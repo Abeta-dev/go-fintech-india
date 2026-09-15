@@ -1,0 +1,38 @@
+name: Feature Request
+description: Propose a new feature, checksum algorithm, or statutory compliance helper for go-fintech-india
+title: "feat: <brief description>"
+labels: ["enhancement", "proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a feature or enhancement to `go-fintech-india`. Please provide financial/regulatory context and use cases.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement / Regulatory Requirement
+      description: What fintech, taxation, banking, or compliance requirement are you addressing?
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution / API Design
+      description: Describe the proposed API signature, types, functions, or mathematical algorithms.
+      render: go
+    validations:
+      required: true
+  - type: textarea
+    id: statutory-reference
+    attributes:
+      label: Statutory / Official Regulatory Reference
+      description: Links or references to official guidelines (e.g. UIDAI, GSTN, RBI, NPCI, MCA circulars).
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches or workarounds did you consider?
+    validations:
+      required: false

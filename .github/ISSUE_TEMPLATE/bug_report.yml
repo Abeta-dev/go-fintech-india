@@ -1,0 +1,61 @@
+name: Bug Report
+description: Report a bug, checksum discrepancy, or statutory calculation issue in go-fintech-india
+title: "bug: <brief description>"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue with `go-fintech-india`. Please provide sufficient detail to reproduce the bug.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component / Module
+      description: Select the module where the issue occurs.
+      options:
+        - money (Paise arithmetic, Split, Allocate, SQL/JSON)
+        - currency (FormatINR, ParseINR, Lakhs/Crores)
+        - words (Rupees to Words, Cheque Printing)
+        - fy (Financial Year, Advance Tax Schedule)
+        - aging (MCA Schedule III Receivables Aging)
+        - aadhaar (Verhoeff D5 Checksum, Masking)
+        - pan (Entity Parsing, Format, Masking)
+        - gstin (Mod-36 Checksum, State Code Lookup)
+        - ifsc (RBI IFSC Validation, Bank Code)
+        - micr (MICR Transit Code Parsing)
+        - upi (NPCI UPI Intent URI/QR, VPA Validation)
+        - phone (Mobile Validation, E.164 Formatting)
+        - account (Bank Account Validation, Masking)
+        - other
+    validations:
+      required: true
+  - type: input
+    id: go-version
+    attributes:
+      label: Go Version
+      description: Run `go version` and paste the output.
+      placeholder: "go version go1.24.4 darwin/arm64"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal Reproducible Example
+      description: Provide a minimal, reproducible code snippet or failing test case.
+      render: go
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior / Statutory Standard
+      description: What did you expect to happen according to statutory standards (UIDAI, GSTN, RBI, NPCI, MCA)?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened? (Include output or error messages).
+    validations:
+      required: true
