@@ -144,8 +144,8 @@ func TestHTTPResolver(t *testing.T) {
 	resolver := NewHTTPResolver(
 		WithBaseURL(server.URL),
 		WithHTTPClient(customClient),
-		WithBaseURL(""),       // test no-op empty string
-		WithHTTPClient(nil),   // test no-op nil client
+		WithBaseURL(""),     // test no-op empty string
+		WithHTTPClient(nil), // test no-op nil client
 	)
 
 	ctx := context.Background()

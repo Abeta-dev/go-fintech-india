@@ -6,8 +6,8 @@
 
 | Version Series | Status             | Security Updates |
 | -------------- | ------------------ | ---------------- |
-| 0.1.x          | **Active / Current** | :white_check_mark: Yes |
-| < 0.1.0        | End-of-Life        | :x: No           |
+| 0.2.x          | **Active / Current** | :white_check_mark: Yes |
+| < 0.2.0        | End-of-Life        | :x: No           |
 
 ---
 
