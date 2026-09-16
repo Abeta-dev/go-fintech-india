@@ -264,15 +264,18 @@ import (
 
 func main() {
 	// Razorpay HMAC-SHA256 verification (constant-time)
-	err := fintechin.VerifyRazorpayWebhook(payload, signature, secret)
-	if err != nil {
+	if err := fintechin.ValidateRazorpayWebhook(payload, signature, secret); err != nil {
 		fmt.Println("Razorpay signature invalid:", err)
 	}
 
 	// Cashfree HMAC-SHA256 with replay-attack tolerance window (e.g. 5 minutes)
-	err = fintechin.VerifyCashfreeWebhook(payload, timestampHeader, signature, secret, 5*time.Minute)
-	if err != nil {
+	if err := fintechin.ValidateCashfreeWebhook(payload, signature, timestampHeader, secret, 5*time.Minute); err != nil {
 		fmt.Println("Cashfree signature invalid or expired:", err)
+	}
+
+	// PhonePe S2S checksum verification (constant-time)
+	if err := fintechin.ValidatePhonePeWebhook(responseBase64, checksum, saltKey, saltIndex); err != nil {
+		fmt.Println("PhonePe checksum invalid:", err)
 	}
 }
 ```

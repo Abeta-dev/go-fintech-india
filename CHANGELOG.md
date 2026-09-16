@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.0] - 2026-09-15
 
+Clean-slate architecture: No backward compatibility preserved. Statutory validation and cryptographic webhook interfaces are designed strictly for modern Go 1.25+ microservices with no legacy shims, as no external developers are actively consuming pre-release revisions.
+
 ### Added
 - `Money`: Exact integer paise monetary struct representing INR currency (1 INR = 100 paise).
 - `NewMoney`, `NewMoneyFromRupees`, `NewMoneyFromFloat`: Constructors with strict rounding.
@@ -28,6 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ValidateUPI`, `IsValidUPI`, `IsKnownPSPHandle`, `UPIParams`, `GenerateUPIURI`, `ParseUPIURI`: NPCI UPI Virtual Payment Address (VPA) verification and Intent URI / QR code generation and parsing.
 - `ValidateMobile`, `IsValidMobile`, `NormalizeMobile`, `FormatE164`: Department of Telecommunications (DoT) 10-digit mobile number validation and E.164 standardization (`+91`).
 - `ValidateBankAccount`, `IsValidBankAccount`, `MaskBankAccount`: Indian bank account number validation (9 to 18 digits) and masking.
-- `VerifyRazorpayWebhook`, `VerifyCashfreeWebhook`, `VerifyPhonePeWebhook`: Cryptographic timing-safe webhook signature verification for major Indian payment gateways.
-- `BankBranch`, `IFSCResolver`, `OfflineIFSCResolver`, `NewOfflineIFSCResolver`, `HTTPResolver`, `NewHTTPResolver`, `WithHTTPClient`, `WithBaseURL`: Dynamic and offline Indian bank branch metadata resolution.
+- `VerifyRazorpayWebhook`, `ValidateRazorpayWebhook`, `VerifyCashfreeWebhook`, `ValidateCashfreeWebhook`, `VerifyPhonePeWebhook`, `ValidatePhonePeWebhook`: Cryptographic timing-safe webhook signature verification and statutory validation for major Indian payment gateways (Razorpay, Cashfree with replay defense, and PhonePe).
+- `BankBranch`, `IFSCResolver`, `OfflineIFSCResolver`, `NewOfflineIFSCResolver`, `HTTPResolver`, `NewHTTPResolver`, `FallbackResolver`, `NewFallbackResolver`, `WithHTTPClient`, `WithBaseURL`: Dynamic, offline, and fallback Indian bank branch metadata resolution.
 - `ErrBranchNotFound`, `ErrInvalidSignature`, `ErrExpiredWebhook`, `ErrMalformedWebhook`: Domain errors for webhooks and branch lookup.

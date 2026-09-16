@@ -39,6 +39,12 @@ type IFSCResolver interface {
 	Resolve(ctx context.Context, ifsc string) (*BankBranch, error)
 }
 
+var (
+	_ IFSCResolver = (*OfflineIFSCResolver)(nil)
+	_ IFSCResolver = (*HTTPResolver)(nil)
+	_ IFSCResolver = (*FallbackResolver)(nil)
+)
+
 // OfflineIFSCResolver resolves bank branch information offline using the embedded bank directory.
 // It executes with zero network I/O and zero heap allocations on hot paths.
 type OfflineIFSCResolver struct{}
@@ -48,13 +54,31 @@ func NewOfflineIFSCResolver() *OfflineIFSCResolver {
 	return &OfflineIFSCResolver{}
 }
 
+// sanitizeIFSC trims whitespace and uppercases ASCII characters without allocating if already normalized.
+func sanitizeIFSC(ifsc string) string {
+	if len(ifsc) == 11 {
+		clean := true
+		for i := 0; i < 11; i++ {
+			c := ifsc[i]
+			if (c >= 'a' && c <= 'z') || c == ' ' || c == '\t' {
+				clean = false
+				break
+			}
+		}
+		if clean {
+			return ifsc
+		}
+	}
+	return strings.ToUpper(strings.TrimSpace(ifsc))
+}
+
 // Resolve validates and decomposes an IFSC code using the local directory.
 func (r *OfflineIFSCResolver) Resolve(_ context.Context, ifsc string) (*BankBranch, error) {
-	if err := ValidateIFSC(ifsc); err != nil {
+	clean := sanitizeIFSC(ifsc)
+	if err := ValidateIFSC(clean); err != nil {
 		return nil, err
 	}
 
-	clean := strings.ToUpper(strings.TrimSpace(ifsc))
 	bCode := BankCode(clean)
 	bName := BankNameFromIFSC(clean)
 	if bName == "" {
@@ -107,6 +131,12 @@ func NewHTTPResolver(opts ...HTTPResolverOption) *HTTPResolver {
 	for _, opt := range opts {
 		opt(r)
 	}
+	if r.client == nil {
+		r.client = &http.Client{Timeout: 5 * time.Second}
+	}
+	if r.baseURL == "" {
+		r.baseURL = "https://ifsc.razorpay.com"
+	}
 	return r
 }
 
@@ -127,11 +157,11 @@ type razorpayIFSCResponse struct {
 
 // Resolve queries the HTTP registry to fetch branch details.
 func (r *HTTPResolver) Resolve(ctx context.Context, ifsc string) (*BankBranch, error) {
-	if err := ValidateIFSC(ifsc); err != nil {
+	clean := sanitizeIFSC(ifsc)
+	if err := ValidateIFSC(clean); err != nil {
 		return nil, err
 	}
 
-	clean := strings.ToUpper(strings.TrimSpace(ifsc))
 	endpoint := fmt.Sprintf("%s/%s", r.baseURL, clean)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, http.NoBody)
@@ -167,12 +197,23 @@ func (r *HTTPResolver) Resolve(ctx context.Context, ifsc string) (*BankBranch, e
 	if bCode == "" {
 		bCode = BankCode(clean)
 	}
+	bName := raw.Bank
+	if bName == "" {
+		bName = BankNameFromIFSC(clean)
+	}
+	if bName == "" {
+		bName = fmt.Sprintf("Unknown Bank (%s)", bCode)
+	}
+	branch := raw.Branch
+	if branch == "" {
+		branch = BranchCode(clean)
+	}
 
 	return &BankBranch{
 		IFSC:     clean,
-		Bank:     raw.Bank,
+		Bank:     bName,
 		BankCode: bCode,
-		Branch:   raw.Branch,
+		Branch:   branch,
 		Address:  raw.Address,
 		City:     raw.City,
 		State:    raw.State,
@@ -182,4 +223,34 @@ func (r *HTTPResolver) Resolve(ctx context.Context, ifsc string) (*BankBranch, e
 		NEFT:     raw.NEFT,
 		IMPS:     raw.IMPS,
 	}, nil
+}
+
+// FallbackResolver chains a primary IFSCResolver (e.g. HTTP live lookup) with a fallback
+// IFSCResolver (e.g. OfflineIFSCResolver) to provide resilient branch resolution.
+type FallbackResolver struct {
+	primary  IFSCResolver
+	fallback IFSCResolver
+}
+
+// NewFallbackResolver constructs an IFSCResolver that first tries primary, and on error tries fallback.
+func NewFallbackResolver(primary, fallback IFSCResolver) *FallbackResolver {
+	return &FallbackResolver{
+		primary:  primary,
+		fallback: fallback,
+	}
+}
+
+// Resolve attempts to resolve using the primary resolver. If primary fails or is nil,
+// it delegates to the fallback resolver.
+func (r *FallbackResolver) Resolve(ctx context.Context, ifsc string) (*BankBranch, error) {
+	if r.primary != nil {
+		branch, err := r.primary.Resolve(ctx, ifsc)
+		if err == nil {
+			return branch, nil
+		}
+	}
+	if r.fallback != nil {
+		return r.fallback.Resolve(ctx, ifsc)
+	}
+	return nil, ErrBranchNotFound
 }
