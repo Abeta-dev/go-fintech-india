@@ -8,47 +8,128 @@ import (
 	"unicode"
 )
 
-// FormatINR formats integer paise into Indian Numbering Format (e.g. "12,34,567.89" or "-50,000.00").
-func FormatINR(paise int64) string {
-	sign := ""
-	p := paise
-	if p < 0 {
-		sign = "-"
-		p = -p
-	}
+// AppendINR appends the Indian Numbering Format of paise to dst and returns the extended buffer.
+// Performs zero heap allocations when dst has sufficient capacity.
+func AppendINR(dst []byte, paise int64) []byte {
+	var buf [48]byte
+	i := len(buf)
 
-	rupees := p / 100
-	paisePart := p % 100
-
-	rupeesStr := strconv.FormatInt(rupees, 10)
-	var formattedRupees string
-
-	if len(rupeesStr) <= 3 {
-		formattedRupees = rupeesStr
+	var u uint64
+	neg := paise < 0
+	if neg {
+		u = uint64(-paise)
 	} else {
-		last3 := rupeesStr[len(rupeesStr)-3:]
-		remaining := rupeesStr[:len(rupeesStr)-3]
-
-		var chunks []string
-		for len(remaining) > 2 {
-			chunks = append([]string{remaining[len(remaining)-2:]}, chunks...)
-			remaining = remaining[:len(remaining)-2]
-		}
-		if remaining != "" {
-			chunks = append([]string{remaining}, chunks...)
-		}
-		formattedRupees = strings.Join(chunks, ",") + "," + last3
+		u = uint64(paise)
 	}
 
-	return fmt.Sprintf("%s%s.%02d", sign, formattedRupees, paisePart)
+	paisePart := u % 100
+	rupees := u / 100
+
+	i--
+	buf[i] = byte('0' + paisePart%10)
+	i--
+	buf[i] = byte('0' + paisePart/10)
+	i--
+	buf[i] = '.'
+
+	if rupees == 0 {
+		i--
+		buf[i] = '0'
+	} else {
+		digitCount := 0
+		groupLimit := 3
+		for rupees > 0 {
+			if digitCount == groupLimit {
+				i--
+				buf[i] = ','
+				digitCount = 0
+				groupLimit = 2
+			}
+			i--
+			buf[i] = byte('0' + rupees%10)
+			rupees /= 10
+			digitCount++
+		}
+	}
+
+	if neg {
+		i--
+		buf[i] = '-'
+	}
+
+	return append(dst, buf[i:]...)
+}
+
+// FormatINR formats integer paise into Indian Numbering Format (e.g. "12,34,567.89" or "-50,000.00").
+// Optimized to perform only a single heap allocation for the returned string.
+func FormatINR(paise int64) string {
+	var buf [48]byte
+	res := AppendINR(buf[:0], paise)
+	return string(res)
+}
+
+// AppendINRSymbol appends the Indian Numbering Format with Rupee symbol ("₹") to dst.
+// Performs zero heap allocations when dst has sufficient capacity.
+func AppendINRSymbol(dst []byte, paise int64) []byte {
+	var buf [48]byte
+	i := len(buf)
+
+	var u uint64
+	neg := paise < 0
+	if neg {
+		u = uint64(-paise)
+	} else {
+		u = uint64(paise)
+	}
+
+	paisePart := u % 100
+	rupees := u / 100
+
+	i--
+	buf[i] = byte('0' + paisePart%10)
+	i--
+	buf[i] = byte('0' + paisePart/10)
+	i--
+	buf[i] = '.'
+
+	if rupees == 0 {
+		i--
+		buf[i] = '0'
+	} else {
+		digitCount := 0
+		groupLimit := 3
+		for rupees > 0 {
+			if digitCount == groupLimit {
+				i--
+				buf[i] = ','
+				digitCount = 0
+				groupLimit = 2
+			}
+			i--
+			buf[i] = byte('0' + rupees%10)
+			rupees /= 10
+			digitCount++
+		}
+	}
+
+	// Prepend Rupee symbol "₹" (UTF-8: \u20b9, 3 bytes: 0xE2, 0x82, 0xB9)
+	i -= 3
+	copy(buf[i:i+3], "\u20b9")
+
+	if neg {
+		i--
+		buf[i] = '-'
+	}
+
+	return append(dst, buf[i:]...)
 }
 
 // FormatINRSymbol formats integer paise with the Indian Rupee symbol (e.g. "₹12,34,567.89", "-₹50,000.00").
+// Optimized to perform only a single heap allocation for the returned string.
 func FormatINRSymbol(paise int64) string {
-	if paise < 0 {
-		return "-₹" + FormatINR(-paise)
-	}
-	return "₹" + FormatINR(paise)
+	var buf [48]byte
+	res := AppendINRSymbol(buf[:0], paise)
+	return string(res)
 }
 
 // ParseINR parses an Indian Rupee string representation into Money.

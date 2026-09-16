@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.1] - 2026-09-16
+## [0.2.2] - 2026-09-16
 
 Clean-slate architecture: No backward compatibility preserved. Statutory validation and cryptographic webhook interfaces are designed strictly for modern Go 1.25+ microservices with no legacy shims, as no external developers are actively consuming pre-release revisions.
 
@@ -15,7 +15,7 @@ Clean-slate architecture: No backward compatibility preserved. Statutory validat
 - `Paise`, `Rupees`, `Float64`, `IsZero`, `IsPositive`, `IsNegative`, `Abs`, `Negate`, `Add`, `Sub`, `Mul`: Integer arithmetic primitives.
 - `Split`: Remainder-safe split distributing leftover paise to earlier elements.
 - `Allocate`: Proportional allocation across weight vectors using the Hare-Niemeyer largest-remainder method without penny-dropping.
-- `FormatINR`, `FormatINRSymbol`: Indian numbering system formatting with Lakhs and Crores grouping (e.g. `₹12,34,567.89`).
+- `FormatINR`, `FormatINRSymbol`, `AppendINR`, `AppendINRSymbol`: Indian numbering system formatting with Lakhs and Crores grouping (e.g. `₹12,34,567.89`) and zero-allocation buffer streaming.
 - `ParseINR`: Robust parsing of Indian currency strings with support for symbols, commas, and negative values.
 - `NumberToIndianWords`, `InWords`: Legal words representation in Indian numbering system for cheque printing per Indian banking conventions.
 - `FinancialYear`, `FYFromDate`, `CurrentFY`, `ParseFY`: Complete Indian Financial Year lifecycle management (April 1 to March 31).

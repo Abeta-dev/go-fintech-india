@@ -106,11 +106,43 @@ func TestParseINR(t *testing.T) {
 	}
 }
 
+func TestAppendINR(t *testing.T) {
+	buf := make([]byte, 0, 64)
+	got := AppendINR(buf, 123456789)
+	if string(got) != "12,34,567.89" {
+		t.Errorf("AppendINR = %q, want %q", string(got), "12,34,567.89")
+	}
+
+	gotSymbol := AppendINRSymbol(buf, -5000000)
+	if string(gotSymbol) != "-₹50,000.00" {
+		t.Errorf("AppendINRSymbol = %q, want %q", string(gotSymbol), "-₹50,000.00")
+	}
+
+	// Verify zero allocations when buffer is pre-allocated
+	allocs := testing.AllocsPerRun(100, func() {
+		b := make([]byte, 0, 48)
+		_ = AppendINR(b, 123456789)
+	})
+	// The only alloc is the make([]byte), AppendINR itself adds 0.
+	if allocs > 1 {
+		t.Errorf("expected at most 1 alloc for make, got %f", allocs)
+	}
+}
+
 func BenchmarkFormatINR(b *testing.B) {
 	paise := int64(123456789)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_ = FormatINR(paise)
+	}
+}
+
+func BenchmarkAppendINR(b *testing.B) {
+	paise := int64(123456789)
+	buf := make([]byte, 0, 48)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = AppendINR(buf[:0], paise)
 	}
 }
 
