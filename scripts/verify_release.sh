@@ -150,8 +150,12 @@ if [ "${MODULE_VERSION}" != "${TAG}" ] || [ -z "${MODULE_SUM}" ] || [ -z "${MODU
 fi
 
 FAILURE_STAGE="source_hash"
-ARCHIVE_SHA256=$(git archive --format=tar "${TAG}" | sha256sum | awk '{print $1}')
-GO_MOD_SHA256=$(git show "${TAG}:go.mod" | sha256sum | awk '{print $1}')
+HASH_CMD="sha256sum"
+if ! command -v sha256sum >/dev/null 2>&1; then
+  HASH_CMD="shasum -a 256"
+fi
+ARCHIVE_SHA256=$(git archive --format=tar "${TAG}" | ${HASH_CMD} | awk '{print $1}')
+GO_MOD_SHA256=$(git show "${TAG}:go.mod" | ${HASH_CMD} | awk '{print $1}')
 
 VERIFICATION_STATUS="verified"
 FAILURE_STAGE=""

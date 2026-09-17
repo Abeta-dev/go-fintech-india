@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.4] - 2026-09-17
+
+Automated verification of immutable Go module releases, proxy resolution retry backoff, SemVer 2.0 prerelease support, and release verification manifest persistence.
+
+### Added
+- `scripts/verify_release.sh`: Comprehensive Go module release verifier with exponential backoff and proxy cache isolation.
+- `scripts/test_verify_release.sh`: Automated test harness verifying proxy retries, failure manifests, and SemVer prerelease parsing.
+
+### Changed
+- `.github/workflows/release.yml`: Persist `release-manifest.json` as a CI artifact and attach it directly to published GitHub releases.
+- `.github/workflows/release.yml`: Ensure release immutability without deleting existing releases.
+- `scripts/check_version.sh`: Enhanced SemVer 2.0 pattern supporting prerelease tags and dynamic tag verification.
+- `CONTRIBUTING.md`: Documented the 3-step release verification and tag publishing workflow.
+
 ## [0.2.3] - 2026-09-17
 
 High-throughput currency streaming benchmarks, offline bank branch resolution guarantees, and statutory payment gateway webhook verification documentation.
