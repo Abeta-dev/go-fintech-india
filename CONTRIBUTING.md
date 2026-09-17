@@ -63,6 +63,16 @@ make lint
 make coverage
 ```
 
+### Release verification
+
+A release tag is immutable. From the tagged checkout, run the release verifier before publishing a GitHub release:
+
+```bash
+GIT_TAG=vX.Y.Z ./scripts/verify_release.sh vX.Y.Z
+```
+
+It verifies the local and remote tag objects resolve to `HEAD`, resolves the exact module through the Go module proxy, and writes an ignored `release-manifest.json` with the module sums and source archive hashes. The release workflow then builds an isolated consumer using the published module; it never replaces that dependency with the checkout or deletes an existing GitHub release. Update the version references in the release commit before creating a new tag.
+
 ---
 
 ## Testing & Quality Checklist

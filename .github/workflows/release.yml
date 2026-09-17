@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: Set up Go
         uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
@@ -41,39 +42,24 @@ jobs:
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "Release target tag: $TAG"
 
-      - name: Remote Tag Collision Check
+      - name: Verify Immutable Release Artifact
         env:
-          TAG: ${{ steps.tag_info.outputs.tag }}
-        run: |
-          echo "Checking tag collision against remote for $TAG..."
-          git fetch --tags origin || true
-          REMOTE_TAG_HASH=$(git ls-remote --tags origin "refs/tags/${TAG}^{}" | awk '{print $1}')
-          if [ -z "$REMOTE_TAG_HASH" ]; then
-            REMOTE_TAG_HASH=$(git ls-remote --tags origin "refs/tags/${TAG}" | awk '{print $1}')
-          fi
-          LOCAL_HASH=$(git rev-parse HEAD)
-          if [ -n "$REMOTE_TAG_HASH" ] && [ "$REMOTE_TAG_HASH" != "$LOCAL_HASH" ]; then
-            echo "❌ Error: Tag $TAG already exists on remote pointing to $REMOTE_TAG_HASH, but HEAD is $LOCAL_HASH."
-            echo "Tag collision detected! Refusing release."
-            exit 1
-          fi
-          echo "✅ Remote tag check passed: No conflicting tag collision found."
+          GIT_TAG: ${{ steps.tag_info.outputs.tag }}
+        run: ./scripts/verify_release.sh "$GIT_TAG"
 
-      - name: Run Quality and Truth Gates
-        run: |
-          ./scripts/check_version.sh
-          ./scripts/check_coverage.sh
+      - name: Run Quality Gates
+        run: ./scripts/check_coverage.sh
 
-      - name: Verify 'go get' in Isolated Scratch Directory
+      - name: Verify Published Module from an Isolated Consumer
         env:
           TAG: ${{ steps.tag_info.outputs.tag }}
         run: |
           SCRATCH_DIR=$(mktemp -d)
+          trap 'rm -rf "$SCRATCH_DIR"' EXIT
           echo "Testing consumer build in isolated directory: $SCRATCH_DIR with tag ${TAG}"
           cd "$SCRATCH_DIR"
-          go mod init scratchconsumer
-          go mod edit -require "github.com/umesh0492/go-fintech-india@${TAG:-v0.1.0}"
-          go mod edit -replace "github.com/umesh0492/go-fintech-india=${GITHUB_WORKSPACE}"
+          GOWORK=off go mod init scratchconsumer
+          GOWORK=off go get "github.com/umesh0492/go-fintech-india@${TAG}"
           cat << 'EOF' > main.go
           package main
 
@@ -87,24 +73,20 @@ jobs:
           	fmt.Println("Money:", m.String())
           }
           EOF
-          go build -v .
+          GOWORK=off go build -v .
           ./scratchconsumer
-          rm -rf "$SCRATCH_DIR"
-          echo "✅ Isolated scratch consumer verification passed."
+          echo "✅ Published isolated scratch consumer verification passed."
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.tag_info.outputs.tag }}
         run: |
-          EXISTING_IDS=$(gh api "repos/${{ github.repository }}/releases" --jq ".[] | select(.tag_name == \"$TAG\") | .id" 2>/dev/null || true)
-          for REL_ID in $EXISTING_IDS; do
-            if [ -n "$REL_ID" ]; then
-              echo "Deleting existing release ID $REL_ID for $TAG..."
-              gh api -X DELETE "repos/${{ github.repository }}/releases/$REL_ID"
-            fi
-          done
-          echo "Creating fresh release $TAG..."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "GitHub release $TAG already exists; leaving immutable release untouched."
+            exit 0
+          fi
+          echo "Creating release $TAG..."
           gh release create "$TAG" \
             --title "go-fintech-india $TAG" \
             --notes-file <(awk '/^## \[/{n++} n==1' CHANGELOG.md)

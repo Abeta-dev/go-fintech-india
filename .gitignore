@@ -24,6 +24,9 @@ coverage.html
 coverage.json
 *.coverprofile
 
+# Release verification evidence; generated from immutable Git and module-proxy data.
+release-manifest.json
+
 # Go workspace and IDE
 .idea/
 .vscode/
