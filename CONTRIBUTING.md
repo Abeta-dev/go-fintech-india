@@ -65,13 +65,19 @@ make coverage
 
 ### Release verification
 
-A release tag is immutable. From the tagged checkout, run the release verifier before publishing a GitHub release:
+A release tag is immutable. Complete the release in this order:
+
+1. Update the version references, changelog, and release checks in a reviewed release commit; run the local quality gates.
+2. Create and push the immutable `vX.Y.Z` (or valid SemVer prerelease such as `vX.Y.Z-rc.1`) tag that points to that commit. The workflow cannot verify a tag or its Go-proxy artifact before this prerequisite exists.
+3. Let the tag-triggered release workflow run. It exports the tag before checking documentation, verifies the local/remote tag objects, retries fresh Go-proxy resolution with bounded exponential backoff, writes `release-manifest.json`, and uploads it both as a workflow artifact and a GitHub release asset.
+
+For an already-pushed tag, use the same checkout and run:
 
 ```bash
 GIT_TAG=vX.Y.Z ./scripts/verify_release.sh vX.Y.Z
 ```
 
-It verifies the local and remote tag objects resolve to `HEAD`, resolves the exact module through the Go module proxy, and writes an ignored `release-manifest.json` with the module sums and source archive hashes. The release workflow then builds an isolated consumer using the published module; it never replaces that dependency with the checkout or deletes an existing GitHub release. Update the version references in the release commit before creating a new tag.
+The verifier records module sums and source archive hashes in the ignored manifest. The workflow builds an isolated consumer using the published module; it never replaces that dependency with the checkout. Re-running a release only replaces that release's verification manifest asset and never deletes or recreates the GitHub release.
 
 ---
 

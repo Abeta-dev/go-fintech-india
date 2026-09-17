@@ -14,11 +14,24 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}"
 
-EXPECTED_VER="0.2.3"
+DEFAULT_EXPECTED_VER="0.2.3"
+GIT_TAG_REF="${GIT_TAG:-}"
+if [ -z "$GIT_TAG_REF" ]; then
+  GIT_TAG_REF=$(git describe --tags --exact-match 2>/dev/null || true)
+fi
 
-CHANGELOG_VER=$(grep -E '^## \[[0-9]+\.[0-9]+\.[0-9]+\]' CHANGELOG.md | head -n1 | sed -E 's/## \[([0-9]+\.[0-9]+\.[0-9]+)\].*/\1/')
-README_HEADER_VER=$(grep -E '^# go-fintech-india · v' README.md | head -n1 | sed -E 's/# go-fintech-india · v([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
-README_GET_VER=$(grep -E 'go get github.com/umesh0492/go-fintech-india@v' README.md | head -n1 | sed -E 's/.*go-fintech-india@v([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+# A release workflow supplies GIT_TAG. Retain the checkout's documented version
+# for ordinary contributor checks, but let tagged prereleases verify their exact
+# SemVer version rather than forcing a stable tag.
+EXPECTED_VER="${DEFAULT_EXPECTED_VER}"
+if [ -n "$GIT_TAG_REF" ]; then
+  EXPECTED_VER="${GIT_TAG_REF#v}"
+fi
+SEMVER_PATTERN='[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?'
+
+CHANGELOG_VER=$(grep -E "^## \[${SEMVER_PATTERN}\]" CHANGELOG.md | head -n1 | sed -E "s/^## \[(${SEMVER_PATTERN})\].*/\1/")
+README_HEADER_VER=$(grep -E "^# go-fintech-india · v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/^# go-fintech-india · v(${SEMVER_PATTERN}).*/\1/")
+README_GET_VER=$(grep -E "go get github.com/umesh0492/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
 
 echo "========================================================"
 echo "🔒 Verifying Version Synchronization (go-fintech-india)"
@@ -26,11 +39,6 @@ echo "   - Expected Version: v$EXPECTED_VER"
 echo "   - CHANGELOG.md:     v$CHANGELOG_VER"
 echo "   - README.md Header: v$README_HEADER_VER"
 echo "   - README.md go get: v$README_GET_VER"
-
-GIT_TAG_REF="${GIT_TAG:-}"
-if [ -z "$GIT_TAG_REF" ]; then
-  GIT_TAG_REF=$(git describe --tags --exact-match 2>/dev/null || true)
-fi
 
 if [ -n "$GIT_TAG_REF" ]; then
   echo "   - Git Tag:          $GIT_TAG_REF"

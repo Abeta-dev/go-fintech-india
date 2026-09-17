@@ -43,14 +43,26 @@ jobs:
           echo "Release target tag: $TAG"
 
       - name: Verify Immutable Release Artifact
+        id: verify_release
         env:
           GIT_TAG: ${{ steps.tag_info.outputs.tag }}
         run: ./scripts/verify_release.sh "$GIT_TAG"
 
+      - name: Upload release verification manifest
+        if: always()
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: release-manifest-${{ steps.tag_info.outputs.tag || github.run_id }}
+          path: release-manifest.json
+          if-no-files-found: warn
+          retention-days: 90
+
       - name: Run Quality Gates
+        id: quality_gates
         run: ./scripts/check_coverage.sh
 
       - name: Verify Published Module from an Isolated Consumer
+        id: isolated_consumer
         env:
           TAG: ${{ steps.tag_info.outputs.tag }}
         run: |
@@ -77,16 +89,18 @@ jobs:
           ./scratchconsumer
           echo "✅ Published isolated scratch consumer verification passed."
 
-      - name: Create GitHub Release
+      - name: Create release or replace its verification manifest
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.tag_info.outputs.tag }}
         run: |
+          test -s release-manifest.json
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "GitHub release $TAG already exists; leaving immutable release untouched."
+            echo "GitHub release $TAG already exists; replacing only its verification manifest asset."
+            gh release upload "$TAG" release-manifest.json --clobber
             exit 0
           fi
-          echo "Creating release $TAG..."
-          gh release create "$TAG" \
+          echo "Creating release $TAG with its verification manifest..."
+          gh release create "$TAG" release-manifest.json \
             --title "go-fintech-india $TAG" \
             --notes-file <(awk '/^## \[/{n++} n==1' CHANGELOG.md)
