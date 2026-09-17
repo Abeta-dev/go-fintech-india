@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2026-09-17
+
+High-throughput currency streaming benchmarks, offline bank branch resolution guarantees, and statutory payment gateway webhook verification documentation.
+
+### Added
+- `AppendINR`, `AppendINRSymbol`: Zero-allocation buffer streaming methods benchmarked at ~17.29 ns/op (0 B/op, 0 allocs/op) for high-frequency financial ledger rendering and zero-overhead JSON streaming.
+- `IFSCResolver`: Production offline (`OfflineIFSCResolver`) and resilient HTTP fallback (`FallbackResolver`) branch resolution verified at ~71.07 ns/op with sub-microsecond local caching.
+- `VerifyRazorpayWebhook`, `ValidateRazorpayWebhook`, `VerifyCashfreeWebhook`, `ValidateCashfreeWebhook`, `VerifyPhonePeWebhook`, `ValidatePhonePeWebhook`: Timing-safe statutory webhook verification benchmarks and replay defense documentation across major Indian payment gateways.
+
+### Performance
+- High-efficiency integer paise formatting: single-allocation `FormatINR` (~24.30 ns/op) and zero-allocation `AppendINR` (~17.29 ns/op).
+- Offline bank branch resolution with `OfflineIFSCResolver` running at ~71.07 ns/op with minimal memory footprint.
+- Constant-time HMAC-SHA256 and SHA256 webhook verification protecting against timing attacks on payment notification callbacks.
+
 ## [0.2.2] - 2026-09-16
 
 Clean-slate architecture: No backward compatibility preserved. Statutory validation and cryptographic webhook interfaces are designed strictly for modern Go 1.25+ microservices with no legacy shims, as no external developers are actively consuming pre-release revisions.

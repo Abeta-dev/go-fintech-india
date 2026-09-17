@@ -1,4 +1,4 @@
-# go-fintech-india · v0.2.2
+# go-fintech-india · v0.2.3
 
 > This repository's public history begins from a single initial commit; see [CHANGELOG.md](CHANGELOG.md) for the version-by-version record of what shipped.
 
@@ -18,7 +18,7 @@ Engineered with pure Go standard library primitives, zero heap allocations on ve
 - ⚡ **Zero External Dependencies**: 100% pure Go standard library. Zero bloat, zero supply-chain risk.
 - 💰 **Exact Integer Paise Math**: Represents all currency as `int64` paise (1 INR = 100 paise). Eliminates IEEE 754 floating-point rounding errors and penny-dropping bugs.
 - 🧮 **Remainder-Safe Allocations**: Proportional distribution and Hare-Niemeyer weighted allocation guarantee $\sum \text{parts} == \text{total}$.
-- 📜 **Indian Lakhs/Crores & Cheque Printing**: Canonical formatting (`₹12,34,567.89`) and legal legal words conversion for bank cheques and invoices.
+- 📜 **Indian Lakhs/Crores & Cheque Printing**: Canonical formatting (`₹12,34,567.89`), zero-allocation streaming (`AppendINR`), and legal words conversion for bank cheques and invoices.
 - 🛡️ **Statutory Identity Checksums**:
   - **UIDAI Aadhaar**: Official Verhoeff Dihedral $D_5$ algorithm validation and statutory masking (`XXXX-XXXX-1234`).
   - **Income Tax PAN**: Structural verification, 4th-character entity classification (Individual, Company, Firm, Trust, etc.), surname cross-validation, and masking.
@@ -37,7 +37,7 @@ Engineered with pure Go standard library primitives, zero heap allocations on ve
 ## Installation
 
 ```bash
-go get github.com/umesh0492/go-fintech-india@v0.2.2
+go get github.com/umesh0492/go-fintech-india@v0.2.3
 ```
 
 ---
@@ -316,16 +316,22 @@ All algorithms are optimized for zero or minimal heap allocations. Benchmarks ru
 
 | Operation | Benchmark Target | Latency (ns/op) | Heap Memory (B/op) | Allocations (allocs/op) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Aadhaar Verhoeff D5 Checksum** | `BenchmarkValidateAadhaar` | ~15 ns/op | 0 B/op | **0 allocs/op** |
-| **GSTIN Mod-36 Checksum** | `BenchmarkValidateGSTIN` | ~25 ns/op | 0 B/op | **0 allocs/op** |
-| **PAN Format & Structure** | `BenchmarkValidatePAN` | ~9 ns/op | 0 B/op | **0 allocs/op** |
-| **IFSC Code Validation** | `BenchmarkValidateIFSC` | ~9 ns/op | 0 B/op | **0 allocs/op** |
-| **UPI VPA Validation** | `BenchmarkValidateUPI` | ~20 ns/op | 0 B/op | **0 allocs/op** |
-| **Money Remainder-Safe Split (7 ways)** | `BenchmarkMoneySplit` | ~15 ns/op | 56 B/op | 1 allocs/op |
-| **Money Proportional Allocate** | `BenchmarkMoneyAllocate` | ~45 ns/op | 160 B/op | 2 allocs/op |
-| **Currency Format INR (Lakhs/Crores)** | `BenchmarkFormatINR` | ~55 ns/op | 64 B/op | 2 allocs/op |
-| **Currency Parse INR** | `BenchmarkParseINR` | ~40 ns/op | 0 B/op | **0 allocs/op** |
-| **Number to Indian Words (Legal Cheque)**| `BenchmarkInWords` | ~140 ns/op | 256 B/op | 5 allocs/op |
+| **Aadhaar Verhoeff D5 Checksum** | `BenchmarkValidateAadhaar` | ~38 ns/op | 0 B/op | **0 allocs/op** |
+| **GSTIN Mod-36 Checksum** | `BenchmarkValidateGSTIN` | ~51 ns/op | 0 B/op | **0 allocs/op** |
+| **PAN Format & Structure** | `BenchmarkValidatePAN` | ~7 ns/op | 0 B/op | **0 allocs/op** |
+| **IFSC Code Validation** | `BenchmarkValidateIFSC` | ~7 ns/op | 0 B/op | **0 allocs/op** |
+| **UPI VPA Validation** | `BenchmarkValidateUPI` | ~47 ns/op | 0 B/op | **0 allocs/op** |
+| **Money Remainder-Safe Split** | `BenchmarkMoneySplit` | ~28 ns/op | 64 B/op | 1 allocs/op |
+| **Money Proportional Allocate** | `BenchmarkMoneyAllocate` | ~51 ns/op | 96 B/op | 2 allocs/op |
+| **Currency Format INR (Lakhs/Crores)** | `BenchmarkFormatINR` | ~24 ns/op | 0 B/op | **0 allocs/op** |
+| **Currency Append INR (Zero Alloc)** | `BenchmarkAppendINR` | ~17 ns/op | 0 B/op | **0 allocs/op** |
+| **Currency Parse INR** | `BenchmarkParseINR` | ~306 ns/op | 48 B/op | 2 allocs/op |
+| **Offline IFSC Resolution** | `BenchmarkOfflineIFSCResolver` | ~71 ns/op | 144 B/op | 1 allocs/op |
+| **Razorpay Webhook Verification** | `BenchmarkVerifyRazorpayWebhook` | ~1.7 µs/op | 664 B/op | 9 allocs/op |
+| **Cashfree Webhook Verification** | `BenchmarkVerifyCashfreeWebhook` | ~2.3 µs/op | 776 B/op | 12 allocs/op |
+| **PhonePe Webhook Verification** | `BenchmarkVerifyPhonePeWebhook` | ~542 ns/op | 192 B/op | 4 allocs/op |
+| **Number to Indian Words (Legal Cheque)**| `BenchmarkInWords` | ~530 ns/op | 400 B/op | 13 allocs/op |
+| **Number to Indian Words (Pure Words)** | `BenchmarkNumberToIndianWords` | ~292 ns/op | 240 B/op | 8 allocs/op |
 
 ---
 
