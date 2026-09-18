@@ -2,10 +2,10 @@
 
 > This repository's public history begins from a single initial commit; see [CHANGELOG.md](CHANGELOG.md) for the version-by-version record of what shipped.
 
-[![CI](https://github.com/umesh0492/go-fintech-india/actions/workflows/ci.yml/badge.svg)](https://github.com/umesh0492/go-fintech-india/actions/workflows/ci.yml)
+[![CI](https://github.com/Abeta-dev/go-fintech-india/actions/workflows/ci.yml/badge.svg)](https://github.com/Abeta-dev/go-fintech-india/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/umesh0492/go-fintech-india.svg)](https://pkg.go.dev/github.com/umesh0492/go-fintech-india)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/umesh0492/go-fintech-india/main/.github/badges/coverage.json)](https://github.com/umesh0492/go-fintech-india)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Abeta-dev/go-fintech-india/main/.github/badges/coverage.json)](https://github.com/Abeta-dev/go-fintech-india)
 
 **go-fintech-india** is a zero-dependency, production-grade Go library designed for financial engines, banking gateways, neo-banks, and enterprise ERPs operating in the Indian economy.
 
@@ -352,4 +352,4 @@ All algorithms are optimized for zero or minimal heap allocations. Benchmarks ru
 
 ## License
 
-MIT License. Copyright (c) 2026 Umesh. See [LICENSE](LICENSE) for details.
+MIT License. Copyright (c) 2026 Abeta. See [LICENSE](LICENSE) for details.
