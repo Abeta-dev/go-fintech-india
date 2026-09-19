@@ -21,7 +21,8 @@ dist/
 # Test and coverage artifacts
 coverage.out
 coverage.html
-coverage.json
+/coverage.json
+!.github/badges/coverage.json
 *.coverprofile
 
 # Release verification evidence; generated from immutable Git and module-proxy data.
