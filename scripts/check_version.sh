@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}"
 
-DEFAULT_EXPECTED_VER="0.2.4"
+DEFAULT_EXPECTED_VER="0.2.5"
 GIT_TAG_REF="${GIT_TAG:-}"
 if [ -z "$GIT_TAG_REF" ]; then
   GIT_TAG_REF=$(git describe --tags --exact-match 2>/dev/null || true)
