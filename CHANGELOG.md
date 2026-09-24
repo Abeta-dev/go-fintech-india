@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.5] - 2026-09-24
+
+Interactive pkg.go.dev documentation examples, unified CI Quality Gate with intelligent path filtering, dynamic shields coverage badge endpoint, and repository attribution update.
+
+### Added
+- `example_test.go`: Comprehensive testable `Example` functions for `Money`, `FormatINR`, `ValidatePAN`, `ValidateGSTIN`, `ValidateAadhaar`, `ValidateIFSC`, `ValidateUPI`, `ValidateMobile`, `FYFromDate`, `AdvanceTaxDueDates`, and payment webhook verifiers (`VerifyRazorpayWebhook`, `VerifyCashfreeWebhook`, `VerifyPhonePeWebhook`) enabling interactive documentation on pkg.go.dev.
+
+### Changed
+- `.github/workflows/ci.yml`: Introduced unified CI Quality Gate workflow with intelligent path filtering (`dorny/paths-filter`).
+- Repository attribution and community guidelines updated to reflect `Abeta-dev`.
+
+### Fixed
+- `.github/badges/coverage.json`: Tracked coverage endpoint JSON directly in the repository to resolve 404 resource not found errors on custom Shields.io badges.
+
 ## [0.2.4] - 2026-09-17
 
 Automated verification of immutable Go module releases, proxy resolution retry backoff, SemVer 2.0 prerelease support, and release verification manifest persistence.
