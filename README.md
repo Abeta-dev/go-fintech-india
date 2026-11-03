@@ -350,6 +350,19 @@ All algorithms are optimized for zero or minimal heap allocations. Benchmarks ru
 
 ---
 
+## 🤖 AI Agent Skills & Multi-Model Context Routing
+
+`go-fintech-india` includes vendor-neutral **Agent Skills (`SKILL.md`)** and a root **[`AGENTS.md`](AGENTS.md)** router for any LLM coding agent (Antigravity, Gemini CLI, Claude Code, OpenAI Codex, Cursor, Windsurf):
+
+| Skill | Path | Covered Capabilities |
+| :--- | :--- | :--- |
+| **`go-fintech-india` (Umbrella)** | [`skills/go-fintech-india/SKILL.md`](skills/go-fintech-india/SKILL.md) | 127-symbol catalog router, zero-dependency invariants, and truth gates |
+| **`go-fintech-india-money-tax`** | [`skills/go-fintech-india-money-tax/SKILL.md`](skills/go-fintech-india-money-tax/SKILL.md) | Exact `int64` paise `Money`, `Split`, `Allocate`, Lakh/Crore `FormatINR`/`AppendINR`, `InWords`, `FinancialYear`, `AdvanceTaxDueDates`, `AgingReport` |
+| **`go-fintech-india-kyc-statutory`** | [`skills/go-fintech-india-kyc-statutory/SKILL.md`](skills/go-fintech-india-kyc-statutory/SKILL.md) | `ValidateGSTIN` (mod-36), `ValidatePAN`, `ValidateAadhaar` (Verhoeff D5 & `MaskAadhaar`), `ValidateIFSC` + `NewOfflineIFSCResolver`, `ValidateMICR`, `ValidateMobile`, `ValidateBankAccount` |
+| **`go-fintech-india-payments-upi`** | [`skills/go-fintech-india-payments-upi/SKILL.md`](skills/go-fintech-india-payments-upi/SKILL.md) | `ValidateUPI`, `IsKnownPSPHandle`, `GenerateUPIURI`/`ParseUPIURI`, and constant-time Razorpay/Cashfree/PhonePe webhook verifiers |
+
+---
+
 ## License
 
 MIT License. Copyright (c) 2026 Abeta. See [LICENSE](LICENSE) for details.
