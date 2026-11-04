@@ -1,9 +1,9 @@
 ---
 name: go-fintech-india-payments-upi
-description: NPCI UPI VPA validation, PSP handle lookup, upi://pay deep-link URI generation/parsing, and constant-time Razorpay, Cashfree, and PhonePe webhook verification using github.com/Abeta-dev/go-fintech-india (v0.2.5).
+description: NPCI UPI VPA validation, PSP handle lookup, upi://pay deep-link URI generation/parsing, and constant-time Razorpay, Cashfree, and PhonePe webhook verification using github.com/Abeta-dev/go-fintech-india (v0.2.6).
 ---
 
-# `go-fintech-india-payments-upi` Subskill (`v0.2.5`)
+# `go-fintech-india-payments-upi` Subskill (`v0.2.6`)
 
 Import: `fintech "github.com/Abeta-dev/go-fintech-india"`
 

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.6] - 2026-11-05
+
+Portable multi-model AI Agent Skills (`SKILL.md`), root `AGENTS.md` context router, and updated README skill routing documentation.
+
+### Changed
+- `AGENTS.md`, `skills/`: Added portable multi-model `AGENTS.md` router and 4 modular Agent Skills (`go-fintech-india`, `go-fintech-india-money-tax`, `go-fintech-india-kyc-statutory`, `go-fintech-india-payments-upi`) for LLM coding assistants.
+- `README.md`: Added AI Agent Skills & Multi-Model Context Routing reference table and bumped release references to `v0.2.6`.
+
 ## [0.2.5] - 2026-09-24
 
 Interactive pkg.go.dev documentation examples, unified CI Quality Gate with intelligent path filtering, dynamic shields coverage badge endpoint, and repository attribution update.

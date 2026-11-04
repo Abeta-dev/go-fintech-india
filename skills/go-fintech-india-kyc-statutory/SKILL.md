@@ -3,7 +3,7 @@ name: go-fintech-india-kyc-statutory
 description: Indian KYC, tax, and banking identifier validation and offline IFSC resolution using github.com/Abeta-dev/go-fintech-india (GSTIN mod-36, PAN entity/surname match, Aadhaar Verhoeff D5 & masking, OfflineIFSCResolver, MICR, Indian mobile, bank account).
 ---
 
-# `go-fintech-india-kyc-statutory` Subskill (`v0.2.5`)
+# `go-fintech-india-kyc-statutory` Subskill (`v0.2.6`)
 
 Import: `fintech "github.com/Abeta-dev/go-fintech-india"`
 
