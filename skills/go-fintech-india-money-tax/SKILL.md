@@ -5,7 +5,7 @@ description: Exact integer-paise Money arithmetic, Indian Lakh/Crore formatting,
 
 # `go-fintech-india-money-tax` Subskill (`v0.2.6`)
 
-Import: `fintech "github.com/Abeta-dev/go-fintech-india"`
+Import: `fintech "github.com/umesh0492/go-fintech-india"`
 
 ## 1. Exact Paise `Money` Construction & Arithmetic
 

@@ -5,7 +5,7 @@ description: Umbrella router and integration guide for github.com/Abeta-dev/go-f
 
 # `go-fintech-india` Umbrella Skill (`v0.2.6`)
 
-Module: `github.com/Abeta-dev/go-fintech-india` (`v0.2.6`, `Go 1.26.0`, zero external dependencies)
+Module (`go.mod` import path): `github.com/umesh0492/go-fintech-india` (GitHub repo: `github.com/Abeta-dev/go-fintech-india`) (`v0.2.6`, `Go 1.26.0`, zero external dependencies)
 
 ## When to Use
 

@@ -5,7 +5,7 @@ description: Indian KYC, tax, and banking identifier validation and offline IFSC
 
 # `go-fintech-india-kyc-statutory` Subskill (`v0.2.6`)
 
-Import: `fintech "github.com/Abeta-dev/go-fintech-india"`
+Import: `fintech "github.com/umesh0492/go-fintech-india"`
 
 ## 1. GSTIN Validation & Metadata Extraction (`gstin.go`)
 

@@ -5,7 +5,7 @@ description: NPCI UPI VPA validation, PSP handle lookup, upi://pay deep-link URI
 
 # `go-fintech-india-payments-upi` Subskill (`v0.2.6`)
 
-Import: `fintech "github.com/Abeta-dev/go-fintech-india"`
+Import: `fintech "github.com/umesh0492/go-fintech-india"`
 
 ## 1. UPI VPA Validation & Known PSP Handle Verification (`upi.go`)
 
