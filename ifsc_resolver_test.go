@@ -215,8 +215,65 @@ func TestHTTPResolver(t *testing.T) {
 		if defResolver.client == nil {
 			t.Error("expected non-nil default client")
 		}
+
+		nilOptResolver := NewHTTPResolver(func(r *HTTPResolver) {
+			r.client = nil
+			r.baseURL = ""
+		})
+		if nilOptResolver.client == nil || nilOptResolver.baseURL != "https://ifsc.razorpay.com" {
+			t.Errorf("expected fallback defaults when option clears fields, got %+v", nilOptResolver)
+		}
+	})
+
+	t.Run("Invalid BaseURL Request Creation Error", func(t *testing.T) {
+		badResolver := NewHTTPResolver(WithBaseURL("://bad-url"))
+		if _, err := badResolver.Resolve(ctx, "HDFC0000001"); err == nil {
+			t.Error("expected error on invalid base URL, got nil")
+		}
+	})
+
+	t.Run("Read Body Error and Unknown Bank Fallback", func(t *testing.T) {
+		errBodyClient := &http.Client{
+			Transport: roundTripFunc(func(req *http.Request) (*http.Response, error) {
+				return &http.Response{
+					StatusCode: http.StatusOK,
+					Body:       errReader{},
+					Header:     make(http.Header),
+				}, nil
+			}),
+		}
+		errBodyResolver := NewHTTPResolver(WithBaseURL("http://example.com"), WithHTTPClient(errBodyClient))
+		if _, err := errBodyResolver.Resolve(ctx, "HDFC0000001"); err == nil {
+			t.Error("expected error when reading response body fails, got nil")
+		}
+
+		unknownBankServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write([]byte(`{}`))
+		}))
+		defer unknownBankServer.Close()
+
+		unknownResolver := NewHTTPResolver(WithBaseURL(unknownBankServer.URL))
+		b, err := unknownResolver.Resolve(ctx, "ZZZZ0000001")
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if b.Bank != "Unknown Bank (ZZZZ)" {
+			t.Errorf("expected Unknown Bank (ZZZZ), got %q", b.Bank)
+		}
 	})
 }
+
+type roundTripFunc func(*http.Request) (*http.Response, error)
+
+func (f roundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
+	return f(req)
+}
+
+type errReader struct{}
+
+func (errReader) Read([]byte) (int, error) { return 0, errors.New("read error") }
+func (errReader) Close() error             { return nil }
 
 func TestFallbackResolver(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

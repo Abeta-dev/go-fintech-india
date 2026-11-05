@@ -37,6 +37,7 @@ func TestMobileValidation(t *testing.T) {
 		{"1876543210", ErrInvalidMobileStartDigit},
 		{"987654321A", ErrInvalidMobileFormat},
 		{"+19876543210", ErrInvalidMobileLength}, // Not +91
+		{"12345678901234567", ErrInvalidMobileLength},
 	}
 
 	for _, tc := range invalidCases {

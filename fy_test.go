@@ -129,6 +129,9 @@ func TestParseFY(t *testing.T) {
 		"2024-2026",
 		"FY abc",
 		"2024-25-26",
+		"FY abcd-25",
+		"FY 2024-xy",
+		"FY 2024-250",
 	}
 
 	for _, s := range invalid {

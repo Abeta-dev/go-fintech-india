@@ -117,6 +117,23 @@ func TestGenerateAndParseUPIURI(t *testing.T) {
 	if parsed.URL != params.URL {
 		t.Errorf("URL = %q, expected %q", parsed.URL, params.URL)
 	}
+
+	// Test ParseUPIURI with path "/pay" (no host) and default currency
+	parsedPath, err := ParseUPIURI("upi:///pay?pa=store@okhdfcbank")
+	if err != nil {
+		t.Fatalf("ParseUPIURI(upi:///pay) failed: %v", err)
+	}
+	if parsedPath.Currency != "INR" {
+		t.Errorf("Currency = %q, want INR", parsedPath.Currency)
+	}
+
+	// Test ParseUPIURI error cases
+	if _, err := ParseUPIURI("upi://pay?pn=Store"); err != ErrInvalidUPIMissingPayee {
+		t.Errorf("expected ErrInvalidUPIMissingPayee, got %v", err)
+	}
+	if _, err := ParseUPIURI("upi://pay?pa=invalid_vpa"); err == nil {
+		t.Error("expected error for invalid pa in ParseUPIURI")
+	}
 }
 
 func TestGenerateUPIURICRLFInjection(t *testing.T) {

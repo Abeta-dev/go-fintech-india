@@ -131,6 +131,9 @@ func TestAgingReport(t *testing.T) {
 	if report.BucketAmount(BucketAbove180) != NewMoneyFromRupees(10000) {
 		t.Errorf("BucketAbove180 = %v, want %v", report.BucketAmount(BucketAbove180), NewMoneyFromRupees(10000))
 	}
+	if report.BucketAmount(AgingBucket("unknown")) != NewMoney(0) {
+		t.Errorf("BucketAmount(unknown) = %v, want 0", report.BucketAmount(AgingBucket("unknown")))
+	}
 
 	// Percentage checks
 	// BucketAbove180: 10000 / 20500 * 100 = 48.78%

@@ -102,6 +102,12 @@ func TestExtractPAN(t *testing.T) {
 	if ExtractPAN("2912345678901Z0") != "" {
 		t.Errorf("expected empty string for invalid embedded PAN")
 	}
+	if _, err := CalculateGSTINChecksum("29AACCG0527D1"); err != ErrInvalidGSTINLength {
+		t.Errorf("CalculateGSTINChecksum short expected ErrInvalidGSTINLength, got %v", err)
+	}
+	if _, err := CalculateGSTINChecksum("29AACCG0527D1!"); err != ErrInvalidGSTINFormat {
+		t.Errorf("CalculateGSTINChecksum invalid char expected ErrInvalidGSTINFormat, got %v", err)
+	}
 }
 
 func BenchmarkValidateGSTIN(b *testing.B) {

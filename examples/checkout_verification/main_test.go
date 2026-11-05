@@ -27,4 +27,6 @@ func TestRunCheckoutDemo(t *testing.T) {
 			t.Errorf("output missing %q\ngot:\n%s", want, out)
 		}
 	}
+
+	main()
 }
