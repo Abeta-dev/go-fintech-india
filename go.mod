@@ -1,3 +1,3 @@
-module github.com/umesh0492/go-fintech-india
+module github.com/Abeta-dev/go-fintech-india
 
-go 1.24.4
+go 1.26.0

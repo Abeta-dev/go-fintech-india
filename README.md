@@ -1,9 +1,9 @@
-# go-fintech-india · v0.2.6
+# go-fintech-india · v0.3.0
 
 > This repository's public history begins from a single initial commit; see [CHANGELOG.md](CHANGELOG.md) for the version-by-version record of what shipped.
 
 [![CI](https://github.com/Abeta-dev/go-fintech-india/actions/workflows/ci.yml/badge.svg)](https://github.com/Abeta-dev/go-fintech-india/actions/workflows/ci.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/umesh0492/go-fintech-india.svg)](https://pkg.go.dev/github.com/umesh0492/go-fintech-india)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Abeta-dev/go-fintech-india.svg)](https://pkg.go.dev/github.com/Abeta-dev/go-fintech-india)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Abeta-dev/go-fintech-india/main/.github/badges/coverage.json)](https://github.com/Abeta-dev/go-fintech-india)
 
@@ -37,7 +37,7 @@ Engineered with pure Go standard library primitives, zero heap allocations on ve
 ## Installation
 
 ```bash
-go get github.com/umesh0492/go-fintech-india@v0.2.6
+go get github.com/Abeta-dev/go-fintech-india@v0.3.0
 ```
 
 ---
@@ -51,7 +51,7 @@ package main
 
 import (
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -84,7 +84,7 @@ package main
 
 import (
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -109,7 +109,7 @@ package main
 
 import (
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -137,7 +137,7 @@ package main
 
 import (
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -166,7 +166,7 @@ package main
 
 import (
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -196,7 +196,7 @@ package main
 
 import (
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -229,7 +229,7 @@ package main
 import (
 	"fmt"
 	"time"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -259,7 +259,7 @@ package main
 import (
 	"fmt"
 	"time"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
@@ -288,7 +288,7 @@ package main
 import (
 	"context"
 	"fmt"
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/Abeta-dev/go-fintech-india"
 )
 
 func main() {
