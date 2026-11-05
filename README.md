@@ -1,4 +1,4 @@
-# go-fintech-india · v0.2.5
+# go-fintech-india · v0.2.6
 
 > This repository's public history begins from a single initial commit; see [CHANGELOG.md](CHANGELOG.md) for the version-by-version record of what shipped.
 
@@ -37,7 +37,7 @@ Engineered with pure Go standard library primitives, zero heap allocations on ve
 ## Installation
 
 ```bash
-go get github.com/umesh0492/go-fintech-india@v0.2.5
+go get github.com/umesh0492/go-fintech-india@v0.2.6
 ```
 
 ---
@@ -347,6 +347,19 @@ All algorithms are optimized for zero or minimal heap allocations. Benchmarks ru
 | **Mobile** | DoT (Telecom) | National Numbering Plan (NNP) & ITU-T E.164 Recommendation |
 | **Financial Year / Tax** | CBDT / MoF | Section 2(9), Section 208/211 of Income Tax Act 1961 |
 | **Receivables Aging** | MCA | Companies Act 2013, Schedule III Division I & II |
+
+---
+
+## 🤖 AI Agent Skills & Multi-Model Context Routing
+
+`go-fintech-india` includes vendor-neutral **Agent Skills (`SKILL.md`)** and a root **[`AGENTS.md`](AGENTS.md)** router for any LLM coding agent (Antigravity, Gemini CLI, Claude Code, OpenAI Codex, Cursor, Windsurf):
+
+| Skill | Path | Covered Capabilities |
+| :--- | :--- | :--- |
+| **`go-fintech-india` (Umbrella)** | [`skills/go-fintech-india/SKILL.md`](skills/go-fintech-india/SKILL.md) | 127-symbol catalog router, zero-dependency invariants, and truth gates |
+| **`go-fintech-india-money-tax`** | [`skills/go-fintech-india-money-tax/SKILL.md`](skills/go-fintech-india-money-tax/SKILL.md) | Exact `int64` paise `Money`, `Split`, `Allocate`, Lakh/Crore `FormatINR`/`AppendINR`, `InWords`, `FinancialYear`, `AdvanceTaxDueDates`, `AgingReport` |
+| **`go-fintech-india-kyc-statutory`** | [`skills/go-fintech-india-kyc-statutory/SKILL.md`](skills/go-fintech-india-kyc-statutory/SKILL.md) | `ValidateGSTIN` (mod-36), `ValidatePAN`, `ValidateAadhaar` (Verhoeff D5 & `MaskAadhaar`), `ValidateIFSC` + `NewOfflineIFSCResolver`, `ValidateMICR`, `ValidateMobile`, `ValidateBankAccount` |
+| **`go-fintech-india-payments-upi`** | [`skills/go-fintech-india-payments-upi/SKILL.md`](skills/go-fintech-india-payments-upi/SKILL.md) | `ValidateUPI`, `IsKnownPSPHandle`, `GenerateUPIURI`/`ParseUPIURI`, and constant-time Razorpay/Cashfree/PhonePe webhook verifiers |
 
 ---
 

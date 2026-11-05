@@ -38,3 +38,7 @@ release-manifest.json
 # Temporary scratch directories
 scratch/
 tmp/
+
+# Graphify context graph output
+graphify-out/
+
