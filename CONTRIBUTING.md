@@ -27,12 +27,12 @@ This project is a high-reliability financial, tax, and identity toolkit designed
 ## Development Workflow
 
 ### Prerequisites
-- Go 1.24+ installed
+- Go 1.26.0+ installed
 - `golangci-lint` (v1.60+ or v2.x)
 
 ### Local Setup
 ```bash
-git clone https://github.com/Abeta-dev/go-fintech-india.git
+git clone https://github.com/abeta-dev/go-fintech-india.git
 cd go-fintech-india
 ```
 

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-11-05
+
+Canonical Go module path migration to `github.com/abeta-dev/go-fintech-india`, Go 1.26.0 toolchain baseline alignment, `math.MinInt64` overflow protection in `InWords`, runnable checkout & onboarding verification blueprint in `examples/checkout_verification`, expanded `pkg.go.dev` testable examples across all 15 source files, 100.0% statement coverage across the entire repository, and 100% compile-verified `SKILL.md` signatures.
+
+### Changed
+- `go.mod`, `README.md`, `example_test.go`, `.github/workflows/release.yml`: Migrated canonical Go module path to `github.com/abeta-dev/go-fintech-india` and upgraded Go baseline to `go 1.26.0`.
+- `examples/checkout_verification/`: Added end-to-end runnable Indian B2B checkout & vendor KYC onboarding example with 100.0% unit test coverage.
+- `example_test.go`: Added testable `Example` functions covering all 15 package files (`ValidateUPI`, `GenerateUPIURI`, `ParseUPIURI`, `ValidateRazorpayWebhook`, `ValidateCashfreeWebhook`, `ValidatePhonePeWebhook`, `OfflineIFSCResolver`, `FYFromDate`, `AdvanceTaxDueDates`, `NewAgingReport`, `ValidateMICR`, `NormalizeMobile`, `FormatE164`, `ValidateBankAccount`, `MaskBankAccount`).
+- `.github/badges/coverage.json`: Achieved `100.0%` statement coverage across every function and package in the repository.
+- `skills/`: Synchronized all 4 `SKILL.md` subskills with exact exported function signatures and canonical `github.com/abeta-dev/go-fintech-india` imports.
+
+### Fixed
+- `words.go`: Fixed `int64` two's-complement negation overflow in `InWords(NewMoney(math.MinInt64))` by computing `rupees` and `paise` before sign negation.
+- `.github/workflows/release.yml`: Fixed changelog notes extraction to match the exact `${TAG#v}` release section.
+
 ## [0.2.6] - 2026-11-05
 
 Portable multi-model AI Agent Skills (`SKILL.md`), root `AGENTS.md` context router, and updated README skill routing documentation.
@@ -22,7 +37,7 @@ Interactive pkg.go.dev documentation examples, unified CI Quality Gate with inte
 
 ### Changed
 - `.github/workflows/ci.yml`: Introduced unified CI Quality Gate workflow with intelligent path filtering (`dorny/paths-filter`).
-- Repository attribution and community guidelines updated to reflect `Abeta-dev`.
+- Repository attribution and community guidelines updated to reflect `abeta-dev`.
 
 ### Fixed
 - `.github/badges/coverage.json`: Tracked coverage endpoint JSON directly in the repository to resolve 404 resource not found errors on custom Shields.io badges.

@@ -14,9 +14,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}"
 
-DEFAULT_EXPECTED_VER="0.2.6"
+DEFAULT_EXPECTED_VER="0.3.0"
 GIT_TAG_REF="${GIT_TAG:-}"
-if [ -z "$GIT_TAG_REF" ]; then
+if [ -z "$GIT_TAG_REF" ] && [ -z "$(git status --porcelain 2>/dev/null || true)" ]; then
   GIT_TAG_REF=$(git describe --tags --exact-match 2>/dev/null || true)
 fi
 
@@ -31,7 +31,7 @@ SEMVER_PATTERN='[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?'
 
 CHANGELOG_VER=$(grep -E "^## \[${SEMVER_PATTERN}\]" CHANGELOG.md | head -n1 | sed -E "s/^## \[(${SEMVER_PATTERN})\].*/\1/")
 README_HEADER_VER=$(grep -E "^# go-fintech-india · v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/^# go-fintech-india · v(${SEMVER_PATTERN}).*/\1/")
-README_GET_VER=$(grep -E "go get github.com/umesh0492/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
+README_GET_VER=$(grep -E "go get github.com/(abeta-dev|umesh0492)/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
 
 echo "========================================================"
 echo "🔒 Verifying Version Synchronization (go-fintech-india)"

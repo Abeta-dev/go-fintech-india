@@ -165,11 +165,7 @@ func ValidateGSTIN(s string) error {
 	}
 
 	// 5. 15th character checksum verification
-	expectedCheck, err := CalculateGSTINChecksum(s[:14])
-	if err != nil {
-		return err
-	}
-
+	expectedCheck, _ := CalculateGSTINChecksum(s[:14])
 	if s[14] != expectedCheck {
 		return ErrInvalidGSTINChecksum
 	}

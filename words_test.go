@@ -1,6 +1,8 @@
 package fintechin
 
 import (
+	"math"
+	"strings"
 	"testing"
 )
 
@@ -96,6 +98,11 @@ func TestInWords(t *testing.T) {
 		if got != tt.want {
 			t.Errorf("InWords(%d) = %q, want %q", tt.m.Paise(), got, tt.want)
 		}
+	}
+
+	minWords := InWords(NewMoney(math.MinInt64))
+	if !strings.HasPrefix(minWords, "Minus Rupees ") || !strings.HasSuffix(minWords, " and Eight Paise Only") {
+		t.Errorf("InWords(math.MinInt64) = %q, want valid non-overflowing Minus Rupees ... and Eight Paise Only", minWords)
 	}
 }
 

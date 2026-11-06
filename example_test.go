@@ -1,9 +1,15 @@
 package fintechin_test
 
 import (
+	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"strconv"
+	"time"
 
-	fintechin "github.com/umesh0492/go-fintech-india"
+	fintechin "github.com/abeta-dev/go-fintech-india"
 )
 
 func ExampleMoney() {
@@ -186,4 +192,142 @@ func ExampleValidateIFSC() {
 	// Bank: State Bank of India (Code: SBIN)
 	// Branch: 000001
 	// SBIN1000001 error: ifsc: 5th character must be '0'
+}
+
+func ExampleOfflineIFSCResolver_Resolve() {
+	resolver := fintechin.NewOfflineIFSCResolver()
+	branch, err := resolver.Resolve(context.Background(), "HDFC0000123")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Printf("%s: %s (Branch: %s)\n", branch.IFSC, branch.Bank, branch.Branch)
+
+	// Output:
+	// HDFC0000123: HDFC Bank (Branch: 000123)
+}
+
+func ExampleValidateMICR() {
+	micr := "400002021"
+	fmt.Printf("Valid: %t (City: %s, Bank: %s, Branch: %s)\n",
+		fintechin.IsValidMICR(micr),
+		fintechin.MICRCityCode(micr),
+		fintechin.MICRBankCode(micr),
+		fintechin.MICRBranchCode(micr),
+	)
+
+	// Output:
+	// Valid: true (City: 400, Bank: 002, Branch: 021)
+}
+
+func ExampleNormalizeMobile() {
+	clean, err := fintechin.NormalizeMobile("+91 98765-43210")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Printf("Normalized: %s, E.164: %s\n", clean, fintechin.FormatE164(clean))
+
+	// Output:
+	// Normalized: 9876543210, E.164: +919876543210
+}
+
+func ExampleValidateBankAccount() {
+	acct := "012345678901"
+	fmt.Printf("Valid: %t, Masked: %s\n",
+		fintechin.IsValidBankAccount(acct),
+		fintechin.MaskBankAccount(acct),
+	)
+
+	// Output:
+	// Valid: true, Masked: XXXXXXXX8901
+}
+
+func ExampleGenerateUPIURI() {
+	uri, err := fintechin.GenerateUPIURI(fintechin.UPIParams{
+		PayeeAddress: "merchant@okhdfcbank",
+		PayeeName:    "Abeta Store",
+		Amount:       "499.50",
+		RefID:        "ORD-1001",
+		Note:         "Invoice Payment",
+	})
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	parsed, _ := fintechin.ParseUPIURI(uri)
+	fmt.Printf("URI: %s\n", uri)
+	fmt.Printf("Parsed Payee: %s, Amount: %s, Known PSP: %t\n",
+		parsed.PayeeAddress, parsed.Amount, fintechin.IsKnownPSPHandle("okhdfcbank"))
+
+	// Output:
+	// URI: upi://pay?am=499.50&cu=INR&pa=merchant%40okhdfcbank&pn=Abeta+Store&tn=Invoice+Payment&tr=ORD-1001
+	// Parsed Payee: merchant@okhdfcbank, Amount: 499.50, Known PSP: true
+}
+
+func ExampleFYFromDate() {
+	date := time.Date(2026, time.May, 15, 0, 0, 0, 0, time.UTC)
+	fy := fintechin.FYFromDate(date)
+	fmt.Printf("%s (%s), Quarter: Q%d\n", fy.Label(), fy.AssessmentYear(), fy.Quarter(date))
+
+	for _, inst := range fy.AdvanceTaxDueDates() {
+		fmt.Printf("Q%d: %s (%d%%)\n", inst.Quarter, inst.DueDate.Format("2006-01-02"), inst.PercentageCum)
+	}
+
+	// Output:
+	// FY 2026-27 (AY 2027-28), Quarter: Q1
+	// Q1: 2026-06-15 (15%)
+	// Q2: 2026-09-15 (45%)
+	// Q3: 2026-12-15 (75%)
+	// Q4: 2027-03-15 (100%)
+}
+
+func ExampleNewAgingReport() {
+	asOf := time.Date(2026, time.November, 1, 0, 0, 0, 0, time.UTC)
+	report := fintechin.NewAgingReport(asOf)
+	report.AddInvoice("INV-01", asOf.AddDate(0, 0, -15), fintechin.NewMoneyFromRupees(10000))
+	report.AddInvoice("INV-02", asOf.AddDate(0, 0, -45), fintechin.NewMoneyFromRupees(30000))
+
+	fmt.Printf("Count: %d, Total: ₹%s\n", report.Count(), fintechin.FormatINR(report.TotalAmount().Paise()))
+	fmt.Printf("0-30 days: ₹%s, 31-60 days: ₹%s (%.0f%%)\n",
+		fintechin.FormatINR(report.BucketAmount(fintechin.Bucket0To30).Paise()),
+		fintechin.FormatINR(report.BucketAmount(fintechin.Bucket31To60).Paise()),
+		report.Percentage(fintechin.Bucket31To60),
+	)
+
+	// Output:
+	// Count: 2, Total: ₹40,000.00
+	// 0-30 days: ₹10,000.00, 31-60 days: ₹30,000.00 (75%)
+}
+
+func ExampleValidateRazorpayWebhook() {
+	payload := []byte(`{"event":"payment.captured","payload":{"payment":{"entity":{"id":"pay_123"}}}}`)
+	secret := "rzp_webhook_secret_key"
+
+	mac := hmac.New(sha256.New, []byte(secret))
+	mac.Write(payload)
+	sig := hex.EncodeToString(mac.Sum(nil))
+
+	fmt.Printf("Razorpay Verified: %t\n", fintechin.VerifyRazorpayWebhook(payload, sig, secret))
+
+	// Cashfree verification with current timestamp
+	ts := strconv.FormatInt(time.Now().Unix(), 10)
+	cfMac := hmac.New(sha256.New, []byte(secret))
+	cfMac.Write([]byte(ts))
+	cfMac.Write(payload)
+	cfSig := hex.EncodeToString(cfMac.Sum(nil))
+	fmt.Printf("Cashfree Verified: %t\n", fintechin.VerifyCashfreeWebhook(payload, cfSig, ts, secret, 5*time.Minute))
+
+	// PhonePe S2S callback verification
+	b64 := "eyJzdWNjZXNzIjp0cnVlLCJjb2RlIjoiUEFZTUVOVF9TVUNDRVNTIiwiZGF0YSI6e319"
+	saltKey := "phonepe_salt_key"
+	saltIdx := 1
+	ppHash := sha256.Sum256([]byte(b64 + saltKey))
+	checksum := hex.EncodeToString(ppHash[:]) + "###1"
+	fmt.Printf("PhonePe Verified: %t\n", fintechin.VerifyPhonePeWebhook(b64, checksum, saltKey, saltIdx))
+
+	// Output:
+	// Razorpay Verified: true
+	// Cashfree Verified: true
+	// PhonePe Verified: true
 }
