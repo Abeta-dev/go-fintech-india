@@ -71,13 +71,13 @@ jobs:
           echo "Testing consumer build in isolated directory: $SCRATCH_DIR with tag ${TAG}"
           cd "$SCRATCH_DIR"
           GOWORK=off go mod init scratchconsumer
-          GOWORK=off go get "github.com/Abeta-dev/go-fintech-india@${TAG}"
+          GOWORK=off go get "github.com/abeta-dev/go-fintech-india@${TAG}"
           cat << 'EOF' > main.go
           package main
 
           import (
           	"fmt"
-          	fintechin "github.com/Abeta-dev/go-fintech-india"
+          	fintechin "github.com/abeta-dev/go-fintech-india"
           )
 
           func main() {

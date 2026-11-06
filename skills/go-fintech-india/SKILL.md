@@ -1,11 +1,11 @@
 ---
 name: go-fintech-india
-description: Umbrella router and integration guide for github.com/Abeta-dev/go-fintech-india (v0.3.0, zero external dependencies). Use when building Indian FinTech, B2B vendor portals, GST invoicing, KYC validation, UPI deep links, or Razorpay/Cashfree/PhonePe webhooks in Go.
+description: Umbrella router and integration guide for github.com/abeta-dev/go-fintech-india (v0.3.0, zero external dependencies). Use when building Indian FinTech, B2B vendor portals, GST invoicing, KYC validation, UPI deep links, or Razorpay/Cashfree/PhonePe webhooks in Go.
 ---
 
 # `go-fintech-india` Umbrella Skill (`v0.3.0`)
 
-Module (`go.mod` import path): `github.com/Abeta-dev/go-fintech-india` (`v0.3.0`, `Go 1.26.0`, zero external dependencies)
+Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.3.0`, `Go 1.26.0`, zero external dependencies)
 
 ## When to Use
 

@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	fintechin "github.com/Abeta-dev/go-fintech-india"
+	fintechin "github.com/abeta-dev/go-fintech-india"
 )
 
 func runCheckoutDemo(w io.Writer) error {

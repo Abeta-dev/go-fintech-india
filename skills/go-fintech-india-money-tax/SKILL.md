@@ -1,11 +1,11 @@
 ---
 name: go-fintech-india-money-tax
-description: Exact integer-paise Money arithmetic, Indian Lakh/Crore formatting, Rupee amount-in-words, Indian Financial Year (FY) & Advance Tax calendars, and AR/AP invoice aging using github.com/Abeta-dev/go-fintech-india (v0.3.0).
+description: Exact integer-paise Money arithmetic, Indian Lakh/Crore formatting, Rupee amount-in-words, Indian Financial Year (FY) & Advance Tax calendars, and AR/AP invoice aging using github.com/abeta-dev/go-fintech-india (v0.3.0).
 ---
 
 # `go-fintech-india-money-tax` Subskill (`v0.3.0`)
 
-Import: `fintech "github.com/Abeta-dev/go-fintech-india"`
+Import: `fintech "github.com/abeta-dev/go-fintech-india"`
 
 ## 1. Exact Paise `Money` Construction & Arithmetic (`money.go`, `currency.go`)
 

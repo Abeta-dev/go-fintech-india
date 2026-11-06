@@ -1,4 +1,4 @@
-# AGENTS.md — `go-fintech-india` (`github.com/Abeta-dev/go-fintech-india`)
+# AGENTS.md — `go-fintech-india` (`github.com/abeta-dev/go-fintech-india`)
 
 Zero-dependency, zero-allocation-hot-path Go library (`v0.3.0`, `Go 1.26.0`) for Indian FinTech, B2B ERP, GST invoicing, statutory KYC validation, and payment gateway webhook verification.
 

@@ -31,7 +31,7 @@ SEMVER_PATTERN='[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?'
 
 CHANGELOG_VER=$(grep -E "^## \[${SEMVER_PATTERN}\]" CHANGELOG.md | head -n1 | sed -E "s/^## \[(${SEMVER_PATTERN})\].*/\1/")
 README_HEADER_VER=$(grep -E "^# go-fintech-india · v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/^# go-fintech-india · v(${SEMVER_PATTERN}).*/\1/")
-README_GET_VER=$(grep -E "go get github.com/(Abeta-dev|umesh0492)/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
+README_GET_VER=$(grep -E "go get github.com/(abeta-dev|umesh0492)/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
 
 echo "========================================================"
 echo "🔒 Verifying Version Synchronization (go-fintech-india)"

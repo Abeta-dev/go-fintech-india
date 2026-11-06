@@ -32,7 +32,7 @@ This project is a high-reliability financial, tax, and identity toolkit designed
 
 ### Local Setup
 ```bash
-git clone https://github.com/Abeta-dev/go-fintech-india.git
+git clone https://github.com/abeta-dev/go-fintech-india.git
 cd go-fintech-india
 ```
 

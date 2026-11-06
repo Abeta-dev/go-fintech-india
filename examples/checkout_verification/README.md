@@ -1,6 +1,6 @@
 # Indian B2B Checkout & Vendor KYC Verification Example
 
-This runnable example demonstrates end-to-end usage of `github.com/Abeta-dev/go-fintech-india`:
+This runnable example demonstrates end-to-end usage of `github.com/abeta-dev/go-fintech-india`:
 
 1. **Vendor KYC & Statutory Validation**:
    - 15-character GSTIN Mod-36 checksum validation, State lookup (`Karnataka`), and embedded PAN extraction.
