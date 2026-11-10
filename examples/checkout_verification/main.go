@@ -33,9 +33,9 @@ func runCheckoutDemo(w io.Writer) error {
 	mobile := "+91 98765-43210"
 	bankAcct := "001234567890"
 
-	fmt.Fprintf(w, "Vendor KYC: GSTIN=%s (%s, %s), PAN=%s (%s), Aadhaar=%s\n",
+	_, _ = fmt.Fprintf(w, "Vendor KYC: GSTIN=%s (%s, %s), PAN=%s (%s), Aadhaar=%s\n",
 		gstin, stateName, stateCode, fintechin.MaskPAN(pan), entityType, fintechin.MaskAadhaar(aadhaar))
-	fmt.Fprintf(w, "Banking: %s (%s) Acct=%s MICR-City=%s Mobile=%s\n",
+	_, _ = fmt.Fprintf(w, "Banking: %s (%s) Acct=%s MICR-City=%s Mobile=%s\n",
 		branch.Bank, branch.IFSC, fintechin.MaskBankAccount(bankAcct), fintechin.MICRCityCode(micr), fintechin.FormatE164(mobile))
 
 	// 2. Exact Paise Invoice Math, GST Split & Indian Formatting
@@ -46,9 +46,9 @@ func runCheckoutDemo(w io.Writer) error {
 
 	var buf []byte
 	buf = fintechin.AppendINRSymbol(buf, grandTotal.Paise())
-	fmt.Fprintf(w, "Invoice Total: %s (CGST: ₹%s, SGST: ₹%s)\n",
+	_, _ = fmt.Fprintf(w, "Invoice Total: %s (CGST: ₹%s, SGST: ₹%s)\n",
 		string(buf), fintechin.FormatINR(cgstSgst[0].Paise()), fintechin.FormatINR(cgstSgst[1].Paise()))
-	fmt.Fprintf(w, "In Words: %s\n", fintechin.InWords(grandTotal))
+	_, _ = fmt.Fprintf(w, "In Words: %s\n", fintechin.InWords(grandTotal))
 
 	// 3. NPCI UPI Intent URI Generation & Verification
 	vpa := "abeta.vendor@okhdfcbank"
@@ -61,7 +61,7 @@ func runCheckoutDemo(w io.Writer) error {
 		Note:         "B2B Settlement",
 	})
 	parsedUPI, pErr := fintechin.ParseUPIURI(upiURI)
-	fmt.Fprintf(w, "UPI Payee: %s (KnownPSP=%t, Ref=%s)\n",
+	_, _ = fmt.Fprintf(w, "UPI Payee: %s (KnownPSP=%t, Ref=%s)\n",
 		parsedUPI.PayeeAddress, fintechin.IsKnownPSPHandle(handle), parsedUPI.RefID)
 
 	// 4. Payment Gateway Webhook Signature Verification (Razorpay & Cashfree)
