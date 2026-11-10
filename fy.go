@@ -66,10 +66,9 @@ func Quarter(t time.Time) int {
 		return 2
 	case time.October, time.November, time.December:
 		return 3
-	case time.January, time.February, time.March:
+	default:
 		return 4
 	}
-	return 0
 }
 
 // FYFromDate computes the Indian Financial Year for the given time.

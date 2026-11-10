@@ -90,13 +90,15 @@ func InWords(m Money) string {
 	}
 
 	isNegative := m.paise < 0
-	absPaise := m.paise
+	var rupees, paise int64
 	if isNegative {
-		absPaise = -absPaise
+		// Divide and modulo before negating so math.MinInt64 never overflows int64.
+		rupees = -(m.paise / 100)
+		paise = -(m.paise % 100)
+	} else {
+		rupees = m.paise / 100
+		paise = m.paise % 100
 	}
-
-	rupees := absPaise / 100
-	paise := absPaise % 100
 
 	paiseUnit := "Paise"
 	if paise == 1 {

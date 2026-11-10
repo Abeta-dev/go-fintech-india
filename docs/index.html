@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="go-fintech-india v0.3.0 — Zero-dependency Go library for Indian financial systems: exact int64 paise Money math, UIDAI Aadhaar Verhoeff D5, GSTIN Mod-36, Income Tax PAN, RBI IFSC/MICR, NPCI UPI Intent URIs, Razorpay/Cashfree/PhonePe webhooks, and MCA Schedule III aging.">
+  <meta name="theme-color" content="#0b0f17">
+  <title>go-fintech-india · v0.3.0 Documentation — Indian Fintech &amp; Statutory Primitives for Go</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root,
+    [data-theme="dark"] {
+      --bg-canvas: #0b0f17;
+      --bg-surface: #111826;
+      --bg-elevated: #162032;
+      --bg-code: #080c14;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-subtle: #1e293b;
+      --border-strong: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #7dd3fc;
+      --accent-surface: rgba(56, 189, 248, 0.12);
+      --success: #34d399;
+      --success-surface: rgba(52, 211, 153, 0.12);
+      --warning: #fbbf24;
+      --selection-bg: rgba(56, 189, 248, 0.28);
+      --selection-text: #f8fafc;
+      --scrollbar-track: #0b0f17;
+      --scrollbar-thumb: #334155;
+      --font-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg-canvas: #f8fafc;
+        --bg-surface: #ffffff;
+        --bg-elevated: #f1f5f9;
+        --bg-code: #0f172a;
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-muted: #475569;
+        --border-subtle: #e2e8f0;
+        --border-strong: #cbd5e1;
+        --accent: #0284c7;
+        --accent-hover: #0369a1;
+        --accent-surface: rgba(2, 132, 199, 0.1);
+        --success: #059669;
+        --success-surface: rgba(5, 150, 105, 0.1);
+        --warning: #d97706;
+        --selection-bg: rgba(2, 132, 199, 0.22);
+        --selection-text: #0f172a;
+        --scrollbar-track: #f1f5f9;
+        --scrollbar-thumb: #94a3b8;
+      }
+    }
+
+    [data-theme="light"] {
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f1f5f9;
+      --bg-code: #0f172a;
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #475569;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --accent: #0284c7;
+      --accent-hover: #0369a1;
+      --accent-surface: rgba(2, 132, 199, 0.1);
+      --success: #059669;
+      --success-surface: rgba(5, 150, 105, 0.1);
+      --warning: #d97706;
+      --selection-bg: rgba(2, 132, 199, 0.22);
+      --selection-text: #0f172a;
+      --scrollbar-track: #f1f5f9;
+      --scrollbar-thumb: #94a3b8;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      scrollbar-width: thin;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 4px;
+    }
+
+    ::selection {
+      background-color: var(--selection-bg);
+      color: var(--selection-text);
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text-primary);
+      background-color: var(--bg-canvas);
+      caret-color: var(--accent);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+      transition: color 180ms var(--ease-out-expo);
+    }
+
+    a:hover {
+      color: var(--accent-hover);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -100px;
+      left: var(--space-4);
+      z-index: 1000;
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .skip-link:focus-visible {
+      top: var(--space-4);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: var(--bg-canvas);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-3) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      min-height: 44px;
+    }
+
+    .brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-sm);
+      background: var(--accent-surface);
+      color: var(--accent);
+      border: 1px solid var(--border-strong);
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 var(--space-3);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      transition: color 180ms var(--ease-out-expo), background-color 180ms var(--ease-out-expo);
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background-color: var(--bg-surface);
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 var(--space-3);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 180ms var(--ease-out-expo), border-color 180ms var(--ease-out-expo);
+    }
+
+    .theme-toggle:hover {
+      background: var(--bg-elevated);
+      border-color: var(--accent);
+    }
+
+    .layout-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6) var(--space-12);
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: var(--space-10);
+      align-items: start;
+    }
+
+    .sidebar-nav {
+      position: sticky;
+      top: 5rem;
+      padding: var(--space-4);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .sidebar-title {
+      margin: 0 0 var(--space-3) 0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .toc-link {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: var(--space-2) var(--space-3);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: var(--radius-sm);
+      transition: background-color 180ms var(--ease-out-expo), color 180ms var(--ease-out-expo);
+    }
+
+    .toc-link:hover {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .doc-intro {
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h1 {
+      margin: 0 0 var(--space-4) 0;
+      font-size: clamp(1.85rem, 3.2vw, 2.65rem);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      text-wrap: balance;
+    }
+
+    .lead {
+      margin: 0 0 var(--space-6) 0;
+      max-width: 68ch;
+      font-size: 1.08rem;
+      color: var(--text-secondary);
+    }
+
+    .status-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.5rem 0.85rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+    }
+
+    .status-pill strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .status-pill--verified {
+      background: var(--success-surface);
+      border-color: var(--success);
+      color: var(--text-primary);
+    }
+
+    .install-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-code);
+      color: #f8fafc;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+      overflow-x: auto;
+    }
+
+    .install-cmd {
+      white-space: nowrap;
+      user-select: all;
+    }
+
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0 var(--space-4);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 180ms var(--ease-out-expo), border-color 180ms var(--ease-out-expo);
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent);
+    }
+
+    section {
+      padding-top: var(--space-10);
+      padding-bottom: var(--space-6);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h2 {
+      margin: 0 0 var(--space-3) 0;
+      font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      text-wrap: balance;
+    }
+
+    h3 {
+      margin: var(--space-6) 0 var(--space-2) 0;
+      font-size: 1.12rem;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 var(--space-4) 0;
+      max-width: 70ch;
+      color: var(--text-secondary);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+      padding: 0.2rem 0.45rem;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+      color: var(--text-primary);
+    }
+
+    pre {
+      margin: var(--space-4) 0 var(--space-6) 0;
+      padding: var(--space-4) var(--space-5);
+      background: var(--bg-code);
+      color: #f8fafc;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.6;
+      font-variant-numeric: tabular-nums;
+    }
+
+    pre code {
+      padding: 0;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    .table-wrap {
+      margin: var(--space-4) 0 var(--space-6) 0;
+      padding: var(--space-3);
+      overflow-x: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    th,
+    td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .num-col {
+      text-align: right;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    .site-footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .layout-shell {
+        grid-template-columns: 1fr;
+        gap: var(--space-6);
+        padding: var(--space-6) var(--space-4) var(--space-10);
+      }
+
+      .sidebar-nav {
+        position: static;
+      }
+
+      .toc-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      a,
+      .nav-link,
+      .toc-link,
+      .theme-toggle,
+      .copy-btn {
+        transition-duration: 120ms;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to documentation content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#main-content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 3h12"/>
+          <path d="M6 8h12"/>
+          <path d="m6 13 8.5 8"/>
+          <path d="M6 13h3"/>
+          <path d="M9 13c6.667 0 6.667-10 0-10"/>
+        </svg>
+        <span>go-fintech-india</span>
+        <span class="brand-badge">v0.3.0</span>
+      </a>
+
+      <nav class="header-controls" aria-label="Primary">
+        <a class="nav-link" href="#capabilities">Capabilities</a>
+        <a class="nav-link" href="#examples">Examples</a>
+        <a class="nav-link" href="#benchmarks">Benchmarks</a>
+        <a class="nav-link" href="#standards">Statutory Specs</a>
+        <a class="nav-link" href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">GitHub</a>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch color theme" aria-pressed="false">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2"/>
+            <path d="M12 20v2"/>
+            <path d="m4.93 4.93 1.41 1.41"/>
+            <path d="m17.66 17.66 1.41 1.41"/>
+            <path d="M2 12h2"/>
+            <path d="M20 12h2"/>
+            <path d="m6.34 17.66-1.41 1.41"/>
+            <path d="m19.07 4.93-1.41 1.41"/>
+          </svg>
+          <span id="theme-label">Theme</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="layout-shell">
+    <aside class="sidebar-nav" aria-label="Documentation sections">
+      <h2 class="sidebar-title">On this page</h2>
+      <ul class="toc-list">
+        <li><a class="toc-link" href="#overview">Overview &amp; Install</a></li>
+        <li><a class="toc-link" href="#capabilities">Statutory Capabilities</a></li>
+        <li><a class="toc-link" href="#examples">Verified Go Examples</a></li>
+        <li><a class="toc-link" href="#benchmarks">Zero-Alloc Benchmarks</a></li>
+        <li><a class="toc-link" href="#standards">Regulatory Standards</a></li>
+        <li><a class="toc-link" href="#agent-skills">AI Agent Skills</a></li>
+      </ul>
+    </aside>
+
+    <main id="main-content">
+      <div class="doc-intro" id="overview">
+        <h1>Indian Financial &amp; Statutory Primitives for Go</h1>
+        <p class="lead">
+          <code>github.com/abeta-dev/go-fintech-india</code> is a zero-dependency Go library engineered for payment gateways, banking cores, B2B ERPs, and financial ledgers operating under Indian statutory regulations (UIDAI, GSTN, CBDT, RBI, NPCI, and MCA).
+        </p>
+
+        <div class="status-strip" role="list" aria-label="Release telemetry">
+          <div class="status-pill status-pill--verified" role="listitem">
+            <strong>Coverage:</strong> <span>100.0% statements</span>
+          </div>
+          <div class="status-pill" role="listitem">
+            <strong>Release:</strong> <span>v0.3.0</span>
+          </div>
+          <div class="status-pill" role="listitem">
+            <strong>Dependencies:</strong> <span>0 external (Pure Go stdlib)</span>
+          </div>
+          <div class="status-pill" role="listitem">
+            <strong>Exported API:</strong> <span>127 verified symbols</span>
+          </div>
+        </div>
+
+        <div class="install-bar" role="region" aria-label="Go module installation command">
+          <span class="install-cmd" id="install-cmd">go get github.com/abeta-dev/go-fintech-india@v0.3.0</span>
+          <button type="button" class="copy-btn" id="copy-btn" aria-label="Copy go get command to clipboard">
+            <span id="copy-status">Copy</span>
+          </button>
+        </div>
+      </div>
+
+      <section id="capabilities" aria-labelledby="heading-capabilities">
+        <h2 id="heading-capabilities">Core Statutory &amp; Financial Capabilities</h2>
+        <p>
+          Every validator and formatter is built to execute with zero heap allocations on hot verification paths while preventing floating-point rounding drift and timing side-channels.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Domain</th>
+                <th scope="col">Key Symbols</th>
+                <th scope="col">Guarantees &amp; Invariants</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Exact INR Paise Math</strong></td>
+                <td><code>Money</code>, <code>NewMoney</code>, <code>Split</code>, <code>Allocate</code></td>
+                <td>Stores currency as <code>int64</code> paise (1 INR = 100 paise). Hare-Niemeyer proportional allocation guarantees sum of parts equals total with zero remainder loss.</td>
+              </tr>
+              <tr>
+                <td><strong>Lakhs/Crores &amp; Legal Words</strong></td>
+                <td><code>FormatINR</code>, <code>AppendINR</code>, <code>ParseINR</code>, <code>InWords</code></td>
+                <td>Canonical Indian digit grouping (<code>₹12,34,567.89</code>), zero-allocation byte appending, and overflow-safe cheque words (including <code>math.MinInt64</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>UIDAI Aadhaar</strong></td>
+                <td><code>ValidateAadhaar</code>, <code>CalculateVerhoeffCheckDigit</code>, <code>MaskAadhaar</code></td>
+                <td>Official Verhoeff Dihedral Group D5 checksum verification and statutory storage masking (<code>XXXX-XXXX-1234</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>GSTN GSTIN &amp; PAN</strong></td>
+                <td><code>ValidateGSTIN</code>, <code>StateName</code>, <code>ValidatePAN</code>, <code>EntityType</code></td>
+                <td>15-character ISO/IEC 7064 Mod-36 checksum, 37 State/UT code registry lookup, embedded PAN extraction, and 4th-char taxpayer classification.</td>
+              </tr>
+              <tr>
+                <td><strong>RBI IFSC, MICR &amp; Accounts</strong></td>
+                <td><code>ValidateIFSC</code>, <code>NewOfflineIFSCResolver</code>, <code>ValidateMICR</code>, <code>MaskBankAccount</code></td>
+                <td>11-character IFSC validation, offline &amp; live Razorpay HTTP branch resolution with fallback, 9-digit MICR clearing validation, and DoT E.164 mobile normalization.</td>
+              </tr>
+              <tr>
+                <td><strong>NPCI UPI &amp; Gateway Webhooks</strong></td>
+                <td><code>GenerateUPIURI</code>, <code>ParseUPIURI</code>, <code>ValidateRazorpayWebhook</code>, <code>ValidateCashfreeWebhook</code>, <code>ValidatePhonePeWebhook</code></td>
+                <td>CRLF-sanitized <code>upi://pay</code> intent generation, PSP handle directory, and constant-time HMAC-SHA256 / SHA256 webhook verification with replay window enforcement.</td>
+              </tr>
+              <tr>
+                <td><strong>Financial Year &amp; MCA Aging</strong></td>
+                <td><code>FYFromDate</code>, <code>AdvanceTaxDueDates</code>, <code>NewAgingReport</code></td>
+                <td>April 1 – March 31 FY/AY resolution, Section 211 quarterly advance tax schedules (15%, 45%, 75%, 100%), and MCA Schedule III receivables aging buckets.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="examples" aria-labelledby="heading-examples">
+        <h2 id="heading-examples">Verified End-to-End Checkout &amp; KYC Example</h2>
+        <p>
+          The complete runnable program in <code>examples/checkout_verification/main.go</code> exercises KYC verification, GST invoice splitting, UPI intent URI generation, Cashfree webhook authentication, and MCA Schedule III aging in a single pipeline:
+        </p>
+
+        <pre><code>package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	fintechin "github.com/abeta-dev/go-fintech-india"
+)
+
+func main() {
+	// 1. Statutory KYC: GSTIN Mod-36, PAN Entity Classification &amp; UIDAI Aadhaar Masking
+	gstin := "29AACCG0527D1Z0"
+	stateName, _ := fintechin.StateName(fintechin.StateCode(gstin))
+	pan := fintechin.ExtractPAN(gstin)
+	entityType, _ := fintechin.EntityType(pan)
+
+	resolver := fintechin.NewOfflineIFSCResolver()
+	branch, _ := resolver.Resolve(context.Background(), "HDFC0000123")
+
+	fmt.Printf("KYC: GSTIN=%s (%s), PAN=%s (%s), Bank=%s\n",
+		gstin, stateName, fintechin.MaskPAN(pan), entityType, branch.Bank)
+
+	// 2. Exact Paise Invoice Math &amp; Remainder-Safe CGST/SGST Split
+	subtotal, _ := fintechin.ParseINR("₹1,25,000.00")
+	gstTotal := fintechin.NewMoney(subtotal.Paise() * 18 / 100)
+	cgstSgst, _ := gstTotal.Split(2)
+	grandTotal := subtotal.Add(gstTotal)
+
+	fmt.Printf("Total: %s (CGST: ₹%s, SGST: ₹%s)\n",
+		fintechin.FormatINRSymbol(grandTotal.Paise()),
+		fintechin.FormatINR(cgstSgst[0].Paise()),
+		fintechin.FormatINR(cgstSgst[1].Paise()))
+	fmt.Printf("Legal Words: %s\n", fintechin.InWords(grandTotal))
+
+	// 3. NPCI UPI Intent URI Generation &amp; MCA Schedule III Receivables Aging
+	upiURI, _ := fintechin.GenerateUPIURI(fintechin.UPIParams{
+		PayeeAddress: "abeta.vendor@okhdfcbank",
+		PayeeName:    "Abeta Vendor Portal",
+		Amount:       grandTotal.String(),
+		RefID:        "INV-2026-001",
+	})
+	invDate := time.Date(2026, time.May, 20, 0, 0, 0, 0, time.UTC)
+	fy := fintechin.FYFromDate(invDate)
+	fmt.Printf("Settlement: %s | %s (%s)\n", upiURI, fy.Label(), fy.AssessmentYear())
+}</code></pre>
+      </section>
+
+      <section id="benchmarks" aria-labelledby="heading-benchmarks">
+        <h2 id="heading-benchmarks">Zero-Allocation Benchmark Profile</h2>
+        <p>
+          Measured with <code>go test -bench=. -benchmem ./...</code> on 64-bit architecture. Core validation and currency formatting routines perform zero heap allocations:
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Operation</th>
+                <th scope="col">Benchmark Symbol</th>
+                <th scope="col" class="num-col">Latency</th>
+                <th scope="col" class="num-col">Heap Bytes</th>
+                <th scope="col" class="num-col">Allocs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>PAN Format &amp; Structure</td>
+                <td><code>BenchmarkValidatePAN</code></td>
+                <td class="num-col">7 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>IFSC Code Validation</td>
+                <td><code>BenchmarkValidateIFSC</code></td>
+                <td class="num-col">7 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>Currency Append INR (Streaming)</td>
+                <td><code>BenchmarkAppendINR</code></td>
+                <td class="num-col">17 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>Currency Format INR (Lakhs/Crores)</td>
+                <td><code>BenchmarkFormatINR</code></td>
+                <td class="num-col">24 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>Aadhaar Verhoeff D5 Checksum</td>
+                <td><code>BenchmarkValidateAadhaar</code></td>
+                <td class="num-col">38 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>UPI VPA Validation</td>
+                <td><code>BenchmarkValidateUPI</code></td>
+                <td class="num-col">47 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>GSTIN Mod-36 Checksum</td>
+                <td><code>BenchmarkValidateGSTIN</code></td>
+                <td class="num-col">51 ns/op</td>
+                <td class="num-col">0 B/op</td>
+                <td class="num-col">0 allocs/op</td>
+              </tr>
+              <tr>
+                <td>Offline IFSC Branch Resolution</td>
+                <td><code>BenchmarkOfflineIFSCResolver</code></td>
+                <td class="num-col">71 ns/op</td>
+                <td class="num-col">144 B/op</td>
+                <td class="num-col">1 allocs/op</td>
+              </tr>
+              <tr>
+                <td>PhonePe S2S Webhook Verification</td>
+                <td><code>BenchmarkVerifyPhonePeWebhook</code></td>
+                <td class="num-col">542 ns/op</td>
+                <td class="num-col">192 B/op</td>
+                <td class="num-col">4 allocs/op</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="standards" aria-labelledby="heading-standards">
+        <h2 id="heading-standards">Statutory Authorities &amp; Regulatory Specifications</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Module</th>
+                <th scope="col">Governing Authority</th>
+                <th scope="col">Statutory Standard / Specification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Aadhaar</strong></td>
+                <td>UIDAI</td>
+                <td>Verhoeff Dihedral Group D5 Checksum Algorithm &amp; UIDAI Aadhaar Masking Regulations</td>
+              </tr>
+              <tr>
+                <td><strong>GSTIN</strong></td>
+                <td>GSTN / CBIC</td>
+                <td>ISO/IEC 7064:2003 Mod 36,36 Checksum &amp; Central Goods and Services Tax (CGST) Rules 2017</td>
+              </tr>
+              <tr>
+                <td><strong>PAN</strong></td>
+                <td>Income Tax Dept (CBDT)</td>
+                <td>Section 139A of Income Tax Act 1961 &amp; Rule 114 of Income Tax Rules</td>
+              </tr>
+              <tr>
+                <td><strong>IFSC &amp; MICR</strong></td>
+                <td>Reserve Bank of India (RBI)</td>
+                <td>RBI National Clearing Cell &amp; RTGS / NEFT / IMPS Procedural Guidelines</td>
+              </tr>
+              <tr>
+                <td><strong>UPI</strong></td>
+                <td>NPCI</td>
+                <td>Unified Payments Interface (UPI) Linking Specifications &amp; Merchant Intent Guidelines</td>
+              </tr>
+              <tr>
+                <td><strong>Mobile</strong></td>
+                <td>DoT (Telecom)</td>
+                <td>National Numbering Plan (NNP) 10-digit series (6/7/8/9) &amp; ITU-T E.164 (<code>+91</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>Financial Year &amp; Tax</strong></td>
+                <td>CBDT / Ministry of Finance</td>
+                <td>Section 2(9) &amp; Section 208 / 211 Advance Tax Installments of Income Tax Act 1961</td>
+              </tr>
+              <tr>
+                <td><strong>Receivables Aging</strong></td>
+                <td>Ministry of Corporate Affairs (MCA)</td>
+                <td>Companies Act 2013, Schedule III Division I &amp; II Trade Receivables Aging</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="agent-skills" aria-labelledby="heading-skills">
+        <h2 id="heading-skills">AI Agent Skills &amp; Multi-Model Context Routing</h2>
+        <p>
+          This repository ships portable <code>SKILL.md</code> modules and a root <code>AGENTS.md</code> routing table so coding agents load only the exact domain context required:
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Skill Name</th>
+                <th scope="col">Path</th>
+                <th scope="col">Scope</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>go-fintech-india</code></td>
+                <td><code>skills/go-fintech-india/SKILL.md</code></td>
+                <td>Umbrella router for all 127 exported symbols, zero-dependency rules, and verification gates.</td>
+              </tr>
+              <tr>
+                <td><code>go-fintech-india-money-tax</code></td>
+                <td><code>skills/go-fintech-india-money-tax/SKILL.md</code></td>
+                <td>Exact <code>int64</code> paise <code>Money</code>, <code>Split</code>, <code>Allocate</code>, <code>FormatINR</code>, <code>InWords</code>, <code>FinancialYear</code>, and <code>AgingReport</code>.</td>
+              </tr>
+              <tr>
+                <td><code>go-fintech-india-kyc-statutory</code></td>
+                <td><code>skills/go-fintech-india-kyc-statutory/SKILL.md</code></td>
+                <td><code>ValidateGSTIN</code>, <code>ValidatePAN</code>, <code>ValidateAadhaar</code>, <code>ValidateIFSC</code>, <code>NewOfflineIFSCResolver</code>, <code>ValidateMICR</code>, and <code>ValidateMobile</code>.</td>
+              </tr>
+              <tr>
+                <td><code>go-fintech-india-payments-upi</code></td>
+                <td><code>skills/go-fintech-india-payments-upi/SKILL.md</code></td>
+                <td><code>ValidateUPI</code>, <code>GenerateUPIURI</code>, <code>ParseUPIURI</code>, and constant-time Razorpay, Cashfree, and PhonePe webhook verifiers.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div>
+      <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.3.0 · MIT License · Copyright (c) 2026 Abeta
+    </div>
+    <div>
+      <a href="https://pkg.go.dev/github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">pkg.go.dev Reference</a>
+      ·
+      <a href="https://github.com/abeta-dev/go-fintech-india/blob/main/CHANGELOG.md" rel="noopener noreferrer">Changelog</a>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggleBtn = document.getElementById('theme-toggle');
+      var themeLabel = document.getElementById('theme-label');
+      var copyBtn = document.getElementById('copy-btn');
+      var copyStatus = document.getElementById('copy-status');
+      var installCmd = document.getElementById('install-cmd');
+
+      function syncThemeUI(theme) {
+        var isLight = theme === 'light';
+        toggleBtn.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+        themeLabel.textContent = isLight ? 'Light' : 'Dark';
+      }
+
+      var savedTheme = null;
+      try {
+        savedTheme = localStorage.getItem('fintechin-docs-theme');
+      } catch (e) {}
+
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        root.setAttribute('data-theme', savedTheme);
+      }
+      syncThemeUI(root.getAttribute('data-theme') || 'dark');
+
+      toggleBtn.addEventListener('click', function () {
+        var current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+        var next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        syncThemeUI(next);
+        try {
+          localStorage.setItem('fintechin-docs-theme', next);
+        } catch (e) {}
+      });
+
+      copyBtn.addEventListener('click', function () {
+        var text = installCmd.textContent;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () {
+            copyStatus.textContent = 'Copied';
+            setTimeout(function () {
+              copyStatus.textContent = 'Copy';
+            }, 1800);
+          });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

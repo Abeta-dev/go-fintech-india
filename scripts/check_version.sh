@@ -14,9 +14,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${ROOT_DIR}"
 
-DEFAULT_EXPECTED_VER="0.2.6"
+DEFAULT_EXPECTED_VER="0.3.0"
 GIT_TAG_REF="${GIT_TAG:-}"
-if [ -z "$GIT_TAG_REF" ]; then
+if [ -z "$GIT_TAG_REF" ] && [ -z "$(git status --porcelain 2>/dev/null || true)" ]; then
   GIT_TAG_REF=$(git describe --tags --exact-match 2>/dev/null || true)
 fi
 
@@ -31,7 +31,7 @@ SEMVER_PATTERN='[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?'
 
 CHANGELOG_VER=$(grep -E "^## \[${SEMVER_PATTERN}\]" CHANGELOG.md | head -n1 | sed -E "s/^## \[(${SEMVER_PATTERN})\].*/\1/")
 README_HEADER_VER=$(grep -E "^# go-fintech-india · v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/^# go-fintech-india · v(${SEMVER_PATTERN}).*/\1/")
-README_GET_VER=$(grep -E "go get github.com/umesh0492/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
+README_GET_VER=$(grep -E "go get [^@]+/go-fintech-india@v${SEMVER_PATTERN}" README.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
 
 echo "========================================================"
 echo "🔒 Verifying Version Synchronization (go-fintech-india)"
@@ -58,6 +58,15 @@ fi
 if [ "$CHANGELOG_VER" != "$README_GET_VER" ]; then
   echo "❌ Error: Version mismatch between CHANGELOG.md (v$CHANGELOG_VER) and README.md go get (v$README_GET_VER)"
   exit 1
+fi
+
+if [ -f "docs/index.html" ]; then
+  DOCS_VER=$(grep -E "go get github.com/abeta-dev/go-fintech-india@v${SEMVER_PATTERN}" docs/index.html | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
+  if [ "$CHANGELOG_VER" != "$DOCS_VER" ]; then
+    echo "❌ Error: Version mismatch between CHANGELOG.md (v$CHANGELOG_VER) and docs/index.html (v$DOCS_VER)"
+    exit 1
+  fi
+  echo "✅ docs/index.html version synchronized (v$DOCS_VER)."
 fi
 
 if [ -n "$GIT_TAG_REF" ]; then
@@ -146,6 +155,10 @@ if [ "${FAILED_SYMBOLS}" -ne 0 ]; then
   exit 1
 fi
 echo "✅ All CHANGELOG exported symbols exist in the repository (${CHECKED_SYMBOLS} symbols verified)."
+
+if [ -x "$(dirname "${BASH_SOURCE[0]}")/check_secrets.sh" ]; then
+  "$(dirname "${BASH_SOURCE[0]}")/check_secrets.sh"
+fi
 
 echo "========================================================"
 echo "✅ All versions, format, and symbols are strictly verified!"

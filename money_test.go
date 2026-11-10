@@ -278,6 +278,15 @@ func TestMoneyJSONMarshaling(t *testing.T) {
 	if err := json.Unmarshal([]byte(`null`), &u7); err != nil || u7.Paise() != 0 {
 		t.Fatalf("Unmarshal from null failed: %v", err)
 	}
+
+	// Unmarshal invalid raw string & float directly via UnmarshalJSON
+	var uErr Money
+	if err := uErr.UnmarshalJSON([]byte(`"unterminated`)); err == nil {
+		t.Fatal("expected error for unterminated JSON string")
+	}
+	if err := uErr.UnmarshalJSON([]byte(`12.34.56`)); err == nil {
+		t.Fatal("expected error for invalid JSON float")
+	}
 }
 
 func TestMoneyTextMarshaling(t *testing.T) {

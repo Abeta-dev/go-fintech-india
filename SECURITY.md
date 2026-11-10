@@ -6,7 +6,8 @@
 
 | Version Series | Status             | Security Updates |
 | -------------- | ------------------ | ---------------- |
-| 0.2.x          | **Active / Current** | :white_check_mark: Yes |
+| 0.3.x          | **Active / Current** | :white_check_mark: Yes |
+| 0.2.x          | Maintenance        | :white_check_mark: Critical fixes only |
 | < 0.2.0        | End-of-Life        | :x: No           |
 
 ---
@@ -18,7 +19,7 @@ The maintainers take security, financial integrity, and data protection very ser
 Instead, please report vulnerabilities through one of the following confidential channels:
 
 ### 1. GitHub Private Vulnerability Reporting (Preferred)
-- Navigate to the **Security** tab of `github.com/Abeta-dev/go-fintech-india`.
+- Navigate to the **Security** tab of `github.com/abeta-dev/go-fintech-india`.
 - Click **"Report a vulnerability"** to submit a draft security advisory.
 - Include a detailed description, affected functions/files, proof of concept (PoC), and potential security or compliance impact.
 
