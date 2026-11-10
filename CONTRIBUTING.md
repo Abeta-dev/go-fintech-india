@@ -85,12 +85,13 @@ The verifier records module sums and source archive hashes in the ignored manife
 
 Before submitting a pull request, ensure:
 - [ ] `make all` passes with zero errors and zero warnings.
-- [ ] `make test-race` passes without any data races.
-- [ ] `./scripts/check_version.sh` passes successfully.
-- [ ] `./scripts/check_coverage.sh` passes with $\ge 90\%$ statement coverage.
+- [ ] `go test -race ./...` and `(cd examples/checkout_verification && go test -race -cover ./...)` pass without any data races.
+- [ ] `./scripts/check_secrets.sh` passes with zero leaked credentials or secrets.
+- [ ] `./scripts/check_version.sh` and `./scripts/test_verify_release.sh` pass successfully.
+- [ ] `./scripts/check_coverage.sh` passes with $\ge 90\%$ statement coverage (`100.0%` maintained across root and examples).
 - [ ] All newly introduced exported types, functions, and methods have godoc comments.
 - [ ] Test table cases cover all boundary conditions, invalid inputs, edge-cases, and checksum failures.
-- [ ] Any public API changes are documented in `CHANGELOG.md` under `### Added` or `### Changed`.
+- [ ] Any public API changes are documented in `CHANGELOG.md` under `### Added` or `### Changed` (see [`.github/RELEASE_PROCEDURE.md`](.github/RELEASE_PROCEDURE.md)).
 
 ---
 

@@ -26,7 +26,7 @@ cat >"${FAKE_GO}" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 if [ "$1" = "list" ]; then
-  printf '%s\n' 'github.com/umesh0492/go-fintech-india'
+  printf '%s\n' 'github.com/abeta-dev/go-fintech-india'
   exit 0
 fi
 if [ "$1" = "clean" ] && [ "$2" = "-modcache" ]; then
@@ -42,7 +42,7 @@ if [ "$1" = "mod" ] && [ "$2" = "download" ]; then
   fi
   cat <<JSON
 {
-  "Path": "github.com/umesh0492/go-fintech-india",
+  "Path": "github.com/abeta-dev/go-fintech-india",
   "Version": "v0.2.3",
   "Sum": "h1:synthetic-module-sum",
   "GoModSum": "h1:synthetic-go-mod-sum"
@@ -83,7 +83,7 @@ grep -F 'h1:synthetic-module-sum' "${MANIFEST_PATH}"
 cat >"${TMP_DIR}/always-fail-go" <<'EOF'
 #!/usr/bin/env bash
 if [ "$1" = "list" ]; then
-  printf '%s\n' 'github.com/umesh0492/go-fintech-india'
+  printf '%s\n' 'github.com/abeta-dev/go-fintech-india'
   exit 0
 fi
 if [ "$1" = "clean" ] && [ "$2" = "-modcache" ]; then

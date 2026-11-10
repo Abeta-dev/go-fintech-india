@@ -16,8 +16,27 @@ This runnable example demonstrates end-to-end usage of `github.com/abeta-dev/go-
 5. **Indian Financial Year & MCA Schedule III Receivables Aging**:
    - `FYFromDate`, `Quarter`, and `NewAgingReport`.
 
-## Run
+## Run & Verify
+
+Run the demonstration program:
 
 ```bash
 go run ./examples/checkout_verification
+```
+
+Run the example test suite with race detector and statement coverage (`100.0%`):
+
+```bash
+(cd examples/checkout_verification && go test -race -cover ./...)
+```
+
+## Expected Output
+
+```text
+Vendor KYC: GSTIN=29AACCG0527D1Z0 (Karnataka, 29), PAN=XXXXX0527X (Company), Aadhaar=XXXX-XXXX-7058
+Banking: HDFC Bank (HDFC0000123) Acct=XXXXXXXX7890 MICR-City=560 Mobile=+919876543210
+Invoice Total: ₹1,47,500.00 (CGST: ₹11,250.00, SGST: ₹11,250.00)
+In Words: Rupees One Lakh Forty-Seven Thousand Five Hundred Only
+UPI Payee: abeta.vendor@okhdfcbank (KnownPSP=true, Ref=INV-2026-001)
+Accounting: FY 2026-27 (AY 2027-28, Q1) | Aging 31-60d: ₹1,47,500.00
 ```

@@ -28,3 +28,21 @@ Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.3.0`
 1. **Zero `float64` for Currency Math**: Never use `float64` for rupees or tax calculations. Always store and compute in integer paise (`fintech.Money` via `NewMoney(paise)` or `NewMoneyFromRupees(rupees)`).
 2. **Zero External Dependencies**: Do not add third-party packages to `go.mod`.
 3. **100% Exported Symbol Truth Gate**: Any new exported symbol (`func`, `type`, method, `const`, `var`) must be listed in `CHANGELOG.md` under `### Added` or `./scripts/check_version.sh` will fail.
+
+## Mandatory Verification Gates
+
+Before committing or opening a PR in `go-fintech-india`, run all repository verification gates:
+
+```bash
+./scripts/check_secrets.sh
+./scripts/check_coverage.sh
+./scripts/check_version.sh
+./scripts/test_verify_release.sh
+go test -race ./...
+(cd examples/checkout_verification && go test -race -cover ./...)
+```
+
+- **`./scripts/check_secrets.sh`**: TruffleHog verified git-history secret scanner + credential/key/token/DSN scanner.
+- **`./scripts/check_coverage.sh`**: Enforces statement coverage (`100.0%` statement coverage across root package and `examples/checkout_verification`) and updates `.github/badges/coverage.json`.
+- **`./scripts/check_version.sh`**: Verifies `v0.3.0` version parity across `CHANGELOG.md`, `README.md`, and `docs/index.html`, checks `gofmt`, and validates all exported symbols listed under `### Added` in `CHANGELOG.md`.
+- **`./scripts/test_verify_release.sh`**: Runs the automated test suite for `scripts/verify_release.sh` (proxy retry backoff, failure manifests, and SemVer prereleases).

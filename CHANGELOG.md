@@ -7,14 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0] - 2026-11-05
 
-Canonical Go module path migration to `github.com/abeta-dev/go-fintech-india`, Go 1.26.0 toolchain baseline alignment, `math.MinInt64` overflow protection in `InWords`, runnable checkout & onboarding verification blueprint in `examples/checkout_verification`, expanded `pkg.go.dev` testable examples across all 15 source files, 100.0% statement coverage across the entire repository, and 100% compile-verified `SKILL.md` signatures.
+Canonical Go module path migration to `github.com/abeta-dev/go-fintech-india`, Go 1.26.0 toolchain baseline alignment, `math.MinInt64` overflow protection in `InWords`, runnable checkout & onboarding verification blueprint in `examples/checkout_verification`, interactive static documentation portal in `docs/index.html`, TruffleHog & credential-leak security gate (`scripts/check_secrets.sh`), expanded `pkg.go.dev` testable examples across all 15 source files, `100.0%` statement coverage across the entire repository, and 100% compile-verified `SKILL.md` signatures.
 
 ### Changed
 - `go.mod`, `README.md`, `example_test.go`, `.github/workflows/release.yml`: Migrated canonical Go module path to `github.com/abeta-dev/go-fintech-india` and upgraded Go baseline to `go 1.26.0`.
-- `examples/checkout_verification/`: Added end-to-end runnable Indian B2B checkout & vendor KYC onboarding example with 100.0% unit test coverage.
+- `examples/checkout_verification/`: Added end-to-end runnable Indian B2B checkout & vendor KYC onboarding example (`main.go`, `main_test.go`, `README.md`) with `100.0%` statement coverage.
+- `docs/index.html`: Added Impeccable-verified single-file documentation portal with dark/light theme support, statutory specification matrix, zero-allocation benchmark profile, and copyable install command synchronized via `scripts/check_version.sh`.
+- `scripts/check_secrets.sh`, `.github/workflows/ci.yml`, `.github/RELEASE_PROCEDURE.md`: Added TruffleHog git-history secret scanning and high-confidence credential/key/token/DSN leak prevention gate in CI and release procedures.
 - `example_test.go`: Added testable `Example` functions covering all 15 package files (`ValidateUPI`, `GenerateUPIURI`, `ParseUPIURI`, `ValidateRazorpayWebhook`, `ValidateCashfreeWebhook`, `ValidatePhonePeWebhook`, `OfflineIFSCResolver`, `FYFromDate`, `AdvanceTaxDueDates`, `NewAgingReport`, `ValidateMICR`, `NormalizeMobile`, `FormatE164`, `ValidateBankAccount`, `MaskBankAccount`).
-- `.github/badges/coverage.json`: Achieved `100.0%` statement coverage across every function and package in the repository.
-- `skills/`: Synchronized all 4 `SKILL.md` subskills with exact exported function signatures and canonical `github.com/abeta-dev/go-fintech-india` imports.
+- `.github/badges/coverage.json`, `scripts/check_coverage.sh`: Achieved `100.0%` statement coverage across every function and package in the repository (`root` and `examples/checkout_verification`).
+- `AGENTS.md`, `skills/`: Synchronized all 4 `SKILL.md` subskills with exact exported function signatures, canonical `github.com/abeta-dev/go-fintech-india` imports, and mandatory verification gates (`check_secrets.sh`, `check_coverage.sh`, `check_version.sh`, `test_verify_release.sh`).
 
 ### Fixed
 - `words.go`: Fixed `int64` two's-complement negation overflow in `InWords(NewMoney(math.MinInt64))` by computing `rupees` and `paise` before sign negation.

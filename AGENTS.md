@@ -18,10 +18,16 @@ Load the smallest subskill that matches your task:
 Before committing or opening a PR in this repository, always run:
 
 ```bash
+./scripts/check_secrets.sh
+./scripts/check_coverage.sh
 ./scripts/check_version.sh
+./scripts/test_verify_release.sh
 go test -race ./...
+(cd examples/checkout_verification && go test -race -cover ./...)
 ```
 
+- **Secret & Credential Leak Gate**: `./scripts/check_secrets.sh` runs TruffleHog verified git-history secret scanning (`trufflehog git file://. --only-verified --fail --no-update`) plus high-confidence credential, private key, token, and DSN leak detection.
+- **100.0% Statement Coverage Gate**: `./scripts/check_coverage.sh` enforces statement coverage (`100.0%` achieved across root package and `examples/checkout_verification`) and generates `.github/badges/coverage.json`.
 - **Zero External Dependencies Gate**: `go.mod` must have **zero** `require` blocks (100% Go standard library).
-- **100% Exported Symbol Changelog Gate**: `scripts/check_version.sh` parses AST for every exported type, function, method, constant, and variable and requires each symbol to appear in `CHANGELOG.md` under `### Added`.
-- **Version Parity Gate**: All `@v` version references in `README.md`, `CONTRIBUTING.md`, and `docs/**/*.md` must match `@v0.3.0`.
+- **100% Exported Symbol Changelog Gate**: `./scripts/check_version.sh` verifies every exported type, function, method, constant, and variable listed in `CHANGELOG.md` under `### Added` exists in package source files.
+- **Version Parity Gate**: All `@v` version references in `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `docs/index.html` must match `@v0.3.0`.
