@@ -1,0 +1,91 @@
+# ==============================================================================
+# go-fintech-india — Granular Module Code-Owner Agent Matrix
+# ==============================================================================
+# Each domain slice is owned by a dedicated Module Code-Owner Agent paired with
+# its companion skill in skills/*/SKILL.md and enforced in CI by
+# .github/workflows/module-agent-review.yml + scripts/module_agent_review.sh.
+# ==============================================================================
+
+# Default repository fallback owner
+* @umesh0492
+
+# ------------------------------------------------------------------------------
+# 1. @go-fintech-india-kyc-statutory-agent
+#    Companion Skill: skills/go-fintech-india-kyc-statutory/SKILL.md
+#    Scope: Indian KYC, Tax & Banking Identifiers (PAN, GSTIN mod-36, Aadhaar
+#           Verhoeff D5 & masking, IFSC + Offline RBI Resolver, MICR, Mobile,
+#           Bank Account validation)
+# ------------------------------------------------------------------------------
+/pan.go                     @umesh0492
+/pan_test.go                @umesh0492
+/gstin.go                   @umesh0492
+/gstin_test.go              @umesh0492
+/aadhaar.go                 @umesh0492
+/aadhaar_test.go            @umesh0492
+/ifsc.go                    @umesh0492
+/ifsc_test.go               @umesh0492
+/ifsc_resolver.go           @umesh0492
+/ifsc_resolver_test.go      @umesh0492
+/micr.go                    @umesh0492
+/micr_test.go               @umesh0492
+/phone.go                   @umesh0492
+/phone_test.go              @umesh0492
+/account.go                 @umesh0492
+/account_test.go            @umesh0492
+
+# ------------------------------------------------------------------------------
+# 2. @go-fintech-india-money-tax-agent
+#    Companion Skill: skills/go-fintech-india-money-tax/SKILL.md
+#    Scope: Exact int64-paise Money arithmetic, Split/Allocate (Hare-Niemeyer),
+#           Indian Lakh/Crore formatting, Amount-in-Words, Indian Financial Year
+#           (FY) & Advance Tax calendars, and MCA Schedule III Aging reports
+# ------------------------------------------------------------------------------
+/money.go                   @umesh0492
+/money_test.go              @umesh0492
+/currency.go                @umesh0492
+/currency_test.go           @umesh0492
+/words.go                   @umesh0492
+/words_test.go              @umesh0492
+/fy.go                      @umesh0492
+/fy_test.go                 @umesh0492
+/aging.go                   @umesh0492
+/aging_test.go              @umesh0492
+
+# ------------------------------------------------------------------------------
+# 3. @go-fintech-india-payments-upi-agent
+#    Companion Skill: skills/go-fintech-india-payments-upi/SKILL.md
+#    Scope: NPCI UPI VPA validation, PSP handle lookup, upi://pay deep-link URI
+#           generation/parsing, constant-time Razorpay/Cashfree/PhonePe webhook
+#           verification, and reference checkout verification examples
+# ------------------------------------------------------------------------------
+/upi.go                     @umesh0492
+/upi_test.go                @umesh0492
+/webhook.go                 @umesh0492
+/webhook_test.go            @umesh0492
+/examples/                  @umesh0492
+
+# ------------------------------------------------------------------------------
+# 4. @go-fintech-india-platform-governance-agent
+#    Companion Skill: skills/go-fintech-india/SKILL.md
+#    Scope: Package doc/examples/fuzz tests, CI/CD workflows, release & truth
+#           gates, skills, documentation, and module governance
+# ------------------------------------------------------------------------------
+/doc.go                     @umesh0492
+/example_test.go            @umesh0492
+/fuzz_test.go               @umesh0492
+/.github/                   @umesh0492
+/scripts/                   @umesh0492
+/docs/                      @umesh0492
+/skills/                    @umesh0492
+/AGENTS.md                  @umesh0492
+/README.md                  @umesh0492
+/CHANGELOG.md               @umesh0492
+/CONTRIBUTING.md            @umesh0492
+/CODE_OF_CONDUCT.md         @umesh0492
+/SECURITY.md                @umesh0492
+/LICENSE                    @umesh0492
+/llms.txt                   @umesh0492
+/go.mod                     @umesh0492
+/.golangci.yml              @umesh0492
+/.gitignore                 @umesh0492
+/Makefile                   @umesh0492

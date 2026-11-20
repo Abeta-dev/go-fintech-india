@@ -1,0 +1,135 @@
+{
+  "repository": "github.com/abeta-dev/go-fintech-india",
+  "version": "0.3.0",
+  "go_version": "1.26.0",
+  "coverage_target": 100.0,
+  "agents": [
+    {
+      "id": "go-fintech-india-kyc-statutory-agent",
+      "name": "KYC & Statutory Identifiers Module Agent",
+      "handle": "@go-fintech-india-kyc-statutory-agent",
+      "skill": "skills/go-fintech-india-kyc-statutory/SKILL.md",
+      "owner": "@umesh0492",
+      "paths": [
+        "pan.go",
+        "pan_test.go",
+        "gstin.go",
+        "gstin_test.go",
+        "aadhaar.go",
+        "aadhaar_test.go",
+        "ifsc.go",
+        "ifsc_test.go",
+        "ifsc_resolver.go",
+        "ifsc_resolver_test.go",
+        "micr.go",
+        "micr_test.go",
+        "phone.go",
+        "phone_test.go",
+        "account.go",
+        "account_test.go"
+      ],
+      "packages": [
+        "."
+      ],
+      "rules": [
+        "100.0% statement coverage across PAN, GSTIN, Aadhaar, IFSC, MICR, Mobile, and Bank Account validators",
+        "GSTIN ISO/IEC 7064 Mod 36,36 checksum verification, valid Indian state code registry (01-38, 97, 99), and PAN extraction parity",
+        "Aadhaar Verhoeff D5 table checksum validation and UIDAI-compliant XXXX-XXXX-1234 masking (never leak raw 12-digit Aadhaar)",
+        "OfflineIFSCResolver O(1) zero-network lookup and context-aware HTTPResolver / FallbackResolver resilience",
+        "Zero external dependencies (100% Go standard library) and zero race conditions under go test -race"
+      ]
+    },
+    {
+      "id": "go-fintech-india-money-tax-agent",
+      "name": "Money, Indian Formatting, FY Calendar & Aging Module Agent",
+      "handle": "@go-fintech-india-money-tax-agent",
+      "skill": "skills/go-fintech-india-money-tax/SKILL.md",
+      "owner": "@umesh0492",
+      "paths": [
+        "money.go",
+        "money_test.go",
+        "currency.go",
+        "currency_test.go",
+        "words.go",
+        "words_test.go",
+        "fy.go",
+        "fy_test.go",
+        "aging.go",
+        "aging_test.go"
+      ],
+      "packages": [
+        "."
+      ],
+      "rules": [
+        "100.0% statement coverage across Money, INR currency formatting, Amount-in-Words, Indian FY calendar, and MCA Schedule III Aging",
+        "Strict int64 paise representation for Money (zero float64/float32 currency arithmetic or struct fields)",
+        "Penny-exact Split and Allocate using Hare-Niemeyer largest remainder distribution (sum of parts always equals original Money)",
+        "Zero-allocation hot-path formatting for AppendINR and AppendINRSymbol with Indian 3-2-2 Lakh/Crore digit grouping",
+        "Statutory Indian Financial Year (April 1 - March 31) quarter boundaries, Advance Tax schedules (15%/45%/75%/100%), and MCA Schedule III aging buckets"
+      ]
+    },
+    {
+      "id": "go-fintech-india-payments-upi-agent",
+      "name": "UPI Deep Links & Payment Gateway Webhooks Module Agent",
+      "handle": "@go-fintech-india-payments-upi-agent",
+      "skill": "skills/go-fintech-india-payments-upi/SKILL.md",
+      "owner": "@umesh0492",
+      "paths": [
+        "upi.go",
+        "upi_test.go",
+        "webhook.go",
+        "webhook_test.go",
+        "examples/"
+      ],
+      "packages": [
+        ".",
+        "./examples/checkout_verification"
+      ],
+      "rules": [
+        "100.0% statement coverage across UPI VPA validation, upi://pay URI generation/parsing, webhook verification, and checkout_verification example",
+        "NPCI UPI Linking Specification compliance with CRLF/control-character injection prevention and strict amount/currency validation",
+        "Constant-time cryptographic signature verification (crypto/hmac.Equal / subtle.ConstantTimeCompare) for Razorpay, Cashfree, and PhonePe webhooks",
+        "Cashfree timestamp replay-window enforcement and raw request body signature verification prior to JSON unmarshaling"
+      ]
+    },
+    {
+      "id": "go-fintech-india-platform-governance-agent",
+      "name": "Platform Architecture, Truth Gates & Governance Module Agent",
+      "handle": "@go-fintech-india-platform-governance-agent",
+      "skill": "skills/go-fintech-india/SKILL.md",
+      "owner": "@umesh0492",
+      "paths": [
+        "doc.go",
+        "example_test.go",
+        "fuzz_test.go",
+        ".github/",
+        "scripts/",
+        "docs/",
+        "skills/",
+        "AGENTS.md",
+        "README.md",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "CODE_OF_CONDUCT.md",
+        "SECURITY.md",
+        "LICENSE",
+        "llms.txt",
+        "go.mod",
+        ".golangci.yml",
+        ".gitignore",
+        "Makefile"
+      ],
+      "packages": [
+        ".",
+        "./examples/checkout_verification"
+      ],
+      "rules": [
+        "100.0% statement coverage across root package and examples/checkout_verification",
+        "Zero external dependencies in go.mod (stdlib-only invariant)",
+        "100% Exported Symbol Truth Gate: every exported symbol in CHANGELOG.md ### Added exists in package source files (./scripts/check_version.sh)",
+        "Version parity (@v0.3.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
+        "Bash 3.2 shell compatibility across all scripts/*.sh and SHA-pinned GitHub Actions with Node 24 runtime enforcement"
+      ]
+    }
+  ]
+}

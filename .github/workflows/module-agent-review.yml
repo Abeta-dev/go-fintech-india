@@ -1,0 +1,144 @@
+name: Module Code-Owner Agent Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  module-agent-review:
+    name: Module Code-Owner Agent Gate & Auto-Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository (Full History)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go 1.26.0
+        uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a # v5.4.0
+        with:
+          go-version: '1.26.0'
+          cache: false
+
+      - name: Stage Module Agent Runner & Config
+        run: |
+          cp scripts/module_agent_review.sh /tmp/module_agent_review.sh
+          chmod +x /tmp/module_agent_review.sh
+          cp .github/module-agents.json /tmp/module-agents.json
+
+      - name: Evaluate & Review Active Pull Requests
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENT_PR: ${{ github.event.pull_request.number || '' }}
+          ORIGINAL_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          git fetch origin --prune
+
+          cleanup_duplicate_issue_comments() {
+            local pr_num="$1"
+            local existing_comment_ids=""
+            existing_comment_ids="$(gh api "repos/${GITHUB_REPOSITORY}/issues/${pr_num}/comments" \
+              --jq '.[] | select(.body | contains("<!-- abeta-module-agent-review -->")) | .id' || true)"
+            if [ -n "${existing_comment_ids}" ]; then
+              for cid in ${existing_comment_ids}; do
+                echo "Deleting duplicate issue comment #${cid} on PR #${pr_num}..."
+                gh api --method DELETE "repos/${GITHUB_REPOSITORY}/issues/comments/${cid}" >/dev/null 2>&1 || true
+              done
+            fi
+          }
+
+          upsert_pr_review() {
+            local pr_num="$1"
+            local status="$2"
+            local report_file="$3"
+
+            if [ "$status" -eq 0 ]; then
+              local approved_ids=""
+              approved_ids="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_num}/reviews" \
+                --jq '.[] | select(.user.login == "github-actions[bot]" and .state == "APPROVED") | .id' || true)"
+
+              if [ -z "${approved_ids}" ]; then
+                approved_ids="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${pr_num}/reviews" \
+                  --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | contains("<!-- abeta-module-agent-review -->"))) | .id' || true)"
+              fi
+
+              if [ -n "${approved_ids}" ]; then
+                local latest_rev_id=""
+                latest_rev_id="$(echo "${approved_ids}" | tail -n1)"
+                jq -Rs '{body: .}' "${report_file}" | gh api \
+                  --method PUT \
+                  "repos/${GITHUB_REPOSITORY}/pulls/${pr_num}/reviews/${latest_rev_id}" \
+                  --input - >/dev/null
+                echo "🔄 Updated existing PR review #${latest_rev_id} in-place on PR #${pr_num}"
+
+                for rid in ${approved_ids}; do
+                  if [ "${rid}" != "${latest_rev_id}" ]; then
+                    gh api \
+                      --method PUT \
+                      "repos/${GITHUB_REPOSITORY}/pulls/${pr_num}/reviews/${rid}" \
+                      -f body="_Superseded by latest Module Code-Owner Agent review._" >/dev/null 2>&1 || true
+                  fi
+                done
+              else
+                gh pr review "${pr_num}" --approve --body-file "${report_file}" 2>/dev/null || \
+                  gh pr review "${pr_num}" --comment --body-file "${report_file}" || true
+                echo "✅ Submitted new PR approval review on PR #${pr_num}"
+              fi
+            else
+              gh pr review "${pr_num}" --request-changes --body-file "${report_file}" 2>/dev/null || \
+                gh pr review "${pr_num}" --comment --body-file "${report_file}" || true
+              echo "❌ Submitted changes-requested review on PR #${pr_num}"
+            fi
+          }
+
+          CURRENT_PR_STATUS=0
+
+          OPEN_PRS=$(gh pr list --state open --json number,baseRefName,headRefName)
+          PR_COUNT=$(echo "$OPEN_PRS" | jq 'length')
+          echo "Found ${PR_COUNT} open PR(s) to evaluate with Module Code-Owner Agents."
+
+          while IFS=$'\t' read -r PR_NUM BASE_BRANCH HEAD_BRANCH; do
+            [ -z "$PR_NUM" ] && continue
+            echo "========================================================"
+            echo "🛡️ Module Code-Owner Agent Review for PR #${PR_NUM} (${BASE_BRANCH} <- ${HEAD_BRANCH})"
+            echo "========================================================"
+
+            git checkout -f "origin/${HEAD_BRANCH}"
+
+            REPORT_FILE="/tmp/module-agent-report-${PR_NUM}.md"
+            set +e
+            /tmp/module_agent_review.sh \
+              --base "origin/${BASE_BRANCH}" \
+              --head "origin/${HEAD_BRANCH}" \
+              --pr-number "${PR_NUM}" \
+              --config /tmp/module-agents.json \
+              --output "${REPORT_FILE}"
+            REVIEW_RC=$?
+            set -e
+
+            cleanup_duplicate_issue_comments "${PR_NUM}"
+            upsert_pr_review "${PR_NUM}" "${REVIEW_RC}" "${REPORT_FILE}"
+
+            if [ -n "${CURRENT_PR}" ] && [ "${PR_NUM}" = "${CURRENT_PR}" ]; then
+              CURRENT_PR_STATUS="${REVIEW_RC}"
+            fi
+          done < <(echo "$OPEN_PRS" | jq -r '.[] | [.number, .baseRefName, .headRefName] | @tsv')
+
+          git checkout -f "${ORIGINAL_SHA}" 2>/dev/null || true
+
+          if [ "${CURRENT_PR_STATUS}" -ne 0 ]; then
+            echo "❌ Module Code-Owner Agent gate failed for current PR #${CURRENT_PR}." >&2
+            exit "${CURRENT_PR_STATUS}"
+          fi

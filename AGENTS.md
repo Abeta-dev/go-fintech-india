@@ -13,11 +13,23 @@ Load the smallest subskill that matches your task:
 | **`go-fintech-india-kyc-statutory`** | [`skills/go-fintech-india-kyc-statutory/SKILL.md`](skills/go-fintech-india-kyc-statutory/SKILL.md) | GSTIN mod-36 validation & PAN/state extraction, PAN & entity/surname checks, Aadhaar Verhoeff D5 & masking, IFSC validation + offline RBI bank resolver, MICR, Indian mobile, and bank account validation. |
 | **`go-fintech-india-payments-upi`** | [`skills/go-fintech-india-payments-upi/SKILL.md`](skills/go-fintech-india-payments-upi/SKILL.md) | NPCI UPI VPA validation, PSP handle lookup, `upi://pay` URI generation/parsing, and constant-time HMAC webhook verification for Razorpay, Cashfree, and PhonePe. |
 
+## Module Code-Owner Agents & Automated PR Review
+
+Every file in `go-fintech-india` is mapped to a specialized **Module Code-Owner Agent** in [`.github/CODEOWNERS`](.github/CODEOWNERS) and [`.github/module-agents.json`](.github/module-agents.json), paired with its companion skill in `skills/*/SKILL.md` and enforced on every pull request by [`.github/workflows/module-agent-review.yml`](.github/workflows/module-agent-review.yml) and [`./scripts/module_agent_review.sh`](scripts/module_agent_review.sh):
+
+| Module Code-Owner Agent | Companion Skill | Owned Domain Files |
+| :--- | :--- | :--- |
+| **`@go-fintech-india-kyc-statutory-agent`** | [`skills/go-fintech-india-kyc-statutory/SKILL.md`](skills/go-fintech-india-kyc-statutory/SKILL.md) | `pan.go`, `gstin.go`, `aadhaar.go`, `ifsc.go`, `ifsc_resolver.go`, `micr.go`, `phone.go`, `account.go` (+ `*_test.go`) |
+| **`@go-fintech-india-money-tax-agent`** | [`skills/go-fintech-india-money-tax/SKILL.md`](skills/go-fintech-india-money-tax/SKILL.md) | `money.go`, `currency.go`, `words.go`, `fy.go`, `aging.go` (+ `*_test.go`) |
+| **`@go-fintech-india-payments-upi-agent`** | [`skills/go-fintech-india-payments-upi/SKILL.md`](skills/go-fintech-india-payments-upi/SKILL.md) | `upi.go`, `webhook.go`, `examples/` (+ `*_test.go`) |
+| **`@go-fintech-india-platform-governance-agent`** | [`skills/go-fintech-india/SKILL.md`](skills/go-fintech-india/SKILL.md) | `doc.go`, `example_test.go`, `fuzz_test.go`, `.github/`, `scripts/`, `docs/`, `skills/`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, `llms.txt`, `go.mod`, `.golangci.yml`, `Makefile` |
+
 ## Mandatory Verification Gates
 
 Before committing or opening a PR in this repository, always run:
 
 ```bash
+./scripts/module_agent_review.sh --base origin/main --head HEAD
 ./scripts/check_secrets.sh
 ./scripts/check_coverage.sh
 ./scripts/check_version.sh
