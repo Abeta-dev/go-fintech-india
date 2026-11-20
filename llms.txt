@@ -1,0 +1,99 @@
+# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.3.0)
+
+> Zero-dependency, production-grade Go library (Go 1.26.0, 100.0% statement coverage, 127 exported symbols) for Indian fintech, banking gateways, and ERPs: exact int64 paise math, GSTIN Mod-36, PAN, UIDAI Verhoeff Aadhaar, RBI IFSC, MICR, NPCI UPI intent URIs, Razorpay/Cashfree/PhonePe webhook HMAC verification, and Indian FY/TDS/TCS tax calendars.
+
+## Quick Installation
+
+```bash
+# Install Go module
+go get github.com/abeta-dev/go-fintech-india@v0.3.0
+
+# Install AI Agent Skills (Claude Code, Gemini CLI, Antigravity, Codex, Cursor, Windsurf)
+npx skills add abeta-dev/go-fintech-india
+```
+
+```go
+import fintechin "github.com/abeta-dev/go-fintech-india"
+```
+
+## Key Links & Resources
+
+- [Live Documentation Portal](https://abeta-dev.github.io/go-fintech-india/): Interactive statutory specification matrix, zero-allocation benchmark profile, and copyable integration recipes.
+- [LLM Discovery Index (`llms.txt`)](https://abeta-dev.github.io/go-fintech-india/llms.txt): Structured markdown index for AI coding assistants and retrieval engines.
+- [Go Package Reference (`pkg.go.dev`)](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india): Full GoDoc API documentation and runnable testable examples across all 15 source files.
+- [GitHub Repository](https://github.com/abeta-dev/go-fintech-india): Source code, CI/CD workflows, and immutable release artifacts.
+- [`AGENTS.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/AGENTS.md): Root multi-model agent routing table and mandatory verification gates.
+- [`skills/go-fintech-india/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india/SKILL.md): Umbrella skill router for all 127 exported symbols.
+- [`skills/go-fintech-india-money-tax/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-money-tax/SKILL.md): Subskill for exact paise math, Indian Lakh/Crore formatting, FY calendars, and MCA Schedule III aging.
+- [`skills/go-fintech-india-kyc-statutory/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-kyc-statutory/SKILL.md): Subskill for GSTIN, PAN, Aadhaar, IFSC/offline resolver, MICR, mobile, and bank account validation.
+- [`skills/go-fintech-india-payments-upi/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-payments-upi/SKILL.md): Subskill for NPCI UPI VPAs, `upi://pay` deep links, and Razorpay/Cashfree/PhonePe webhook verifiers.
+- [`examples/checkout_verification`](https://github.com/abeta-dev/go-fintech-india/tree/main/examples/checkout_verification): End-to-end runnable B2B checkout & vendor KYC onboarding verification blueprint (`100.0%` coverage).
+
+## Capability & Symbol Guide by Domain
+
+### 1. Money & INR Formatting (`money.go`, `currency.go`, `words.go`)
+- **Core Types & Constructors**: `Money` (exact `int64` paise; `1 INR = 100 paise`), `NewMoney(paise int64)`, `NewMoneyFromRupees(rupees int64)`, `NewMoneyFromFloat(rupees float64)`.
+- **Arithmetic & Inspection**: `Money.Paise()`, `Money.Rupees()`, `Money.Float64()`, `Money.IsZero()`, `Money.IsPositive()`, `Money.IsNegative()`, `Money.Abs()`, `Money.Negate()`, `Money.Add(other Money)`, `Money.Sub(other Money)`, `Money.Mul(factor int64)`, `Money.Equals(other Money)`, `Money.GreaterThan(other Money)`, `Money.GreaterThanOrEqual(other Money)`, `Money.LessThan(other Money)`, `Money.LessThanOrEqual(other Money)`, `Money.Compare(other Money)`, `Money.String()`.
+- **Serialization (`database/sql` & `encoding/json`)**: `Money.Value() (driver.Value, error)`, `Money.Scan(src any) error`, `Money.MarshalJSON() ([]byte, error)`, `Money.UnmarshalJSON(data []byte) error`.
+- **Indian Numbering (`3-2-2` Lakhs/Crores) & Streaming**: `FormatINR(paise int64) string`, `FormatINRSymbol(paise int64) string`, `AppendINR(dst []byte, paise int64) []byte` (`0 allocs/op`), `AppendINRSymbol(dst []byte, paise int64) []byte` (`0 allocs/op`), `ParseINR(s string) (Money, error)`.
+- **Legal Cheque & Invoice Words**: `InWords(m Money) string` (`"Rupees Twelve Lakh ... and Eighty-Nine Paise Only"`), `NumberToIndianWords(n int64) string`.
+
+### 2. GST & Tax Calculation / Remainder-Safe Allocation (`money.go`, `gstin.go`)
+- **Remainder-Safe Splits & Weighted Allocation**:
+  - `Money.Split(n int) ([]Money, error)`: Distributes leftover paise across earlier shares so $\sum \text{parts} == \text{total}$ with zero penny-dropping.
+  - `Money.Allocate(ratios ...int) ([]Money, error)`: Hare-Niemeyer largest-remainder proportional allocation for CGST/SGST/IGST splits, multi-party fee sharing, and discount pro-rating.
+- **Intra-State vs Inter-State Place-of-Supply Detection**:
+  - Compare `StateCode(supplierGSTIN)` vs `StateCode(recipientGSTIN)` across all 37 Indian State/UT codes (`01`–`38`, `97` Other Territory, `99` Centre Jurisdiction) and resolve human-readable names via `StateName(code string) (string, bool)`.
+
+### 3. Statutory KYC & Banking Checksums (`gstin.go`, `pan.go`, `aadhaar.go`, `ifsc.go`, `ifsc_resolver.go`, `micr.go`, `phone.go`, `account.go`)
+- **GSTN GSTIN (`gstin.go`, `0 allocs/op`)**:
+  - `ValidateGSTIN(gstin string) error`, `IsValidGSTIN(gstin string) bool`, `CalculateGSTINChecksum(prefix14 string) (byte, error)`, `ExtractPAN(gstin string) string`, `StateCode(gstin string) string`, `StateName(code string) (string, bool)`.
+  - Errors: `ErrInvalidGSTINLength`, `ErrInvalidStateCode`, `ErrInvalidGSTINFormat`, `ErrInvalidGSTINChecksum`.
+- **Income Tax PAN (`pan.go`, `0 allocs/op`)**:
+  - `ValidatePAN(pan string) error`, `IsValidPAN(pan string) bool`, `EntityType(pan string) (PANEntityType, error)`, `EntityTypeFromPAN(pan string) (string, error)`, `MatchesSurname(pan, surname string) bool`, `MaskPAN(pan string) string`.
+  - Entity constants (`PANEntityType`): `EntityIndividual` (`P`), `EntityCompany` (`C`), `EntityHUF` (`H`), `EntityFirm` (`F`), `EntityAOP` (`A`), `EntityTrust` (`T`), `EntityBOI` (`B`), `EntityLocalAuthority` (`L`), `EntityArtificialJuridical` (`J`), `EntityGovernment` (`G`), `EntityUnknown`.
+  - Errors: `ErrInvalidPANLength`, `ErrInvalidPANFormat`.
+- **UIDAI Aadhaar (`aadhaar.go`, `0 allocs/op`)**:
+  - `ValidateAadhaar(aadhaar string) error`, `IsValidAadhaar(aadhaar string) bool`, `CalculateVerhoeffCheckDigit(first11Digits string) (int, error)`, `MaskAadhaar(aadhaar string) string` (`XXXX-XXXX-1234`), `FormatAadhaar(aadhaar string) string` (`1234 5678 9012`).
+  - Errors: `ErrInvalidAadhaarLength`, `ErrInvalidAadhaarFormat`, `ErrInvalidAadhaarFirstDigit`, `ErrInvalidAadhaarChecksum`.
+- **RBI IFSC & Offline/Live Bank Branch Resolver (`ifsc.go`, `ifsc_resolver.go`)**:
+  - Validation (`0 allocs/op`): `ValidateIFSC(ifsc string) error`, `IsValidIFSC(ifsc string) bool`, `BankCode(ifsc string) string`, `BranchCode(ifsc string) string`, `BankNameFromIFSC(ifsc string) (string, bool)`.
+  - Errors: `ErrInvalidIFSCLength`, `ErrInvalidIFSCBankCode`, `ErrInvalidIFSCFifthChar`, `ErrInvalidIFSCBranchCode`, `ErrBranchNotFound`.
+  - Resolvers: `IFSCResolver` interface (`Resolve(ctx context.Context, ifsc string) (*BankBranch, error)`), `BankBranch` struct, `OfflineIFSCResolver`, `NewOfflineIFSCResolver()` (`~71 ns/op`, zero network I/O), `HTTPResolver`, `NewHTTPResolver(opts ...HTTPResolverOption)`, `WithHTTPClient(client *http.Client)`, `WithBaseURL(baseURL string)`, `FallbackResolver`, `NewFallbackResolver(resolvers ...IFSCResolver)`.
+- **RBI MICR (`micr.go`)**:
+  - `ValidateMICR(micr string) error`, `IsValidMICR(micr string) bool`, `MICRCityCode(micr string) string`, `MICRBankCode(micr string) string`, `MICRBranchCode(micr string) string`.
+  - Errors: `ErrInvalidMICRLength`, `ErrInvalidMICRFormat`.
+- **DoT Indian Mobile (`phone.go`)**:
+  - `ValidateMobile(phone string) error`, `IsValidMobile(phone string) bool`, `NormalizeMobile(phone string) (string, error)`, `FormatE164(phone string) (string, error)` (`+91XXXXXXXXXX`).
+  - Errors: `ErrInvalidMobileLength`, `ErrInvalidMobileFormat`, `ErrInvalidMobileStartDigit`.
+- **Indian Bank Account (`account.go`)**:
+  - `ValidateBankAccount(account string) error`, `IsValidBankAccount(account string) bool`, `MaskBankAccount(account string) string`.
+  - Errors: `ErrInvalidAccountLength`, `ErrInvalidAccountFormat`, `ErrInvalidAccountAllZeros`.
+
+### 4. UPI & Payment Gateway Webhooks (`upi.go`, `webhook.go`)
+- **NPCI UPI VPA & Deep-Link Intent URIs (`upi.go`)**:
+  - `ValidateUPI(vpa string) error`, `IsValidUPI(vpa string) bool`, `IsKnownPSPHandle(handle string) bool`, `UPIParams` struct, `GenerateUPIURI(params UPIParams) (string, error)`, `ParseUPIURI(rawURI string) (UPIParams, error)`.
+  - Errors: `ErrInvalidUPIFormat`, `ErrInvalidUPIUser`, `ErrInvalidUPIHandle`, `ErrMissingUPIPayee`, `ErrMissingUPIPayeeName`, `ErrInvalidUPIAmount`, `ErrInvalidUPIURI`.
+- **Constant-Time Payment Gateway Webhook Verifiers (`webhook.go`)**:
+  - **Razorpay**: `ValidateRazorpayWebhook(payload []byte, signature, secret string) error`, `VerifyRazorpayWebhook(payload []byte, signature, secret string) bool` (`HMAC-SHA256`).
+  - **Cashfree**: `ValidateCashfreeWebhook(payload []byte, signature, timestamp, secret string, tolerance time.Duration) error`, `VerifyCashfreeWebhook(payload []byte, signature, timestamp, secret string, tolerance time.Duration) bool` (`HMAC-SHA256` over `timestamp + payload` with replay-window defense).
+  - **PhonePe**: `ValidatePhonePeWebhook(responseBase64, xVerifyHeader, saltKey, saltIndex string) error`, `VerifyPhonePeWebhook(responseBase64, xVerifyHeader, saltKey, saltIndex string) bool` (`SHA256(responseBase64 + saltKey) + "###" + saltIndex`).
+  - Errors: `ErrInvalidSignature`, `ErrExpiredWebhook`, `ErrMalformedWebhook`.
+
+### 5. Fiscal Calendar & Aging Reports (`fy.go`, `aging.go`)
+- **Indian Financial Year (`April 1 – March 31`) & Section 211 Advance Tax (`fy.go`)**:
+  - `FinancialYear` struct (`StartYear`, `EndYear`), `CurrentFY() FinancialYear`, `FYFromDate(t time.Time) FinancialYear`, `ParseFY(s string) (FinancialYear, error)`.
+  - Methods: `FinancialYear.String()` (`"2025-26"`), `FinancialYear.Label()` (`"FY 2025-26"`), `FinancialYear.AssessmentYear()` (`"AY 2026-27"`), `FinancialYear.StartDate()`, `FinancialYear.EndDate()`, `FinancialYear.Contains(t time.Time) bool`, `FinancialYear.Quarter(t time.Time) int`, `FinancialYear.AdvanceTaxDueDates() []AdvanceTaxInstallment`.
+  - Structs & Errors: `AdvanceTaxInstallment` (`Quarter`, `DueDate`, `PercentageCum`: 15% Jun 15, 45% Sep 15, 75% Dec 15, 100% Mar 15), `ErrInvalidFYFormat`.
+- **MCA Schedule III Trade Receivables Aging (`aging.go`)**:
+  - `AgingBucket` type and constants: `Bucket0To30`, `Bucket31To60`, `Bucket61To90`, `Bucket91To180`, `BucketAbove180`.
+  - Functions & Types: `AllAgingBuckets() []AgingBucket`, `CategorizeAging(dueDate, asOfDate time.Time) (AgingBucket, int)`, `AgingItem` struct, `AgingReport` struct, `NewAgingReport(asOfDate time.Time) *AgingReport`, `AgingReport.AddInvoice(id string, dueDate time.Time, amount Money)`, `AgingReport.BucketAmount(b AgingBucket) Money`, `AgingReport.BucketCount(b AgingBucket) int`.
+
+## Abeta Go Ecosystem
+
+| Repository | Role | Live Documentation Portal | Go Package Reference |
+| :--- | :--- | :--- | :--- |
+| **[`github.com/abeta-dev/go-libs`](https://github.com/abeta-dev/go-libs)** | 35 foundational Go packages: Gin middleware (`ginmw`), resilience (`retry`, `circuitbreaker`, `ratelimit`), `pgxpool` DB helpers, RBAC/JWKS security, OTel telemetry, and type-safe utilities | [abeta-dev.github.io/go-libs](https://abeta-dev.github.io/go-libs/) | [pkg.go.dev/github.com/abeta-dev/go-libs](https://pkg.go.dev/github.com/abeta-dev/go-libs) |
+| **[`github.com/abeta-dev/go-fintech-india`](https://github.com/abeta-dev/go-fintech-india)** | Zero-dependency Indian FinTech primitives: exact `int64` paise math, GSTIN Mod-36, PAN, Aadhaar Verhoeff D5, IFSC/MICR, NPCI UPI URIs, Razorpay/Cashfree/PhonePe webhooks, and Indian FY/Advance Tax calendars | [abeta-dev.github.io/go-fintech-india](https://abeta-dev.github.io/go-fintech-india/) | [pkg.go.dev/github.com/abeta-dev/go-fintech-india](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india) |
+| **[`github.com/abeta-dev/go-app-kit`](https://github.com/abeta-dev/go-app-kit)** | Enterprise SaaS application building blocks: transactional outbox, tamper-evident audit logging, multi-channel notifications, CSV/JSON streaming export, and PDF generation | [abeta-dev.github.io/go-app-kit](https://abeta-dev.github.io/go-app-kit/) | [pkg.go.dev/github.com/abeta-dev/go-app-kit](https://pkg.go.dev/github.com/abeta-dev/go-app-kit) |
+| **[`github.com/abeta-dev/cloud-native-observability`](https://github.com/abeta-dev/cloud-native-observability)** | Production LGTM observability stack (Loki, Grafana, Tempo, Mimir, OpenTelemetry Collector), SRE SLO alerting rules, and GitOps Terraform blueprints | [abeta-dev.github.io/cloud-native-observability](https://abeta-dev.github.io/cloud-native-observability/) | [github.com/abeta-dev/cloud-native-observability](https://github.com/abeta-dev/cloud-native-observability) |
