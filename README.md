@@ -4,6 +4,8 @@
 
 [![CI](https://github.com/abeta-dev/go-fintech-india/actions/workflows/ci.yml/badge.svg)](https://github.com/abeta-dev/go-fintech-india/actions/workflows/ci.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/abeta-dev/go-fintech-india.svg)](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india)
+[![Docs Portal](https://img.shields.io/badge/docs-abeta--dev.github.io%2Fgo--fintech--india-00ADD8?logo=read-the-docs&logoColor=white)](https://abeta-dev.github.io/go-fintech-india/)
+[![llms.txt](https://img.shields.io/badge/llms.txt-AI--Ready-7C3AED)](https://abeta-dev.github.io/go-fintech-india/llms.txt)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/abeta-dev/go-fintech-india/main/.github/badges/coverage.json)](https://github.com/abeta-dev/go-fintech-india)
 
@@ -352,7 +354,7 @@ All algorithms are optimized for zero or minimal heap allocations. Benchmarks ru
 
 ## 🤖 AI Agent Skills & Multi-Model Context Routing
 
-`go-fintech-india` includes vendor-neutral **Agent Skills (`SKILL.md`)** and a root **[`AGENTS.md`](AGENTS.md)** router for any LLM coding agent (Antigravity, Gemini CLI, Claude Code, OpenAI Codex, Cursor, Windsurf):
+`go-fintech-india` includes vendor-neutral **Agent Skills (`SKILL.md`)**, a root **[`AGENTS.md`](AGENTS.md)** router, and an AI discovery index (**[`llms.txt`](llms.txt)** / **[`https://abeta-dev.github.io/go-fintech-india/llms.txt`](https://abeta-dev.github.io/go-fintech-india/llms.txt)**) for any LLM coding agent (Antigravity, Gemini CLI, Claude Code, OpenAI Codex, Cursor, Windsurf):
 
 | Skill | Path | Covered Capabilities |
 | :--- | :--- | :--- |
@@ -360,6 +362,19 @@ All algorithms are optimized for zero or minimal heap allocations. Benchmarks ru
 | **`go-fintech-india-money-tax`** | [`skills/go-fintech-india-money-tax/SKILL.md`](skills/go-fintech-india-money-tax/SKILL.md) | Exact `int64` paise `Money`, `Split`, `Allocate`, Lakh/Crore `FormatINR`/`AppendINR`, `InWords`, `FinancialYear`, `AdvanceTaxDueDates`, `AgingReport` |
 | **`go-fintech-india-kyc-statutory`** | [`skills/go-fintech-india-kyc-statutory/SKILL.md`](skills/go-fintech-india-kyc-statutory/SKILL.md) | `ValidateGSTIN` (mod-36), `ValidatePAN`, `ValidateAadhaar` (Verhoeff D5 & `MaskAadhaar`), `ValidateIFSC` + `NewOfflineIFSCResolver`, `ValidateMICR`, `ValidateMobile`, `ValidateBankAccount` |
 | **`go-fintech-india-payments-upi`** | [`skills/go-fintech-india-payments-upi/SKILL.md`](skills/go-fintech-india-payments-upi/SKILL.md) | `ValidateUPI`, `IsKnownPSPHandle`, `GenerateUPIURI`/`ParseUPIURI`, and constant-time Razorpay/Cashfree/PhonePe webhook verifiers |
+
+---
+
+## 🌐 Abeta Go Ecosystem
+
+`go-fintech-india` is part of the Abeta open-source Go engineering ecosystem:
+
+| Repository | Role | Live Documentation Portal | Go Reference |
+| :--- | :--- | :--- | :--- |
+| **[`github.com/abeta-dev/go-libs`](https://github.com/abeta-dev/go-libs)** | 35 foundational Go packages: Gin middleware (`ginmw`), resilience (`retry`, `circuitbreaker`, `ratelimit`), `pgxpool` DB helpers, RBAC/JWKS security, OTel telemetry, and type-safe utilities | [abeta-dev.github.io/go-libs](https://abeta-dev.github.io/go-libs/) | [pkg.go.dev/github.com/abeta-dev/go-libs](https://pkg.go.dev/github.com/abeta-dev/go-libs) |
+| **[`github.com/abeta-dev/go-fintech-india`](https://github.com/abeta-dev/go-fintech-india)** | Zero-dependency Indian FinTech primitives: exact `int64` paise math, GSTIN Mod-36, PAN, Aadhaar Verhoeff D5, IFSC/MICR, NPCI UPI URIs, Razorpay/Cashfree/PhonePe webhooks, and Indian FY/Advance Tax calendars | [abeta-dev.github.io/go-fintech-india](https://abeta-dev.github.io/go-fintech-india/) | [pkg.go.dev/github.com/abeta-dev/go-fintech-india](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india) |
+| **[`github.com/abeta-dev/go-app-kit`](https://github.com/abeta-dev/go-app-kit)** | Enterprise SaaS application building blocks: transactional outbox, tamper-evident audit logging, multi-channel notifications, CSV/JSON streaming export, and PDF generation | [abeta-dev.github.io/go-app-kit](https://abeta-dev.github.io/go-app-kit/) | [pkg.go.dev/github.com/abeta-dev/go-app-kit](https://pkg.go.dev/github.com/abeta-dev/go-app-kit) |
+| **[`github.com/abeta-dev/cloud-native-observability`](https://github.com/abeta-dev/cloud-native-observability)** | Production LGTM observability stack (Loki, Grafana, Tempo, Mimir, OpenTelemetry Collector), SRE SLO alerting rules, and GitOps Terraform blueprints | [abeta-dev.github.io/cloud-native-observability](https://abeta-dev.github.io/cloud-native-observability/) | [github.com/abeta-dev/cloud-native-observability](https://github.com/abeta-dev/cloud-native-observability) |
 
 ---
 
