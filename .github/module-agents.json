@@ -1,6 +1,6 @@
 {
   "repository": "github.com/abeta-dev/go-fintech-india",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "go_version": "1.26.0",
   "coverage_target": 100.0,
   "agents": [
@@ -127,7 +127,7 @@
         "100.0% statement coverage across root package and examples/checkout_verification",
         "Zero external dependencies in go.mod (stdlib-only invariant)",
         "100% Exported Symbol Truth Gate: every exported symbol in CHANGELOG.md ### Added exists in package source files (./scripts/check_version.sh)",
-        "Version parity (@v0.3.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
+        "Version parity (@v0.4.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
         "Bash 3.2 shell compatibility across all scripts/*.sh and SHA-pinned GitHub Actions with Node 24 runtime enforcement"
       ]
     }

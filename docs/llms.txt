@@ -1,4 +1,4 @@
-# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.3.0)
+# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.4.0)
 
 > Zero-dependency, production-grade Go library (Go 1.26.0, 100.0% statement coverage, 127 exported symbols) for Indian fintech, banking gateways, and ERPs: exact int64 paise math, GSTIN Mod-36, PAN, UIDAI Verhoeff Aadhaar, RBI IFSC, MICR, NPCI UPI intent URIs, Razorpay/Cashfree/PhonePe webhook HMAC verification, and Indian FY/TDS/TCS tax calendars.
 
@@ -6,7 +6,7 @@
 
 ```bash
 # Install Go module
-go get github.com/abeta-dev/go-fintech-india@v0.3.0
+go get github.com/abeta-dev/go-fintech-india@v0.4.0
 
 # Install AI Agent Skills (Claude Code, Gemini CLI, Antigravity, Codex, Cursor, Windsurf)
 npx skills add abeta-dev/go-fintech-india

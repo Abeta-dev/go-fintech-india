@@ -1,6 +1,6 @@
 # AGENTS.md — `go-fintech-india` (`github.com/abeta-dev/go-fintech-india`)
 
-Zero-dependency, zero-allocation-hot-path Go library (`v0.3.0`, `Go 1.26.0`) for Indian FinTech, B2B ERP, GST invoicing, statutory KYC validation, and payment gateway webhook verification.
+Zero-dependency, zero-allocation-hot-path Go library (`v0.4.0`, `Go 1.26.0`) for Indian FinTech, B2B ERP, GST invoicing, statutory KYC validation, and payment gateway webhook verification.
 
 ## Skill Routing Table
 
@@ -42,4 +42,4 @@ go test -race ./...
 - **100.0% Statement Coverage Gate**: `./scripts/check_coverage.sh` enforces statement coverage (`100.0%` achieved across root package and `examples/checkout_verification`) and generates `.github/badges/coverage.json`.
 - **Zero External Dependencies Gate**: `go.mod` must have **zero** `require` blocks (100% Go standard library).
 - **100% Exported Symbol Changelog Gate**: `./scripts/check_version.sh` verifies every exported type, function, method, constant, and variable listed in `CHANGELOG.md` under `### Added` exists in package source files.
-- **Version Parity Gate**: All `@v` version references in `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `docs/index.html` must match `@v0.3.0`.
+- **Version Parity Gate**: All `@v` version references in `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, and `docs/index.html` must match `@v0.4.0`.

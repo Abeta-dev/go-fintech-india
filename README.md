@@ -1,4 +1,4 @@
-# go-fintech-india · v0.3.0
+# go-fintech-india · v0.4.0
 
 > This repository's public history begins from a single initial commit; see [CHANGELOG.md](CHANGELOG.md) for the version-by-version record of what shipped.
 
@@ -40,7 +40,7 @@ Engineered with pure Go standard library primitives, zero heap allocations on ve
 ## Installation
 
 ```bash
-go get github.com/abeta-dev/go-fintech-india@v0.3.0
+go get github.com/abeta-dev/go-fintech-india@v0.4.0
 ```
 
 ---

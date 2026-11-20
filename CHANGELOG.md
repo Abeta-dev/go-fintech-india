@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-11-21
+
+GitHub Pages interactive documentation portal deployment, `llms.txt` AI discovery index, Abeta Go Ecosystem navigation, SHA-pinned CodeQL / OpenSSF Scorecard / Dependabot supply-chain security workflows, and 4 Module Code-Owner Agents with automated multi-skill PR review and approval.
+
+### Changed
+- `.github/workflows/pages.yml`, `docs/index.html`: Added automated GitHub Pages deployment workflow for the interactive documentation portal (`https://abeta-dev.github.io/go-fintech-india/`).
+- `llms.txt`, `docs/llms.txt`, `README.md`: Added machine-readable `llms.txt` AI context discovery index and Abeta Go Ecosystem cross-repository navigation links (`go-libs`, `go-app-kit`, `go-fintech-india`, `cloud-native-observability`).
+- `.github/workflows/codeql.yml`, `.github/workflows/scorecard.yml`, `.github/dependabot.yml`, `.github/PULL_REQUEST_TEMPLATE.md`: Added SHA-pinned CodeQL semantic analysis, OpenSSF Scorecard supply-chain security scanning, automated Dependabot configuration, and upgraded PR verification checklist.
+- `.github/CODEOWNERS`, `.github/module-agents.json`, `scripts/module_agent_review.sh`, `.github/workflows/module-agent-review.yml`, `AGENTS.md`: Added 4 Module Code-Owner Agents (`@go-fintech-india-kyc-statutory-agent`, `@go-fintech-india-money-tax-agent`, `@go-fintech-india-payments-upi-agent`, `@go-fintech-india-platform-governance-agent`) with automated GitHub Actions PR review, deduplicated review updates, and live `/impeccable`, `@uncle-bob-craft`, `@effective-agent-skills`, and `@security-auditor` verification gates.
+
 ## [0.3.0] - 2026-11-05
 
 Canonical Go module path migration to `github.com/abeta-dev/go-fintech-india`, Go 1.26.0 toolchain baseline alignment, `math.MinInt64` overflow protection in `InWords`, runnable checkout & onboarding verification blueprint in `examples/checkout_verification`, interactive static documentation portal in `docs/index.html`, TruffleHog & credential-leak security gate (`scripts/check_secrets.sh`), expanded `pkg.go.dev` testable examples across all 15 source files, `100.0%` statement coverage across the entire repository, and 100% compile-verified `SKILL.md` signatures.

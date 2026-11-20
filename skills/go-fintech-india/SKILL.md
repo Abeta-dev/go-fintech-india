@@ -1,11 +1,11 @@
 ---
 name: go-fintech-india
-description: Umbrella router and integration guide for github.com/abeta-dev/go-fintech-india (v0.3.0, zero external dependencies). Use when building Indian FinTech, B2B vendor portals, GST invoicing, KYC validation, UPI deep links, or Razorpay/Cashfree/PhonePe webhooks in Go.
+description: Umbrella router and integration guide for github.com/abeta-dev/go-fintech-india (v0.4.0, zero external dependencies). Use when building Indian FinTech, B2B vendor portals, GST invoicing, KYC validation, UPI deep links, or Razorpay/Cashfree/PhonePe webhooks in Go.
 ---
 
-# `go-fintech-india` Umbrella Skill (`v0.3.0`)
+# `go-fintech-india` Umbrella Skill (`v0.4.0`)
 
-Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.3.0`, `Go 1.26.0`, zero external dependencies)
+Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.4.0`, `Go 1.26.0`, zero external dependencies)
 
 ## When to Use
 
@@ -44,5 +44,5 @@ go test -race ./...
 
 - **`./scripts/check_secrets.sh`**: TruffleHog verified git-history secret scanner + credential/key/token/DSN scanner.
 - **`./scripts/check_coverage.sh`**: Enforces statement coverage (`100.0%` statement coverage across root package and `examples/checkout_verification`) and updates `.github/badges/coverage.json`.
-- **`./scripts/check_version.sh`**: Verifies `v0.3.0` version parity across `CHANGELOG.md`, `README.md`, and `docs/index.html`, checks `gofmt`, and validates all exported symbols listed under `### Added` in `CHANGELOG.md`.
+- **`./scripts/check_version.sh`**: Verifies `v0.4.0` version parity across `CHANGELOG.md`, `README.md`, and `docs/index.html`, checks `gofmt`, and validates all exported symbols listed under `### Added` in `CHANGELOG.md`.
 - **`./scripts/test_verify_release.sh`**: Runs the automated test suite for `scripts/verify_release.sh` (proxy retry backoff, failure manifests, and SemVer prereleases).
