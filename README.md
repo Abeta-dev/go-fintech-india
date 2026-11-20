@@ -8,6 +8,7 @@
 [![llms.txt](https://img.shields.io/badge/llms.txt-AI--Ready-7C3AED)](https://abeta-dev.github.io/go-fintech-india/llms.txt)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/abeta-dev/go-fintech-india/main/.github/badges/coverage.json)](https://github.com/abeta-dev/go-fintech-india)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/abeta-dev/go-fintech-india/badge)](https://scorecard.dev/viewer/?uri=github.com/abeta-dev/go-fintech-india)
 
 **go-fintech-india** is a zero-dependency, production-grade Go library designed for financial engines, banking gateways, neo-banks, and enterprise ERPs operating in the Indian economy.
 
