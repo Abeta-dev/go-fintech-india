@@ -522,12 +522,27 @@
       margin: 0 auto;
       padding: var(--space-8) var(--space-6);
       display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-row {
+      display: flex;
       align-items: center;
       justify-content: space-between;
       gap: var(--space-4);
       flex-wrap: wrap;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+    }
+
+    .ecosystem-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border-subtle);
     }
 
     @media (max-width: 900px) {
@@ -584,6 +599,7 @@
         <a class="nav-link" href="#examples">Examples</a>
         <a class="nav-link" href="#benchmarks">Benchmarks</a>
         <a class="nav-link" href="#standards">Statutory Specs</a>
+        <a class="nav-link" href="llms.txt">llms.txt</a>
         <a class="nav-link" href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">GitHub</a>
         <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch color theme" aria-pressed="false">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -942,14 +958,25 @@ func main() {
   </div>
 
   <footer class="site-footer">
-    <div>
-      <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.4.0 · MIT License · Copyright (c) 2026 Abeta
+    <div class="footer-row">
+      <div>
+        <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.4.0 · MIT License · Copyright (c) 2026 Abeta
+      </div>
+      <div>
+        <a href="llms.txt">llms.txt</a>
+        ·
+        <a href="https://pkg.go.dev/github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">pkg.go.dev Reference</a>
+        ·
+        <a href="https://github.com/abeta-dev/go-fintech-india/blob/main/CHANGELOG.md" rel="noopener noreferrer">Changelog</a>
+      </div>
     </div>
-    <div>
-      <a href="https://pkg.go.dev/github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">pkg.go.dev Reference</a>
-      ·
-      <a href="https://github.com/abeta-dev/go-fintech-india/blob/main/CHANGELOG.md" rel="noopener noreferrer">Changelog</a>
-    </div>
+    <nav class="ecosystem-nav" aria-label="Abeta Go Ecosystem">
+      <a href="https://github.com/abeta-dev/go-libs" rel="noopener noreferrer">go-libs v0.5.0 — 36 Foundational Go Packages</a>
+      <a href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">go-fintech-india v0.4.0 — Zero-Dep Indian FinTech Engine</a>
+      <a href="https://github.com/abeta-dev/go-app-kit" rel="noopener noreferrer">go-app-kit v0.6.0 — 5 Enterprise Workflow Engines</a>
+      <a href="https://github.com/abeta-dev/cloud-native-observability" rel="noopener noreferrer">cloud-native-observability v0.4.0 — OTel + LGTM + SRE SLOs</a>
+      <a href="llms.txt">LLM Context Index (llms.txt)</a>
+    </nav>
   </footer>
 
   <script>

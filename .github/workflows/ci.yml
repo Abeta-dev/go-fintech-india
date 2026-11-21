@@ -142,7 +142,9 @@ jobs:
 
       - name: Install TruffleHog Secret Scanner
         run: |
-          curl -fsSL "https://github.com/trufflesecurity/trufflehog/releases/download/v3.88.14/trufflehog_3.88.14_linux_amd64.tar.gz" | tar -xz -C /tmp trufflehog
+          curl -fsSL --retry 3 --retry-delay 2 -o /tmp/trufflehog.tar.gz "https://github.com/trufflesecurity/trufflehog/releases/download/v3.88.14/trufflehog_3.88.14_linux_amd64.tar.gz"
+          tar -xzf /tmp/trufflehog.tar.gz -C /tmp trufflehog
+          rm -f /tmp/trufflehog.tar.gz
           echo "/tmp" >> $GITHUB_PATH
 
       - name: Scan for Leaked Credentials & Secrets
