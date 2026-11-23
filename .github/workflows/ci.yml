@@ -150,6 +150,12 @@ jobs:
       - name: Scan for Leaked Credentials & Secrets
         run: ./scripts/check_secrets.sh
 
+      - name: Run Pure Stdlib Leaf-Import Isolation Gate
+        run: ./scripts/check_leaf_imports.sh
+
+      - name: Run Strict N+2 Minor-Release Deprecation Window Gate
+        run: ./scripts/check_deprecation.sh
+
       - name: Run Coverage Gate (>= 90%)
         run: ./scripts/check_coverage.sh
 

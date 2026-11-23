@@ -69,6 +69,15 @@ if [ -f "docs/index.html" ]; then
   echo "✅ docs/index.html version synchronized (v$DOCS_VER)."
 fi
 
+if [ -f "docs/VERSIONING.md" ]; then
+  VERSIONING_VER=$(grep -E "go get github.com/abeta-dev/go-fintech-india@v${SEMVER_PATTERN}" docs/VERSIONING.md | head -n1 | sed -E "s/.*go-fintech-india@v(${SEMVER_PATTERN}).*/\1/")
+  if [ "$CHANGELOG_VER" != "$VERSIONING_VER" ]; then
+    echo "❌ Error: Version mismatch between CHANGELOG.md (v$CHANGELOG_VER) and docs/VERSIONING.md (v$VERSIONING_VER)"
+    exit 1
+  fi
+  echo "✅ docs/VERSIONING.md version synchronized (v$VERSIONING_VER)."
+fi
+
 if [ -n "$GIT_TAG_REF" ]; then
   STRIPPED_TAG=$(echo "$GIT_TAG_REF" | sed -E 's/^v//')
   if [ "$STRIPPED_TAG" != "$CHANGELOG_VER" ]; then
@@ -155,6 +164,14 @@ if [ "${FAILED_SYMBOLS}" -ne 0 ]; then
   exit 1
 fi
 echo "✅ All CHANGELOG exported symbols exist in the repository (${CHECKED_SYMBOLS} symbols verified)."
+
+if [ -x "$(dirname "${BASH_SOURCE[0]}")/check_leaf_imports.sh" ]; then
+  "$(dirname "${BASH_SOURCE[0]}")/check_leaf_imports.sh"
+fi
+
+if [ -x "$(dirname "${BASH_SOURCE[0]}")/check_deprecation.sh" ]; then
+  "$(dirname "${BASH_SOURCE[0]}")/check_deprecation.sh"
+fi
 
 if [ -x "$(dirname "${BASH_SOURCE[0]}")/check_secrets.sh" ]; then
   "$(dirname "${BASH_SOURCE[0]}")/check_secrets.sh"

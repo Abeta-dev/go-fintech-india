@@ -75,7 +75,10 @@
 /fuzz_test.go               @umesh0492
 /.github/                   @umesh0492
 /scripts/                   @umesh0492
+/scripts/check_leaf_imports.sh @umesh0492
+/scripts/check_deprecation.sh @umesh0492
 /docs/                      @umesh0492
+/docs/VERSIONING.md         @umesh0492
 /skills/                    @umesh0492
 /AGENTS.md                  @umesh0492
 /README.md                  @umesh0492

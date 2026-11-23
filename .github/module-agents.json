@@ -104,7 +104,10 @@
         "fuzz_test.go",
         ".github/",
         "scripts/",
+        "scripts/check_leaf_imports.sh",
+        "scripts/check_deprecation.sh",
         "docs/",
+        "docs/VERSIONING.md",
         "skills/",
         "AGENTS.md",
         "README.md",
@@ -125,9 +128,10 @@
       ],
       "rules": [
         "100.0% statement coverage across root package and examples/checkout_verification",
-        "Zero external dependencies in go.mod (stdlib-only invariant)",
+        "Zero external dependencies in go.mod and pure stdlib leaf-import isolation in consumer sandbox (./scripts/check_leaf_imports.sh)",
+        "Strict N+2 minor-release deprecation window contract enforced across all exported symbols (./scripts/check_deprecation.sh & docs/VERSIONING.md)",
         "100% Exported Symbol Truth Gate: every exported symbol in CHANGELOG.md ### Added exists in package source files (./scripts/check_version.sh)",
-        "Version parity (@v0.4.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
+        "Version parity (@v0.4.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/VERSIONING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
         "Bash 3.2 shell compatibility across all scripts/*.sh and SHA-pinned GitHub Actions with Node 24 runtime enforcement"
       ]
     }

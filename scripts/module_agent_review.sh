@@ -240,7 +240,7 @@ for root_dir, _, files in os.walk("."):
 
 lint_failures.extend(float_violations)
 
-# 5. Run Domain & Truth Gates (./scripts/check_version.sh + zero external deps in go.mod)
+# 5. Run Domain & Truth Gates (./scripts/check_leaf_imports.sh + ./scripts/check_deprecation.sh + ./scripts/check_version.sh + zero external deps in go.mod)
 domain_failures = []
 if os.path.isfile("go.mod"):
     with open("go.mod", "r", encoding="utf-8") as gmf:
@@ -248,14 +248,17 @@ if os.path.isfile("go.mod"):
     if re.search(r"^\s*require\b", gomod_content, flags=re.MULTILINE):
         domain_failures.append("go.mod: external dependency 'require' block detected (zero-dependency invariant violated)")
 
-if os.path.isfile("scripts/check_version.sh") and os.access("scripts/check_version.sh", os.X_OK):
-    ver_rc, ver_out = run_cmd(["./scripts/check_version.sh"])
-    if ver_rc != 0:
-        for vl in ver_out.splitlines():
-            if "❌" in vl or "Error:" in vl:
-                domain_failures.append(vl.strip())
-        if not domain_failures:
-            domain_failures.append("scripts/check_version.sh failed with exit code " + str(ver_rc))
+for gate_script in ["scripts/check_leaf_imports.sh", "scripts/check_deprecation.sh", "scripts/check_version.sh"]:
+    if os.path.isfile(gate_script) and os.access(gate_script, os.X_OK):
+        g_rc, g_out = run_cmd([f"./{gate_script}"])
+        if g_rc != 0:
+            added_err = False
+            for gl in g_out.splitlines():
+                if "❌" in gl or "Error:" in gl:
+                    domain_failures.append(gl.strip())
+                    added_err = True
+            if not added_err:
+                domain_failures.append(f"{gate_script} failed with exit code {g_rc}")
 
 # 6. Multi-Skill Quality & Architecture Review Gates
 skill_gate_failures = []
