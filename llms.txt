@@ -1,12 +1,12 @@
-# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.4.0)
+# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.5.0)
 
-> Zero-dependency, production-grade Go library (Go 1.26.0, 100.0% statement coverage, 127 exported symbols) for Indian fintech, banking gateways, and ERPs: exact int64 paise math, GSTIN Mod-36, PAN, UIDAI Verhoeff Aadhaar, RBI IFSC, MICR, NPCI UPI intent URIs, Razorpay/Cashfree/PhonePe webhook HMAC verification, and Indian FY/TDS/TCS tax calendars.
+> Zero-dependency, production-grade Go library (Go 1.26.0, 100.0% statement coverage, 157 exported symbols across 17 domain files) for Indian fintech, banking gateways, and ERPs: exact int64 paise math, deterministic GST tax-split (`CGST + SGST` vs `IGST`), statutory TDS section calculator (`194C`/`194J`/`194H`/`194I`/`194Q`/`194O` + Section 206AA), GSTIN Mod-36, PAN, UIDAI Verhoeff Aadhaar, RBI IFSC, MICR, NPCI UPI intent URIs, Razorpay/Cashfree/PhonePe webhook HMAC verification, and Indian FY/Advance Tax calendars.
 
 ## Quick Installation
 
 ```bash
 # Install Go module
-go get github.com/abeta-dev/go-fintech-india@v0.4.0
+go get github.com/abeta-dev/go-fintech-india@v0.5.0
 
 # Install AI Agent Skills (Claude Code, Gemini CLI, Antigravity, Codex, Cursor, Windsurf)
 npx skills add abeta-dev/go-fintech-india
@@ -20,12 +20,12 @@ import fintechin "github.com/abeta-dev/go-fintech-india"
 
 - [Live Documentation Portal](https://abeta-dev.github.io/go-fintech-india/): Interactive statutory specification matrix, zero-allocation benchmark profile, and copyable integration recipes.
 - [LLM Discovery Index (`llms.txt`)](https://abeta-dev.github.io/go-fintech-india/llms.txt): Structured markdown index for AI coding assistants and retrieval engines.
-- [Go Package Reference (`pkg.go.dev`)](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india): Full GoDoc API documentation and runnable testable examples across all 15 source files.
+- [Go Package Reference (`pkg.go.dev`)](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india): Full GoDoc API documentation and runnable testable examples across all 17 source files.
 - [GitHub Repository](https://github.com/abeta-dev/go-fintech-india): Source code, CI/CD workflows, and immutable release artifacts.
 - [`AGENTS.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/AGENTS.md): Root multi-model agent routing table and mandatory verification gates (`./scripts/check_secrets.sh`, `./scripts/check_leaf_imports.sh`, `./scripts/check_deprecation.sh`, `./scripts/check_coverage.sh`, `./scripts/check_version.sh`, `./scripts/module_agent_review.sh`).
-- [`docs/VERSIONING.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/docs/VERSIONING.md): Semantic Versioning contract (`v0.4.0`), Day-1 Pure Stdlib Leaf-Import Invariant (`./scripts/check_leaf_imports.sh`), strict `N + 2` Minor-Release Deprecation Window Policy (`./scripts/check_deprecation.sh`), and 15-file / 127-symbol Domain Maturity Matrix.
-- [`skills/go-fintech-india/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india/SKILL.md): Umbrella skill router for all 127 exported symbols.
-- [`skills/go-fintech-india-money-tax/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-money-tax/SKILL.md): Subskill for exact paise math, Indian Lakh/Crore formatting, FY calendars, and MCA Schedule III aging.
+- [`docs/VERSIONING.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/docs/VERSIONING.md): Semantic Versioning contract (`v0.5.0`), Day-1 Pure Stdlib Leaf-Import Invariant (`./scripts/check_leaf_imports.sh`), strict `N + 2` Minor-Release Deprecation Window Policy (`./scripts/check_deprecation.sh`), and 17-file / 157-symbol Domain Maturity Matrix.
+- [`skills/go-fintech-india/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india/SKILL.md): Umbrella skill router for all 157 exported symbols.
+- [`skills/go-fintech-india-money-tax/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-money-tax/SKILL.md): Subskill for exact paise math, GST tax-split, statutory TDS calculator, Indian Lakh/Crore formatting, FY calendars, and MCA Schedule III aging.
 - [`skills/go-fintech-india-kyc-statutory/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-kyc-statutory/SKILL.md): Subskill for GSTIN, PAN, Aadhaar, IFSC/offline resolver, MICR, mobile, and bank account validation.
 - [`skills/go-fintech-india-payments-upi/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-payments-upi/SKILL.md): Subskill for NPCI UPI VPAs, `upi://pay` deep links, and Razorpay/Cashfree/PhonePe webhook verifiers.
 - [`examples/checkout_verification`](https://github.com/abeta-dev/go-fintech-india/tree/main/examples/checkout_verification): End-to-end runnable B2B checkout & vendor KYC onboarding verification blueprint (`100.0%` coverage).
@@ -39,12 +39,20 @@ import fintechin "github.com/abeta-dev/go-fintech-india"
 - **Indian Numbering (`3-2-2` Lakhs/Crores) & Streaming**: `FormatINR(paise int64) string`, `FormatINRSymbol(paise int64) string`, `AppendINR(dst []byte, paise int64) []byte` (`0 allocs/op`), `AppendINRSymbol(dst []byte, paise int64) []byte` (`0 allocs/op`), `ParseINR(s string) (Money, error)`.
 - **Legal Cheque & Invoice Words**: `InWords(m Money) string` (`"Rupees Twelve Lakh ... and Eighty-Nine Paise Only"`), `NumberToIndianWords(n int64) string`.
 
-### 2. GST & Tax Calculation / Remainder-Safe Allocation (`money.go`, `gstin.go`)
+### 2. GST Tax-Split, Statutory TDS & Remainder-Safe Allocation (`gst_tax.go`, `tds.go`, `money.go`, `gstin.go`)
+- **Deterministic GST Tax-Split (`gst_tax.go`)**:
+  - `CalculateGST(taxable Money, rateBps int64, sellerGSTIN, buyerGSTIN string) (GSTBreakdown, error)`: Validates 15-char GSTINs and splits tax into `CGST + SGST` (`SupplyIntraState`, zero paise drift) or `IGST` (`SupplyInterState`).
+  - `CalculateGSTByState(taxable Money, rateBps int64, sellerStateCode, buyerStateCode string) (GSTBreakdown, error)` and `IsValidGSTStateCode(code string) bool`.
+  - Slabs & Types: `GSTBreakdown`, `SupplyType` (`SupplyIntraState`, `SupplyInterState`), `GSTSlab0` (`0`), `GSTSlab5` (`500`), `GSTSlab12` (`1200`), `GSTSlab18` (`1800`), `GSTSlab28` (`2800`), `ErrInvalidGSTRate`, `ErrNegativeTaxableAmount`.
+- **Statutory TDS Section Calculator (`tds.go`)**:
+  - `CalculateTDS(gross Money, section TDSSection, deducteePAN string) (TDSBreakdown, error)`: Computes statutory TDS deduction and `NetPayable` in integer paise with automatic Section 206AA (`Section206AARateBps = 2000` bps / `20.0%`) escalation when `deducteePAN` is missing or invalid.
+  - `TDSRateBps(section TDSSection) (int64, error)`: Looks up statutory base rate in basis points for `TDSSection194CIndividual` (`100`), `TDSSection194COther` (`200`), `TDSSection194JTechnical` (`200`), `TDSSection194JProfessional` (`1000`), `TDSSection194HCommission` (`200`), `TDSSection194IPlant` (`200`), `TDSSection194ILandBuilding` (`1000`), `TDSSection194QPurchase` (`10`), `TDSSection194OECommerce` (`10`).
+  - Errors: `ErrUnsupportedTDSSection`, `ErrNegativeTDSAmount`.
 - **Remainder-Safe Splits & Weighted Allocation**:
   - `Money.Split(n int) ([]Money, error)`: Distributes leftover paise across earlier shares so $\sum \text{parts} == \text{total}$ with zero penny-dropping.
   - `Money.Allocate(ratios ...int) ([]Money, error)`: Hare-Niemeyer largest-remainder proportional allocation for CGST/SGST/IGST splits, multi-party fee sharing, and discount pro-rating.
 - **Intra-State vs Inter-State Place-of-Supply Detection**:
-  - Compare `StateCode(supplierGSTIN)` vs `StateCode(recipientGSTIN)` across all 37 Indian State/UT codes (`01`–`38`, `97` Other Territory, `99` Centre Jurisdiction) and resolve human-readable names via `StateName(code string) (string, bool)`.
+  - Compare `StateCode(supplierGSTIN)` vs `StateCode(recipientGSTIN)` across all 37 Indian State/UT codes (`01`–`38`, `97` Other Territory, `99` Centre Jurisdiction) and resolve human-readable names via `StateName(code string) (string, error)`.
 
 ### 3. Statutory KYC & Banking Checksums (`gstin.go`, `pan.go`, `aadhaar.go`, `ifsc.go`, `ifsc_resolver.go`, `micr.go`, `phone.go`, `account.go`)
 - **GSTN GSTIN (`gstin.go`, `0 allocs/op`)**:
@@ -95,6 +103,6 @@ import fintechin "github.com/abeta-dev/go-fintech-india"
 | Repository | Role | Live Documentation Portal | Go Package Reference |
 | :--- | :--- | :--- | :--- |
 | **[`github.com/abeta-dev/go-libs`](https://github.com/abeta-dev/go-libs)** | 36 foundational Go packages (v0.5.0): HTTP compression (`compress` Brotli/Gzip), Gin middleware (`ginmw`), resilience (`retry`, `circuitbreaker`, `ratelimit`), caching, `pgxpool` DB helpers, RBAC/JWKS security, OpenTelemetry, and generic utilities | [abeta-dev.github.io/go-libs](https://abeta-dev.github.io/go-libs/) | [pkg.go.dev/github.com/abeta-dev/go-libs](https://pkg.go.dev/github.com/abeta-dev/go-libs) |
-| **[`github.com/abeta-dev/go-fintech-india`](https://github.com/abeta-dev/go-fintech-india)** | Zero-dependency Indian FinTech primitives (v0.4.0): exact `int64` paise math, GSTIN Mod-36, PAN, Aadhaar Verhoeff D5, IFSC/MICR, NPCI UPI URIs, Razorpay/Cashfree/PhonePe webhooks, and Indian FY/Advance Tax calendars | [abeta-dev.github.io/go-fintech-india](https://abeta-dev.github.io/go-fintech-india/) | [pkg.go.dev/github.com/abeta-dev/go-fintech-india](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india) |
+| **[`github.com/abeta-dev/go-fintech-india`](https://github.com/abeta-dev/go-fintech-india)** | Zero-dependency Indian FinTech primitives (v0.5.0): exact `int64` paise math, GST tax-split (`CGST + SGST` vs `IGST`), statutory TDS (`194C`/`194J`/`194H`/`194I`/`194Q`/`194O` + `206AA`), GSTIN Mod-36, PAN, Aadhaar Verhoeff D5, IFSC/MICR, NPCI UPI URIs, Razorpay/Cashfree/PhonePe webhooks, and Indian FY/Advance Tax calendars | [abeta-dev.github.io/go-fintech-india](https://abeta-dev.github.io/go-fintech-india/) | [pkg.go.dev/github.com/abeta-dev/go-fintech-india](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india) |
 | **[`github.com/abeta-dev/go-app-kit`](https://github.com/abeta-dev/go-app-kit)** | Enterprise SaaS application building blocks (v0.6.0): transactional outbox, tamper-evident audit logging, multi-channel notifications, CSV/JSON streaming export, and PDF generation | [abeta-dev.github.io/go-app-kit](https://abeta-dev.github.io/go-app-kit/) | [pkg.go.dev/github.com/abeta-dev/go-app-kit](https://pkg.go.dev/github.com/abeta-dev/go-app-kit) |
 | **[`github.com/abeta-dev/cloud-native-observability`](https://github.com/abeta-dev/cloud-native-observability)** | Production LGTM observability stack (v0.4.0): Loki, Grafana, Tempo, Mimir, OpenTelemetry Collector, SRE SLO alerting rules, and GitOps Terraform blueprints | [abeta-dev.github.io/cloud-native-observability](https://abeta-dev.github.io/cloud-native-observability/) | [github.com/abeta-dev/cloud-native-observability](https://github.com/abeta-dev/cloud-native-observability) |

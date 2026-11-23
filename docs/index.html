@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="go-fintech-india v0.4.0 — Zero-dependency Go library for Indian financial systems: exact int64 paise Money math, UIDAI Aadhaar Verhoeff D5, GSTIN Mod-36, Income Tax PAN, RBI IFSC/MICR, NPCI UPI Intent URIs, Razorpay/Cashfree/PhonePe webhooks, and MCA Schedule III aging.">
+  <meta name="description" content="go-fintech-india v0.5.0 — Zero-dependency Go library for Indian financial systems: exact int64 paise Money math, GST tax-split (CGST + SGST vs IGST), Statutory TDS calculator (Section 206AA), UIDAI Aadhaar Verhoeff D5, GSTIN Mod-36, Income Tax PAN, RBI IFSC/MICR, NPCI UPI Intent URIs, Razorpay/Cashfree/PhonePe webhooks, and MCA Schedule III aging.">
   <meta name="theme-color" content="#0b0f17">
-  <title>go-fintech-india · v0.4.0 Documentation — Indian Fintech &amp; Statutory Primitives for Go</title>
+  <title>go-fintech-india · v0.5.0 Documentation — Indian Fintech &amp; Statutory Primitives for Go</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -591,7 +591,7 @@
           <path d="M9 13c6.667 0 6.667-10 0-10"/>
         </svg>
         <span>go-fintech-india</span>
-        <span class="brand-badge">v0.4.0</span>
+        <span class="brand-badge">v0.5.0</span>
       </a>
 
       <nav class="header-controls" aria-label="Primary">
@@ -644,18 +644,18 @@
             <strong>Coverage:</strong> <span>100.0% statements</span>
           </div>
           <div class="status-pill" role="listitem">
-            <strong>Release:</strong> <span>v0.4.0</span>
+            <strong>Release:</strong> <span>v0.5.0</span>
           </div>
           <div class="status-pill" role="listitem">
             <strong>Dependencies:</strong> <span>0 external (Pure Go stdlib)</span>
           </div>
           <div class="status-pill" role="listitem">
-            <strong>Exported API:</strong> <span>127 verified symbols</span>
+            <strong>Exported API:</strong> <span>157 verified symbols</span>
           </div>
         </div>
 
         <div class="install-bar" role="region" aria-label="Go module installation command">
-          <span class="install-cmd" id="install-cmd">go get github.com/abeta-dev/go-fintech-india@v0.4.0</span>
+          <span class="install-cmd" id="install-cmd">go get github.com/abeta-dev/go-fintech-india@v0.5.0</span>
           <button type="button" class="copy-btn" id="copy-btn" aria-label="Copy go get command to clipboard">
             <span id="copy-status">Copy</span>
           </button>
@@ -682,6 +682,11 @@
                 <td><strong>Exact INR Paise Math</strong></td>
                 <td><code>Money</code>, <code>NewMoney</code>, <code>Split</code>, <code>Allocate</code></td>
                 <td>Stores currency as <code>int64</code> paise (1 INR = 100 paise). Hare-Niemeyer proportional allocation guarantees sum of parts equals total with zero remainder loss.</td>
+              </tr>
+              <tr>
+                <td><strong>GST Tax-Split &amp; Statutory TDS</strong></td>
+                <td><code>CalculateGST</code>, <code>CalculateGSTByState</code>, <code>CalculateTDS</code>, <code>TDSRateBps</code></td>
+                <td>Deterministic intra-state (<code>CGST + SGST</code> with zero paise drift) vs inter-state (<code>IGST</code>) tax splits and statutory TDS sections (<code>194C</code>, <code>194J</code>, <code>194H</code>, <code>194I</code>, <code>194Q</code>, <code>194O</code>) with Section 206AA <code>20%</code> non-PAN escalation.</td>
               </tr>
               <tr>
                 <td><strong>Lakhs/Crores &amp; Legal Words</strong></td>
@@ -933,12 +938,12 @@ func main() {
               <tr>
                 <td><code>go-fintech-india</code></td>
                 <td><code>skills/go-fintech-india/SKILL.md</code></td>
-                <td>Umbrella router for all 127 exported symbols, zero-dependency rules, and verification gates.</td>
+                <td>Umbrella router for all 157 exported symbols across 17 domain files, zero-dependency rules, and verification gates.</td>
               </tr>
               <tr>
                 <td><code>go-fintech-india-money-tax</code></td>
                 <td><code>skills/go-fintech-india-money-tax/SKILL.md</code></td>
-                <td>Exact <code>int64</code> paise <code>Money</code>, <code>Split</code>, <code>Allocate</code>, <code>FormatINR</code>, <code>InWords</code>, <code>FinancialYear</code>, and <code>AgingReport</code>.</td>
+                <td>Exact <code>int64</code> paise <code>Money</code>, <code>Split</code>, <code>Allocate</code>, <code>CalculateGST</code>, <code>CalculateTDS</code>, <code>FormatINR</code>, <code>InWords</code>, <code>FinancialYear</code>, and <code>AgingReport</code>.</td>
               </tr>
               <tr>
                 <td><code>go-fintech-india-kyc-statutory</code></td>
@@ -960,7 +965,7 @@ func main() {
   <footer class="site-footer">
     <div class="footer-row">
       <div>
-        <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.4.0 · MIT License · Copyright (c) 2026 Abeta
+        <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.5.0 · MIT License · Copyright (c) 2026 Abeta
       </div>
       <div>
         <a href="llms.txt">llms.txt</a>
@@ -972,7 +977,7 @@ func main() {
     </div>
     <nav class="ecosystem-nav" aria-label="Abeta Go Ecosystem">
       <a href="https://github.com/abeta-dev/go-libs" rel="noopener noreferrer">go-libs v0.5.0 — 36 Foundational Go Packages</a>
-      <a href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">go-fintech-india v0.4.0 — Zero-Dep Indian FinTech Engine</a>
+      <a href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">go-fintech-india v0.5.0 — Zero-Dep Indian FinTech Engine</a>
       <a href="https://github.com/abeta-dev/go-app-kit" rel="noopener noreferrer">go-app-kit v0.6.0 — 5 Enterprise Workflow Engines</a>
       <a href="https://github.com/abeta-dev/cloud-native-observability" rel="noopener noreferrer">cloud-native-observability v0.4.0 — OTel + LGTM + SRE SLOs</a>
       <a href="llms.txt">LLM Context Index (llms.txt)</a>

@@ -1,9 +1,9 @@
 ---
 name: go-fintech-india-money-tax
-description: Exact integer-paise Money arithmetic, Indian Lakh/Crore formatting, Rupee amount-in-words, Indian Financial Year (FY) & Advance Tax calendars, and AR/AP invoice aging using github.com/abeta-dev/go-fintech-india (v0.4.0).
+description: Exact integer-paise Money arithmetic, GST tax-split (CGST + SGST vs IGST), statutory TDS section calculator (with Section 206AA), Indian Lakh/Crore formatting, Rupee amount-in-words, Indian Financial Year (FY) & Advance Tax calendars, and AR/AP invoice aging using github.com/abeta-dev/go-fintech-india (v0.5.0).
 ---
 
-# `go-fintech-india-money-tax` Subskill (`v0.4.0`)
+# `go-fintech-india-money-tax` Subskill (`v0.5.0`)
 
 Import: `fintech "github.com/abeta-dev/go-fintech-india"`
 
@@ -29,6 +29,26 @@ parts, err := fintech.NewMoneyFromRupees(100).Split(3)
 
 // Allocate ₹1,000.00 across 50:30:20 ratio (variadic int weights)
 alloc, err := fintech.NewMoneyFromRupees(1000).Allocate(50, 30, 20)
+```
+
+### Deterministic GST Tax-Split (`CGST + SGST` vs `IGST`, `gst_tax.go`) & Statutory TDS (`tds.go`)
+```go
+// 1. Intra-State (CGST + SGST with zero paise drift) vs Inter-State (IGST) by GSTIN or 2-digit State Code
+gst, err := fintech.CalculateGST(
+	fintech.NewMoneyFromRupees(10000),
+	fintech.GSTSlab18, // 1800 bps (18%)
+	"29AACCG0527D1Z0", // Seller: Karnataka (29)
+	"27AACCG0527D1Z4", // Buyer: Maharashtra (27) -> SupplyInterState (IGST)
+)
+// Or by 2-digit state codes directly:
+byState, err := fintech.CalculateGSTByState(fintech.NewMoneyFromRupees(10000), fintech.GSTSlab18, "29", "29")
+
+// 2. Statutory TDS Deduction (194C, 194J, 194H, 194I, 194Q, 194O + Section 206AA 20% non-PAN escalation)
+tds, err := fintech.CalculateTDS(
+	fintech.NewMoneyFromRupees(50000),
+	fintech.TDSSection194JProfessional, // 1000 bps (10%), or 2000 bps (20%) if PAN is missing/invalid
+	"ABCDE1234F",
+)
 ```
 
 ## 2. Indian Numbering System (`12,34,567.89`) & Amount in Words (`currency.go`, `words.go`)

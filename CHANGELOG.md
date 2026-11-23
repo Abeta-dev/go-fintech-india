@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-04-12
+
+Deterministic Indian GST tax-split calculator (`CGST + SGST` intra-state vs `IGST` inter-state) and Statutory TDS section calculator (`194C`, `194J`, `194H`, `194I`, `194Q`, `194O` with automatic Section 206AA `20%` non-PAN escalation) in exact integer paise (`100.0%` statement coverage across 17 domain files and 157 exported symbols).
+
+### Added
+- `CalculateGST`, `CalculateGSTByState`, `IsValidGSTStateCode`, `GSTBreakdown`, `SupplyType`, `SupplyIntraState`, `SupplyInterState`: Deterministic integer-paise GST tax-split calculator resolving intra-state (`CGST + SGST` with zero paise drift) vs inter-state (`IGST`) supplies from full 15-character GSTINs or 2-digit Indian state codes (`01`–`38`, `97`, `99`).
+- `GSTSlab0`, `GSTSlab5`, `GSTSlab12`, `GSTSlab18`, `GSTSlab28`, `ErrInvalidGSTRate`, `ErrNegativeTaxableAmount`: Standard Indian GST rate slabs in basis points (`0`, `500`, `1200`, `1800`, `2800` bps) and validation sentinels.
+- `TDSRateBps`, `CalculateTDS`, `TDSBreakdown`, `TDSSection`, `Section206AARateBps`: Statutory Income Tax TDS deduction and net-payable calculator in exact integer paise with automatic Section 206AA (`2000` bps / `20.0%`) escalation when the deductee PAN is missing or invalid.
+- `TDSSection194CIndividual`, `TDSSection194COther`, `TDSSection194JTechnical`, `TDSSection194JProfessional`, `TDSSection194HCommission`, `TDSSection194IPlant`, `TDSSection194ILandBuilding`, `TDSSection194QPurchase`, `TDSSection194OECommerce`, `ErrUnsupportedTDSSection`, `ErrNegativeTDSAmount`: Statutory TDS section identifiers (`194C`, `194J`, `194H`, `194I`, `194Q`, `194O`) and error sentinels.
+
 ## [0.4.0] - 2026-11-21
 
 GitHub Pages interactive documentation portal deployment, `llms.txt` AI discovery index, Abeta Go Ecosystem navigation, SHA-pinned CodeQL / OpenSSF Scorecard / Dependabot supply-chain security workflows, and 4 Module Code-Owner Agents with automated multi-skill PR review and approval.

@@ -1,6 +1,6 @@
 {
   "repository": "github.com/abeta-dev/go-fintech-india",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "go_version": "1.26.0",
   "coverage_target": 100.0,
   "agents": [
@@ -41,7 +41,7 @@
     },
     {
       "id": "go-fintech-india-money-tax-agent",
-      "name": "Money, Indian Formatting, FY Calendar & Aging Module Agent",
+      "name": "Money, Indian Formatting, GST/TDS Tax, FY Calendar & Aging Module Agent",
       "handle": "@go-fintech-india-money-tax-agent",
       "skill": "skills/go-fintech-india-money-tax/SKILL.md",
       "owner": "@umesh0492",
@@ -52,6 +52,10 @@
         "currency_test.go",
         "words.go",
         "words_test.go",
+        "gst_tax.go",
+        "gst_tax_test.go",
+        "tds.go",
+        "tds_test.go",
         "fy.go",
         "fy_test.go",
         "aging.go",
@@ -61,11 +65,11 @@
         "."
       ],
       "rules": [
-        "100.0% statement coverage across Money, INR currency formatting, Amount-in-Words, Indian FY calendar, and MCA Schedule III Aging",
+        "100.0% statement coverage across Money, INR currency formatting, Amount-in-Words, GST tax-split, Statutory TDS calculator, Indian FY calendar, and MCA Schedule III Aging",
         "Strict int64 paise representation for Money (zero float64/float32 currency arithmetic or struct fields)",
-        "Penny-exact Split and Allocate using Hare-Niemeyer largest remainder distribution (sum of parts always equals original Money)",
+        "Penny-exact Split and Allocate using Hare-Niemeyer largest remainder distribution (sum of parts always equals original Money) and zero-drift intra-state CGST + SGST == TotalTax",
         "Zero-allocation hot-path formatting for AppendINR and AppendINRSymbol with Indian 3-2-2 Lakh/Crore digit grouping",
-        "Statutory Indian Financial Year (April 1 - March 31) quarter boundaries, Advance Tax schedules (15%/45%/75%/100%), and MCA Schedule III aging buckets"
+        "Statutory Indian Financial Year (April 1 - March 31) quarter boundaries, Advance Tax schedules (15%/45%/75%/100%), TDS Section 206AA 20% non-PAN escalation, and MCA Schedule III aging buckets"
       ]
     },
     {
@@ -131,7 +135,7 @@
         "Zero external dependencies in go.mod and pure stdlib leaf-import isolation in consumer sandbox (./scripts/check_leaf_imports.sh)",
         "Strict N+2 minor-release deprecation window contract enforced across all exported symbols (./scripts/check_deprecation.sh & docs/VERSIONING.md)",
         "100% Exported Symbol Truth Gate: every exported symbol in CHANGELOG.md ### Added exists in package source files (./scripts/check_version.sh)",
-        "Version parity (@v0.4.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/VERSIONING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
+        "Version parity (@v0.5.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/VERSIONING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
         "Bash 3.2 shell compatibility across all scripts/*.sh and SHA-pinned GitHub Actions with Node 24 runtime enforcement"
       ]
     }

@@ -331,3 +331,50 @@ func ExampleValidateRazorpayWebhook() {
 	// Cashfree Verified: true
 	// PhonePe Verified: true
 }
+
+func ExampleCalculateGST() {
+	taxable := fintechin.NewMoneyFromRupees(10000) // ₹10,000.00
+	sellerGSTIN := "29AACCG0527D1Z0"               // Karnataka (29)
+	buyerIntra := "29AACCG0527D1Z0"                // Karnataka (29)
+	buyerInter := "27AACCG0527D1Z4"                // Maharashtra (27)
+
+	intra, _ := fintechin.CalculateGST(taxable, fintechin.GSTSlab18, sellerGSTIN, buyerIntra)
+	fmt.Printf("%s: CGST=%s, SGST=%s, IGST=%s, Total=%s\n",
+		intra.SupplyType, intra.CGST, intra.SGST, intra.IGST, intra.TotalInvoiceAmount)
+
+	inter, _ := fintechin.CalculateGST(taxable, fintechin.GSTSlab18, sellerGSTIN, buyerInter)
+	fmt.Printf("%s: CGST=%s, SGST=%s, IGST=%s, Total=%s\n",
+		inter.SupplyType, inter.CGST, inter.SGST, inter.IGST, inter.TotalInvoiceAmount)
+
+	// Output:
+	// INTRA_STATE: CGST=900.00, SGST=900.00, IGST=0.00, Total=11800.00
+	// INTER_STATE: CGST=0.00, SGST=0.00, IGST=1800.00, Total=11800.00
+}
+
+func ExampleCalculateGSTByState() {
+	taxable := fintechin.NewMoneyFromRupees(1000) // ₹1,000.00
+	breakdown, _ := fintechin.CalculateGSTByState(taxable, fintechin.GSTSlab18, "29", "29")
+	fmt.Printf("Supply=%s CGST=%s SGST=%s TotalTax=%s\n",
+		breakdown.SupplyType, breakdown.CGST, breakdown.SGST, breakdown.TotalTax)
+
+	// Output:
+	// Supply=INTRA_STATE CGST=90.00 SGST=90.00 TotalTax=180.00
+}
+
+func ExampleCalculateTDS() {
+	gross := fintechin.NewMoneyFromRupees(50000) // ₹50,000.00
+
+	// Valid PAN: 194J Professional Services (10% = 1000 bps)
+	withPAN, _ := fintechin.CalculateTDS(gross, fintechin.TDSSection194JProfessional, "ABCDE1234F")
+	fmt.Printf("With PAN: Rate=%dbps TDS=%s Net=%s 206AA=%t\n",
+		withPAN.EffectiveRateBps, withPAN.TDSAmount, withPAN.NetPayable, withPAN.Section206AAApplied)
+
+	// Missing PAN: Section 206AA higher withholding (20% = 2000 bps)
+	noPAN, _ := fintechin.CalculateTDS(gross, fintechin.TDSSection194CIndividual, "")
+	fmt.Printf("No PAN: Rate=%dbps TDS=%s Net=%s 206AA=%t\n",
+		noPAN.EffectiveRateBps, noPAN.TDSAmount, noPAN.NetPayable, noPAN.Section206AAApplied)
+
+	// Output:
+	// With PAN: Rate=1000bps TDS=5000.00 Net=45000.00 206AA=false
+	// No PAN: Rate=2000bps TDS=10000.00 Net=40000.00 206AA=true
+}

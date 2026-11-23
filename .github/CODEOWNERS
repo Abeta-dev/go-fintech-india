@@ -37,8 +37,10 @@
 # 2. @go-fintech-india-money-tax-agent
 #    Companion Skill: skills/go-fintech-india-money-tax/SKILL.md
 #    Scope: Exact int64-paise Money arithmetic, Split/Allocate (Hare-Niemeyer),
-#           Indian Lakh/Crore formatting, Amount-in-Words, Indian Financial Year
-#           (FY) & Advance Tax calendars, and MCA Schedule III Aging reports
+#           Indian Lakh/Crore formatting, Amount-in-Words, GST Tax-Split
+#           (CGST + SGST vs IGST), Statutory TDS Section Calculator (with 206AA),
+#           Indian Financial Year (FY) & Advance Tax calendars, and MCA
+#           Schedule III Aging reports
 # ------------------------------------------------------------------------------
 /money.go                   @umesh0492
 /money_test.go              @umesh0492
@@ -46,6 +48,10 @@
 /currency_test.go           @umesh0492
 /words.go                   @umesh0492
 /words_test.go              @umesh0492
+/gst_tax.go                 @umesh0492
+/gst_tax_test.go            @umesh0492
+/tds.go                     @umesh0492
+/tds_test.go                @umesh0492
 /fy.go                      @umesh0492
 /fy_test.go                 @umesh0492
 /aging.go                   @umesh0492
