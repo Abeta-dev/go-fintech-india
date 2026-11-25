@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-04-15
+
+Bulk unstructured-text Indian PII scanner and redactor (`ScanText`, `RedactText`) for chats, emails, support tickets, and AI/LLM PII airlocks covering GSTIN (Mod-36), PAN, UIDAI Aadhaar (Verhoeff D5), Indian mobile numbers (`+91`/DoT), RBI IFSC, NPCI UPI VPAs, and context-anchored OTPs with synthetic test-placeholder allowlists (`100.0%` statement coverage across 18 domain files and 182 exported symbols, zero external dependencies).
+
+### Added
+- `ScanText`, `RedactText`, `PIIMatch`, `PIIType`, `AllPIITypes`: Unstructured-text Indian PII scanner and single-pass redactor resolving overlapping spans (GSTIN over embedded PAN, `+91` phone over inner digits) and preventing email-domain false positives.
+- `PIITypeGSTIN`, `PIITypePAN`, `PIITypeAadhaar`, `PIITypeIFSC`, `PIITypePhone`, `PIITypeUPI`, `PIITypeOTP`: Typed Indian PII and credential categories validated by existing zero-dependency statutory checksums and registries.
+- `RedactionMode`, `RedactPlaceholder`, `RedactMask`, `RedactHash`, `PIIOption`, `WithPIITypes`, `WithRedactionMode`, `WithRedactionSalt`, `WithAllowlist`, `WithDefaultTestAllowlist`, `WithRequireKnownIFSCBank`, `WithRequireKnownUPIHandle`, `WithCustomRedactor`: Configurable redaction policies including typed placeholders (`[REDACTED:PAN]`), statutory partial masking (`XXXX-XXXX-7058`), salted SHA-256 deterministic pseudonyms (`[PAN:3f8a9c12]`), synthetic test-fixture allowlists, and custom vault redactors.
+
 ## [0.5.0] - 2026-04-12
 
 Deterministic Indian GST tax-split calculator (`CGST + SGST` intra-state vs `IGST` inter-state) and Statutory TDS section calculator (`194C`, `194J`, `194H`, `194I`, `194Q`, `194O` with automatic Section 206AA `20%` non-PAN escalation) in exact integer paise (`100.0%` statement coverage across 17 domain files and 157 exported symbols).

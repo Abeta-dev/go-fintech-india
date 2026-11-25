@@ -1,12 +1,12 @@
-# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.5.0)
+# go-fintech-india (github.com/abeta-dev/go-fintech-india@v0.6.0)
 
-> Zero-dependency, production-grade Go library (Go 1.26.0, 100.0% statement coverage, 157 exported symbols across 17 domain files) for Indian fintech, banking gateways, and ERPs: exact int64 paise math, deterministic GST tax-split (`CGST + SGST` vs `IGST`), statutory TDS section calculator (`194C`/`194J`/`194H`/`194I`/`194Q`/`194O` + Section 206AA), GSTIN Mod-36, PAN, UIDAI Verhoeff Aadhaar, RBI IFSC, MICR, NPCI UPI intent URIs, Razorpay/Cashfree/PhonePe webhook HMAC verification, and Indian FY/Advance Tax calendars.
+> Zero-dependency, production-grade Go library (Go 1.26.0, 100.0% statement coverage, 182 exported symbols across 18 domain files) for Indian fintech, banking gateways, AI/LLM PII airlocks, and ERPs: exact int64 paise math, deterministic GST tax-split (`CGST + SGST` vs `IGST`), statutory TDS section calculator (`194C`/`194J`/`194H`/`194I`/`194Q`/`194O` + Section 206AA), bulk unstructured-text Indian PII scanner & redactor (`ScanText`, `RedactText`), GSTIN Mod-36, PAN, UIDAI Verhoeff Aadhaar, RBI IFSC, MICR, NPCI UPI intent URIs, Razorpay/Cashfree/PhonePe webhook HMAC verification, and Indian FY/Advance Tax calendars.
 
 ## Quick Installation
 
 ```bash
 # Install Go module
-go get github.com/abeta-dev/go-fintech-india@v0.5.0
+go get github.com/abeta-dev/go-fintech-india@v0.6.0
 
 # Install AI Agent Skills (Claude Code, Gemini CLI, Antigravity, Codex, Cursor, Windsurf)
 npx skills add abeta-dev/go-fintech-india
@@ -20,11 +20,11 @@ import fintechin "github.com/abeta-dev/go-fintech-india"
 
 - [Live Documentation Portal](https://abeta-dev.github.io/go-fintech-india/): Interactive statutory specification matrix, zero-allocation benchmark profile, and copyable integration recipes.
 - [LLM Discovery Index (`llms.txt`)](https://abeta-dev.github.io/go-fintech-india/llms.txt): Structured markdown index for AI coding assistants and retrieval engines.
-- [Go Package Reference (`pkg.go.dev`)](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india): Full GoDoc API documentation and runnable testable examples across all 17 source files.
+- [Go Package Reference (`pkg.go.dev`)](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india): Full GoDoc API documentation and runnable testable examples across all 18 source files.
 - [GitHub Repository](https://github.com/abeta-dev/go-fintech-india): Source code, CI/CD workflows, and immutable release artifacts.
 - [`AGENTS.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/AGENTS.md): Root multi-model agent routing table and mandatory verification gates (`./scripts/check_secrets.sh`, `./scripts/check_leaf_imports.sh`, `./scripts/check_deprecation.sh`, `./scripts/check_coverage.sh`, `./scripts/check_version.sh`, `./scripts/module_agent_review.sh`).
-- [`docs/VERSIONING.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/docs/VERSIONING.md): Semantic Versioning contract (`v0.5.0`), Day-1 Pure Stdlib Leaf-Import Invariant (`./scripts/check_leaf_imports.sh`), strict `N + 2` Minor-Release Deprecation Window Policy (`./scripts/check_deprecation.sh`), and 17-file / 157-symbol Domain Maturity Matrix.
-- [`skills/go-fintech-india/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india/SKILL.md): Umbrella skill router for all 157 exported symbols.
+- [`docs/VERSIONING.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/docs/VERSIONING.md): Semantic Versioning contract (`v0.6.0`), Day-1 Pure Stdlib Leaf-Import Invariant (`./scripts/check_leaf_imports.sh`), strict `N + 2` Minor-Release Deprecation Window Policy (`./scripts/check_deprecation.sh`), and 18-file / 182-symbol Domain Maturity Matrix.
+- [`skills/go-fintech-india/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india/SKILL.md): Umbrella skill router for all 182 exported symbols.
 - [`skills/go-fintech-india-money-tax/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-money-tax/SKILL.md): Subskill for exact paise math, GST tax-split, statutory TDS calculator, Indian Lakh/Crore formatting, FY calendars, and MCA Schedule III aging.
 - [`skills/go-fintech-india-kyc-statutory/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-kyc-statutory/SKILL.md): Subskill for GSTIN, PAN, Aadhaar, IFSC/offline resolver, MICR, mobile, and bank account validation.
 - [`skills/go-fintech-india-payments-upi/SKILL.md`](https://github.com/abeta-dev/go-fintech-india/blob/main/skills/go-fintech-india-payments-upi/SKILL.md): Subskill for NPCI UPI VPAs, `upi://pay` deep links, and Razorpay/Cashfree/PhonePe webhook verifiers.
@@ -78,6 +78,9 @@ import fintechin "github.com/abeta-dev/go-fintech-india"
 - **Indian Bank Account (`account.go`)**:
   - `ValidateBankAccount(account string) error`, `IsValidBankAccount(account string) bool`, `MaskBankAccount(account string) string`.
   - Errors: `ErrInvalidAccountLength`, `ErrInvalidAccountFormat`, `ErrInvalidAccountAllZeros`.
+- **Bulk Unstructured-Text Indian PII Scanner & Redactor (`pii.go`)**:
+  - `ScanText(text string, opts ...PIIOption) []PIIMatch`, `RedactText(text string, opts ...PIIOption) (string, []PIIMatch)`, `AllPIITypes() []PIIType`, `PIIMatch`, `PIIType` (`PIITypeGSTIN`, `PIITypePAN`, `PIITypeAadhaar`, `PIITypeIFSC`, `PIITypePhone`, `PIITypeUPI`, `PIITypeOTP`).
+  - Redaction Modes & Options: `RedactionMode` (`RedactPlaceholder`, `RedactMask`, `RedactHash`), `PIIOption`, `WithPIITypes`, `WithRedactionMode`, `WithRedactionSalt`, `WithAllowlist`, `WithDefaultTestAllowlist`, `WithRequireKnownIFSCBank`, `WithRequireKnownUPIHandle`, `WithCustomRedactor`.
 
 ### 4. UPI & Payment Gateway Webhooks (`upi.go`, `webhook.go`)
 - **NPCI UPI VPA & Deep-Link Intent URIs (`upi.go`)**:
@@ -103,6 +106,6 @@ import fintechin "github.com/abeta-dev/go-fintech-india"
 | Repository | Role | Live Documentation Portal | Go Package Reference |
 | :--- | :--- | :--- | :--- |
 | **[`github.com/abeta-dev/go-libs`](https://github.com/abeta-dev/go-libs)** | 36 foundational Go packages (v0.5.0): HTTP compression (`compress` Brotli/Gzip), Gin middleware (`ginmw`), resilience (`retry`, `circuitbreaker`, `ratelimit`), caching, `pgxpool` DB helpers, RBAC/JWKS security, OpenTelemetry, and generic utilities | [abeta-dev.github.io/go-libs](https://abeta-dev.github.io/go-libs/) | [pkg.go.dev/github.com/abeta-dev/go-libs](https://pkg.go.dev/github.com/abeta-dev/go-libs) |
-| **[`github.com/abeta-dev/go-fintech-india`](https://github.com/abeta-dev/go-fintech-india)** | Zero-dependency Indian FinTech primitives (v0.5.0): exact `int64` paise math, GST tax-split (`CGST + SGST` vs `IGST`), statutory TDS (`194C`/`194J`/`194H`/`194I`/`194Q`/`194O` + `206AA`), GSTIN Mod-36, PAN, Aadhaar Verhoeff D5, IFSC/MICR, NPCI UPI URIs, Razorpay/Cashfree/PhonePe webhooks, and Indian FY/Advance Tax calendars | [abeta-dev.github.io/go-fintech-india](https://abeta-dev.github.io/go-fintech-india/) | [pkg.go.dev/github.com/abeta-dev/go-fintech-india](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india) |
+| **[`github.com/abeta-dev/go-fintech-india`](https://github.com/abeta-dev/go-fintech-india)** | Zero-dependency Indian FinTech primitives (v0.6.0): exact `int64` paise math, GST tax-split (`CGST + SGST` vs `IGST`), statutory TDS (`194C`/`194J`/`194H`/`194I`/`194Q`/`194O` + `206AA`), bulk Indian PII scanner/redactor (`ScanText`/`RedactText`), GSTIN Mod-36, PAN, Aadhaar Verhoeff D5, IFSC/MICR, NPCI UPI URIs, Razorpay/Cashfree/PhonePe webhooks, and Indian FY/Advance Tax calendars | [abeta-dev.github.io/go-fintech-india](https://abeta-dev.github.io/go-fintech-india/) | [pkg.go.dev/github.com/abeta-dev/go-fintech-india](https://pkg.go.dev/github.com/abeta-dev/go-fintech-india) |
 | **[`github.com/abeta-dev/go-app-kit`](https://github.com/abeta-dev/go-app-kit)** | Enterprise SaaS application building blocks (v0.6.0): transactional outbox, tamper-evident audit logging, multi-channel notifications, CSV/JSON streaming export, and PDF generation | [abeta-dev.github.io/go-app-kit](https://abeta-dev.github.io/go-app-kit/) | [pkg.go.dev/github.com/abeta-dev/go-app-kit](https://pkg.go.dev/github.com/abeta-dev/go-app-kit) |
 | **[`github.com/abeta-dev/cloud-native-observability`](https://github.com/abeta-dev/cloud-native-observability)** | Production LGTM observability stack (v0.4.0): Loki, Grafana, Tempo, Mimir, OpenTelemetry Collector, SRE SLO alerting rules, and GitOps Terraform blueprints | [abeta-dev.github.io/cloud-native-observability](https://abeta-dev.github.io/cloud-native-observability/) | [github.com/abeta-dev/cloud-native-observability](https://github.com/abeta-dev/cloud-native-observability) |

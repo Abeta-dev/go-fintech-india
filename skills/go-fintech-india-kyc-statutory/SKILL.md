@@ -1,9 +1,9 @@
 ---
 name: go-fintech-india-kyc-statutory
-description: Indian KYC, tax, and banking identifier validation and offline IFSC resolution using github.com/abeta-dev/go-fintech-india (v0.5.0: GSTIN mod-36, PAN entity/surname match, Aadhaar Verhoeff D5 & masking, OfflineIFSCResolver, MICR, Indian mobile, bank account).
+description: Indian KYC, tax, and banking identifier validation, offline IFSC resolution, and bulk unstructured-text Indian PII scanning/redaction using github.com/abeta-dev/go-fintech-india (v0.6.0: ScanText/RedactText PII airlock, GSTIN mod-36, PAN entity/surname match, Aadhaar Verhoeff D5 & masking, OfflineIFSCResolver, MICR, Indian mobile, bank account).
 ---
 
-# `go-fintech-india-kyc-statutory` Subskill (`v0.5.0`)
+# `go-fintech-india-kyc-statutory` Subskill (`v0.6.0`)
 
 Import: `fintech "github.com/abeta-dev/go-fintech-india"`
 
@@ -67,3 +67,21 @@ resolver := fintech.NewFallbackResolver(fintech.NewHTTPResolver(), offline)
 - `fintech.ValidateMICR(code)` / `fintech.MICRCityCode(code)` / `fintech.MICRBankCode(code)` / `fintech.MICRBranchCode(code)` — 9-digit cheque clearing transit code (`micr.go`).
 - `fintech.NormalizeMobile(input)` / `fintech.ValidateMobile(input)` / `fintech.FormatE164(input)` — Strips `+91`/`91`/`0` prefixes and validates DoT `[6-9]\d{9}` numbering plan (`phone.go`).
 - `fintech.ValidateBankAccount(acct)` / `fintech.MaskBankAccount(acct)` — Validates 9–18 digit Indian bank account numbers, rejects all-zero strings, and masks leading digits (`account.go`).
+
+## 6. Bulk Unstructured-Text Indian PII Scanner & Redactor (`pii.go`)
+
+Scan and redact chats, emails, support transcripts, and LLM prompts/responses in a single pass with zero email-domain false positives, overlap resolution (`GSTIN` over embedded `PAN`, `+91` phone over inner digits), and synthetic test-placeholder allowlists:
+
+```go
+redacted, matches := fintech.RedactText(
+	transcript,
+	fintech.WithRedactionMode(fintech.RedactMask), // or RedactPlaceholder / RedactHash
+	fintech.WithDefaultTestAllowlist(),
+)
+// Or salted deterministic pseudonymization for multi-turn LLM PII airlocks:
+airlocked, _ := fintech.RedactText(
+	transcript,
+	fintech.WithRedactionMode(fintech.RedactHash),
+	fintech.WithRedactionSalt("session-salt"),
+)
+```

@@ -1,16 +1,17 @@
 ---
 name: go-fintech-india
-description: Umbrella router and integration guide for github.com/abeta-dev/go-fintech-india (v0.5.0, zero external dependencies). Use when building Indian FinTech, B2B vendor portals, GST invoicing, statutory TDS calculators, KYC validation, UPI deep links, or Razorpay/Cashfree/PhonePe webhooks in Go.
+description: Umbrella router and integration guide for github.com/abeta-dev/go-fintech-india (v0.6.0, zero external dependencies). Use when building Indian FinTech, B2B vendor portals, GST invoicing, statutory TDS calculators, KYC validation, AI/LLM Indian PII scanning & redaction, UPI deep links, or Razorpay/Cashfree/PhonePe webhooks in Go.
 ---
 
-# `go-fintech-india` Umbrella Skill (`v0.5.0`)
+# `go-fintech-india` Umbrella Skill (`v0.6.0`)
 
-Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.5.0`, `Go 1.26.0`, zero external dependencies)
+Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.6.0`, `Go 1.26.0`, zero external dependencies)
 
 ## When to Use
 
 - Performing exact Indian Rupee (`INR`) paise arithmetic, deterministic GST tax-splits (`CGST + SGST` vs `IGST`), statutory TDS deductions (with Section 206AA), Lakh/Crore formatting, or Indian English amount-in-words conversion
 - Validating Indian KYC and statutory identifiers (`GSTIN`, `PAN`, `Aadhaar`, `IFSC`, `MICR`, `UPI VPA`, Indian mobile numbers, bank account numbers)
+- Scanning and redacting unstructured text (chats, emails, support transcripts, LLM PII airlocks) for Indian PII (`ScanText`, `RedactText` covering GSTIN, PAN, Aadhaar Verhoeff D5, `+91` phones, IFSC, UPI VPAs, and OTPs with synthetic test allowlists)
 - Resolving IFSC codes to RBI bank/branch metadata offline in `<100ns` (`OfflineIFSCResolver`) or with live HTTP fallback (`FallbackResolver`)
 - Generating or parsing NPCI `upi://pay` URIs or verifying Razorpay, Cashfree, and PhonePe webhooks
 - Computing Indian Financial Year (`April 1 – March 31`) quarters, Advance Tax due dates, or MCA Schedule III AR/AP invoice aging buckets
@@ -20,7 +21,7 @@ Module (`go.mod` import path): `github.com/abeta-dev/go-fintech-india` (`v0.5.0`
 | Capability Area | Subskill | Key Symbols |
 | :--- | :--- | :--- |
 | **Money, GST/TDS Tax, Indian Formatting, FY Calendar & Aging** | [`go-fintech-india-money-tax`](../go-fintech-india-money-tax/SKILL.md) | `Money`, `NewMoney`, `NewMoneyFromRupees`, `NewMoneyFromFloat`, `Split`, `Allocate`, `CalculateGST`, `CalculateGSTByState`, `IsValidGSTStateCode`, `GSTBreakdown`, `SupplyType`, `CalculateTDS`, `TDSRateBps`, `TDSBreakdown`, `TDSSection`, `FormatINR`, `FormatINRSymbol`, `AppendINR`, `AppendINRSymbol`, `ParseINR`, `InWords`, `NumberToIndianWords`, `CurrentFY`, `FYFromDate`, `ParseFY`, `AdvanceTaxDueDates`, `NewAgingReport`, `CategorizeAging` |
-| **Statutory KYC & Banking Identifiers** | [`go-fintech-india-kyc-statutory`](../go-fintech-india-kyc-statutory/SKILL.md) | `ValidateGSTIN`, `ExtractPAN`, `StateCode`, `StateName`, `ValidatePAN`, `EntityType`, `EntityTypeFromPAN`, `MatchesSurname`, `MaskPAN`, `ValidateAadhaar`, `MaskAadhaar`, `FormatAadhaar`, `ValidateIFSC`, `NewOfflineIFSCResolver`, `NewHTTPResolver`, `NewFallbackResolver`, `ValidateMICR`, `ValidateMobile`, `NormalizeMobile`, `FormatE164`, `ValidateBankAccount`, `MaskBankAccount` |
+| **Statutory KYC, Banking Identifiers & Bulk PII Airlock** | [`go-fintech-india-kyc-statutory`](../go-fintech-india-kyc-statutory/SKILL.md) | `ScanText`, `RedactText`, `PIIMatch`, `PIIType`, `WithRedactionMode`, `WithDefaultTestAllowlist`, `ValidateGSTIN`, `ExtractPAN`, `StateCode`, `StateName`, `ValidatePAN`, `EntityType`, `EntityTypeFromPAN`, `MatchesSurname`, `MaskPAN`, `ValidateAadhaar`, `MaskAadhaar`, `FormatAadhaar`, `ValidateIFSC`, `NewOfflineIFSCResolver`, `NewHTTPResolver`, `NewFallbackResolver`, `ValidateMICR`, `ValidateMobile`, `NormalizeMobile`, `FormatE164`, `ValidateBankAccount`, `MaskBankAccount` |
 | **UPI Deep Links & Payment Gateway Webhooks** | [`go-fintech-india-payments-upi`](../go-fintech-india-payments-upi/SKILL.md) | `ValidateUPI`, `IsValidUPI`, `IsKnownPSPHandle`, `UPIParams`, `GenerateUPIURI`, `ParseUPIURI`, `ValidateRazorpayWebhook`, `VerifyRazorpayWebhook`, `ValidateCashfreeWebhook`, `VerifyCashfreeWebhook`, `ValidatePhonePeWebhook`, `VerifyPhonePeWebhook` |
 
 ## Architectural Invariants
@@ -44,5 +45,5 @@ go test -race ./...
 
 - **`./scripts/check_secrets.sh`**: TruffleHog verified git-history secret scanner + credential/key/token/DSN scanner.
 - **`./scripts/check_coverage.sh`**: Enforces statement coverage (`100.0%` statement coverage across root package and `examples/checkout_verification`) and updates `.github/badges/coverage.json`.
-- **`./scripts/check_version.sh`**: Verifies `v0.5.0` version parity across `CHANGELOG.md`, `README.md`, and `docs/index.html`, checks `gofmt`, and validates all exported symbols listed under `### Added` in `CHANGELOG.md`.
+- **`./scripts/check_version.sh`**: Verifies `v0.6.0` version parity across `CHANGELOG.md`, `README.md`, and `docs/index.html`, checks `gofmt`, and validates all exported symbols listed under `### Added` in `CHANGELOG.md`.
 - **`./scripts/test_verify_release.sh`**: Runs the automated test suite for `scripts/verify_release.sh` (proxy retry backoff, failure manifests, and SemVer prereleases).

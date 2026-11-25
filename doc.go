@@ -22,6 +22,10 @@
 //   - Retail Payments (NPCI): UPI Intent QR code and URI generation/parsing,
 //     VPA / UPI handle verification, and bank account number masking.
 //   - Telecom: Indian mobile number validation and E.164 standardization (+91).
+//   - AI/LLM PII Airlock & Redaction: Unstructured-text Indian PII scanning and
+//     redaction (ScanText, RedactText) across GSTIN, PAN, Aadhaar (Verhoeff D5),
+//     +91 mobile numbers, IFSC, UPI VPAs, and context-anchored OTPs with
+//     synthetic test-placeholder allowlists and salted SHA-256 pseudonymization.
 //
 // All operations are thread-safe, zero external dependency, and strictly rely
 // upon the Go standard library.
