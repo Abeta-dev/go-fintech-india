@@ -1,4 +1,4 @@
-# OS artifacts
+# OS & cloud-sync conflict artifacts
 .DS_Store
 .DS_Store?
 ._*
@@ -6,6 +6,12 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+* [0-9]
+* [0-9].*
+*_2.*
+*.bak
+*.orig
+*.tmp
 
 # Binaries and build outputs
 *.exe
@@ -29,6 +35,8 @@ coverage.html
 release-manifest.json
 
 # Go workspace and IDE
+go.work
+go.work.sum
 .idea/
 .vscode/
 *.swp

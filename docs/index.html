@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="go-fintech-india v0.5.0 — Zero-dependency Go library for Indian financial systems: exact int64 paise Money math, GST tax-split (CGST + SGST vs IGST), Statutory TDS calculator (Section 206AA), UIDAI Aadhaar Verhoeff D5, GSTIN Mod-36, Income Tax PAN, RBI IFSC/MICR, NPCI UPI Intent URIs, Razorpay/Cashfree/PhonePe webhooks, and MCA Schedule III aging.">
+  <meta name="description" content="go-fintech-india v0.6.0 — Zero-dependency Go library for Indian financial systems &amp; AI PII airlocks: exact int64 paise Money math, GST tax-split (CGST + SGST vs IGST), Statutory TDS calculator (Section 206AA), bulk unstructured-text Indian PII scanner &amp; redactor (ScanText, RedactText), UIDAI Aadhaar Verhoeff D5, GSTIN Mod-36, Income Tax PAN, RBI IFSC/MICR, NPCI UPI Intent URIs, Razorpay/Cashfree/PhonePe webhooks, and MCA Schedule III aging.">
   <meta name="theme-color" content="#0b0f17">
-  <title>go-fintech-india · v0.5.0 Documentation — Indian Fintech &amp; Statutory Primitives for Go</title>
+  <title>go-fintech-india · v0.6.0 Documentation — Indian Fintech &amp; Statutory Primitives for Go</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -591,7 +591,7 @@
           <path d="M9 13c6.667 0 6.667-10 0-10"/>
         </svg>
         <span>go-fintech-india</span>
-        <span class="brand-badge">v0.5.0</span>
+        <span class="brand-badge">v0.6.0</span>
       </a>
 
       <nav class="header-controls" aria-label="Primary">
@@ -644,18 +644,18 @@
             <strong>Coverage:</strong> <span>100.0% statements</span>
           </div>
           <div class="status-pill" role="listitem">
-            <strong>Release:</strong> <span>v0.5.0</span>
+            <strong>Release:</strong> <span>v0.6.0</span>
           </div>
           <div class="status-pill" role="listitem">
             <strong>Dependencies:</strong> <span>0 external (Pure Go stdlib)</span>
           </div>
           <div class="status-pill" role="listitem">
-            <strong>Exported API:</strong> <span>157 verified symbols</span>
+            <strong>Exported API:</strong> <span>182 verified symbols</span>
           </div>
         </div>
 
         <div class="install-bar" role="region" aria-label="Go module installation command">
-          <span class="install-cmd" id="install-cmd">go get github.com/abeta-dev/go-fintech-india@v0.5.0</span>
+          <span class="install-cmd" id="install-cmd">go get github.com/abeta-dev/go-fintech-india@v0.6.0</span>
           <button type="button" class="copy-btn" id="copy-btn" aria-label="Copy go get command to clipboard">
             <span id="copy-status">Copy</span>
           </button>
@@ -712,6 +712,11 @@
                 <td><strong>NPCI UPI &amp; Gateway Webhooks</strong></td>
                 <td><code>GenerateUPIURI</code>, <code>ParseUPIURI</code>, <code>ValidateRazorpayWebhook</code>, <code>ValidateCashfreeWebhook</code>, <code>ValidatePhonePeWebhook</code></td>
                 <td>CRLF-sanitized <code>upi://pay</code> intent generation, PSP handle directory, and constant-time HMAC-SHA256 / SHA256 webhook verification with replay window enforcement.</td>
+              </tr>
+              <tr>
+                <td><strong>Bulk Indian PII Airlock</strong></td>
+                <td><code>ScanText</code>, <code>RedactText</code>, <code>RedactMask</code>, <code>RedactHash</code>, <code>WithDefaultTestAllowlist</code></td>
+                <td>Unstructured-text detection and single-pass redaction of GSTIN, PAN, Aadhaar (Verhoeff D5), <code>+91</code> mobile numbers, IFSC, UPI VPAs (zero email false positives), and context-anchored OTPs for AI/LLM airlocks.</td>
               </tr>
               <tr>
                 <td><strong>Financial Year &amp; MCA Aging</strong></td>
@@ -938,7 +943,7 @@ func main() {
               <tr>
                 <td><code>go-fintech-india</code></td>
                 <td><code>skills/go-fintech-india/SKILL.md</code></td>
-                <td>Umbrella router for all 157 exported symbols across 17 domain files, zero-dependency rules, and verification gates.</td>
+                <td>Umbrella router for all 182 exported symbols across 18 domain files, zero-dependency rules, and verification gates.</td>
               </tr>
               <tr>
                 <td><code>go-fintech-india-money-tax</code></td>
@@ -948,7 +953,7 @@ func main() {
               <tr>
                 <td><code>go-fintech-india-kyc-statutory</code></td>
                 <td><code>skills/go-fintech-india-kyc-statutory/SKILL.md</code></td>
-                <td><code>ValidateGSTIN</code>, <code>ValidatePAN</code>, <code>ValidateAadhaar</code>, <code>ValidateIFSC</code>, <code>NewOfflineIFSCResolver</code>, <code>ValidateMICR</code>, and <code>ValidateMobile</code>.</td>
+                <td><code>ScanText</code>, <code>RedactText</code>, <code>ValidateGSTIN</code>, <code>ValidatePAN</code>, <code>ValidateAadhaar</code>, <code>ValidateIFSC</code>, <code>NewOfflineIFSCResolver</code>, <code>ValidateMICR</code>, and <code>ValidateMobile</code>.</td>
               </tr>
               <tr>
                 <td><code>go-fintech-india-payments-upi</code></td>
@@ -965,7 +970,7 @@ func main() {
   <footer class="site-footer">
     <div class="footer-row">
       <div>
-        <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.5.0 · MIT License · Copyright (c) 2026 Abeta
+        <strong>github.com/abeta-dev/go-fintech-india</strong> · v0.6.0 · MIT License · Copyright (c) 2026 Abeta
       </div>
       <div>
         <a href="llms.txt">llms.txt</a>
@@ -977,7 +982,7 @@ func main() {
     </div>
     <nav class="ecosystem-nav" aria-label="Abeta Go Ecosystem">
       <a href="https://github.com/abeta-dev/go-libs" rel="noopener noreferrer">go-libs v0.5.0 — 36 Foundational Go Packages</a>
-      <a href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">go-fintech-india v0.5.0 — Zero-Dep Indian FinTech Engine</a>
+      <a href="https://github.com/abeta-dev/go-fintech-india" rel="noopener noreferrer">go-fintech-india v0.6.0 — Zero-Dep Indian FinTech &amp; PII Engine</a>
       <a href="https://github.com/abeta-dev/go-app-kit" rel="noopener noreferrer">go-app-kit v0.6.0 — 5 Enterprise Workflow Engines</a>
       <a href="https://github.com/abeta-dev/cloud-native-observability" rel="noopener noreferrer">cloud-native-observability v0.4.0 — OTel + LGTM + SRE SLOs</a>
       <a href="llms.txt">LLM Context Index (llms.txt)</a>

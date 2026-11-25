@@ -273,3 +273,30 @@ func FuzzInWords(f *testing.F) {
 		_ = m.Negate()
 	})
 }
+
+// FuzzRedactText fuzzes ScanText and RedactText on arbitrary unstructured text inputs.
+// Asserts that byte offsets remain strictly within bounds and no panics occur.
+func FuzzRedactText(f *testing.F) {
+	seeds := []string{
+		"",
+		"PAN BNZPM2501F and Aadhaar 9999 4105 7058",
+		"GSTIN 29AACCG0527D1Z0, IFSC SBIN0000691, UPI user@okhdfcbank.",
+		"Your OTP is 482910 and phone is +91 98765-43210",
+		"Email alice@sbi.co.in and support@hdfcbank.com",
+		"नमस्ते +91-9876543210 \x00 \xff",
+	}
+	for _, s := range seeds {
+		f.Add(s)
+	}
+
+	f.Fuzz(func(t *testing.T, text string) {
+		matches := ScanText(text, WithDefaultTestAllowlist())
+		for _, m := range matches {
+			if m.Start < 0 || m.End > len(text) || m.Start > m.End {
+				t.Fatalf("invalid match bounds [%d:%d] for len %d", m.Start, m.End, len(text))
+			}
+		}
+		_, _ = RedactText(text, WithRedactionMode(RedactMask))
+		_, _ = RedactText(text, WithRedactionMode(RedactHash), WithRedactionSalt("fuzz"))
+	})
+}

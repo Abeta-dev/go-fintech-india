@@ -1,18 +1,18 @@
 # Versioning Policy, Deprecation Contract & Domain Maturity Matrix
 
-This document defines the Semantic Versioning contract (`v0.5.0`), the **Day-1 Pure Stdlib Leaf-Import Invariant**, the **Strict `N + 2` Minor-Release Deprecation Window Policy**, the **17-File / 157-Symbol Domain Maturity Matrix**, and the path to `v1.0.0` for `github.com/abeta-dev/go-fintech-india`.
+This document defines the Semantic Versioning contract (`v0.6.0`), the **Day-1 Pure Stdlib Leaf-Import Invariant**, the **Strict `N + 2` Minor-Release Deprecation Window Policy**, the **18-File / 182-Symbol Domain Maturity Matrix**, and the path to `v1.0.0` for `github.com/abeta-dev/go-fintech-india`.
 
 ```bash
-go get github.com/abeta-dev/go-fintech-india@v0.5.0
+go get github.com/abeta-dev/go-fintech-india@v0.6.0
 ```
 
 ---
 
-## 1. Semantic Versioning Contract (`v0.5.0`)
+## 1. Semantic Versioning Contract (`v0.6.0`)
 
 `go-fintech-india` adheres strictly to [Semantic Versioning 2.0.0](https://semver.org/):
 
-- **Current Release Baseline**: `v0.5.0` (`Go 1.26.0`, **157 exported symbols**, **100.0% statement coverage**, **0 external dependencies**).
+- **Current Release Baseline**: `v0.6.0` (`Go 1.26.0`, **182 exported symbols**, **100.0% statement coverage**, **0 external dependencies**).
 - **Minor Releases (`v0.X.0`)**: Introduce new Indian statutory validators, payment gateway webhook verifiers, fiscal calendar utilities, or backward-compatible API enhancements. Any symbol scheduled for deprecation must follow the strict `N + 2` minor-release deprecation window below before removal.
 - **Patch Releases (`v0.x.Y`)**: Strictly reserved for backward-compatible bug fixes, statutory table updates (e.g., RBI IFSC prefixes, GSTN state codes, NPCI PSP handles), zero-allocation performance optimizations, and security hardening. Zero breaking changes are permitted in patch releases.
 - **Changelog & Symbol Truth Gate**: Every exported symbol documented in [`CHANGELOG.md`](../CHANGELOG.md) under `### Added` is continuously verified against package source files by [`./scripts/check_version.sh`](../scripts/check_version.sh).
@@ -46,9 +46,9 @@ To protect production financial, ERP, and payment systems from unexpected compil
 
 ---
 
-## 4. Domain Maturity Matrix (17 Source Files · 157 Exported Symbols · 100.0% Coverage)
+## 4. Domain Maturity Matrix (18 Source Files · 182 Exported Symbols · 100.0% Coverage)
 
-All 17 domain implementation files (plus `doc.go` and `examples/checkout_verification`) are production-hardened at **Stable** maturity with **100.0% statement coverage** and **0 external dependencies**:
+All 18 domain implementation files (plus `doc.go` and `examples/checkout_verification`) are production-hardened at **Stable** maturity with **100.0% statement coverage** and **0 external dependencies**:
 
 | Domain File | Owning Module Agent | Maturity Tier | Coverage | Hot-Path Allocations | Exported Capabilities & Statutory Scope |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -67,6 +67,7 @@ All 17 domain implementation files (plus `doc.go` and `examples/checkout_verific
 | `micr.go` | `@go-fintech-india-kyc-statutory-agent` | **Stable** | `100.0%` | `0 allocs/op` | RBI 9-digit cheque clearing MICR validation and city/bank/branch code extraction |
 | `phone.go` | `@go-fintech-india-kyc-statutory-agent` | **Stable** | `100.0%` | `0 allocs/op` | DoT 10-digit Indian mobile validation (`6`–`9` start digit), `NormalizeMobile`, and E.164 formatting (`+91XXXXXXXXXX`) |
 | `account.go` | `@go-fintech-india-kyc-statutory-agent` | **Stable** | `100.0%` | `0 allocs/op` | RBI 9–18 digit bank account validation, all-zeros rejection, and compliant masking (`MaskBankAccount`) |
+| `pii.go` | `@go-fintech-india-kyc-statutory-agent` | **Stable** | `100.0%` | Single-pass builder | Bulk unstructured-text Indian PII scanner & redactor (`ScanText`, `RedactText`) for GSTIN, PAN, Aadhaar Verhoeff D5, `+91` phones, IFSC, UPI VPAs, and OTPs with placeholder/mask/salted-hash modes and synthetic test allowlists |
 | `upi.go` | `@go-fintech-india-payments-upi-agent` | **Stable** | `100.0%` | Zero-injection parser | NPCI UPI VPA validation, PSP handle registry, and `upi://pay` deep-link intent URI generator & parser |
 | `webhook.go` | `@go-fintech-india-payments-upi-agent` | **Stable** | `100.0%` | Constant-time HMAC | Timing-safe HMAC-SHA256 / SHA256 webhook signature and replay-window verifiers for Razorpay, Cashfree, and PhonePe |
 

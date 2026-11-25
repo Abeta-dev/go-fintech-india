@@ -1,6 +1,6 @@
 {
   "repository": "github.com/abeta-dev/go-fintech-india",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "go_version": "1.26.0",
   "coverage_target": 100.0,
   "agents": [
@@ -26,15 +26,18 @@
         "phone.go",
         "phone_test.go",
         "account.go",
-        "account_test.go"
+        "account_test.go",
+        "pii.go",
+        "pii_test.go"
       ],
       "packages": [
         "."
       ],
       "rules": [
-        "100.0% statement coverage across PAN, GSTIN, Aadhaar, IFSC, MICR, Mobile, and Bank Account validators",
+        "100.0% statement coverage across PAN, GSTIN, Aadhaar, IFSC, MICR, Mobile, Bank Account validators, and bulk Indian PII scanner/redactor (pii.go)",
         "GSTIN ISO/IEC 7064 Mod 36,36 checksum verification, valid Indian state code registry (01-38, 97, 99), and PAN extraction parity",
         "Aadhaar Verhoeff D5 table checksum validation and UIDAI-compliant XXXX-XXXX-1234 masking (never leak raw 12-digit Aadhaar)",
+        "Bulk unstructured-text PII airlock (ScanText, RedactText) with overlap resolution, zero email-domain false positives, and synthetic test-placeholder allowlists",
         "OfflineIFSCResolver O(1) zero-network lookup and context-aware HTTPResolver / FallbackResolver resilience",
         "Zero external dependencies (100% Go standard library) and zero race conditions under go test -race"
       ]
@@ -135,7 +138,7 @@
         "Zero external dependencies in go.mod and pure stdlib leaf-import isolation in consumer sandbox (./scripts/check_leaf_imports.sh)",
         "Strict N+2 minor-release deprecation window contract enforced across all exported symbols (./scripts/check_deprecation.sh & docs/VERSIONING.md)",
         "100% Exported Symbol Truth Gate: every exported symbol in CHANGELOG.md ### Added exists in package source files (./scripts/check_version.sh)",
-        "Version parity (@v0.5.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/VERSIONING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
+        "Version parity (@v0.6.0) across CHANGELOG.md, README.md, CONTRIBUTING.md, docs/VERSIONING.md, docs/index.html, llms.txt, and skills/*/SKILL.md",
         "Bash 3.2 shell compatibility across all scripts/*.sh and SHA-pinned GitHub Actions with Node 24 runtime enforcement"
       ]
     }

@@ -378,3 +378,19 @@ func ExampleCalculateTDS() {
 	// With PAN: Rate=1000bps TDS=5000.00 Net=45000.00 206AA=false
 	// No PAN: Rate=2000bps TDS=10000.00 Net=40000.00 206AA=true
 }
+
+func ExampleRedactText() {
+	transcript := "PAN BNZPM2501F, Aadhaar 9999 4105 7058, Mobile +91 98765-43210, UPI rohan@okhdfcbank, OTP is 482910."
+
+	redacted, matches := fintechin.RedactText(transcript)
+	fmt.Printf("Found %d PII spans\n", len(matches))
+	fmt.Println(redacted)
+
+	masked, _ := fintechin.RedactText(transcript, fintechin.WithRedactionMode(fintechin.RedactMask))
+	fmt.Println(masked)
+
+	// Output:
+	// Found 5 PII spans
+	// PAN [REDACTED:PAN], Aadhaar [REDACTED:AADHAAR], Mobile [REDACTED:PHONE], UPI [REDACTED:UPI], OTP is [REDACTED:OTP].
+	// PAN XXXXX2501X, Aadhaar XXXX-XXXX-7058, Mobile +91-XXXXXX3210, UPI r***@okhdfcbank, OTP is ******.
+}
