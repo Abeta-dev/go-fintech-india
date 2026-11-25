@@ -67,14 +67,14 @@ type piiConfig struct {
 }
 
 var (
-	rePIIGSTIN   = regexp.MustCompile(`(?i)[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][0-9A-Z]Z[0-9A-Z]`)
-	rePIIPAN     = regexp.MustCompile(`(?i)[A-Z]{5}[0-9]{4}[A-Z]`)
+	rePIIGSTIN   = regexp.MustCompile(`(?i)\d{2}[A-Z]{5}\d{4}[A-Z][0-9A-Z]Z[0-9A-Z]`)
+	rePIIPAN     = regexp.MustCompile(`(?i)[A-Z]{5}\d{4}[A-Z]`)
 	rePIIIFSC    = regexp.MustCompile(`(?i)[A-Z]{4}0[A-Z0-9]{6}`)
-	rePIIAadhaar = regexp.MustCompile(`[2-9][0-9]{3}(?:[ -][0-9]{4}[ -][0-9]{4}|[0-9]{8})`)
-	rePIIPhone   = regexp.MustCompile(`(?:\+91[\s-]?|91[\s-]|0[\s-]?)?[6-9][0-9]{2}(?:[\s-]?[0-9]{3}[\s-]?[0-9]{4}|[0-9]{2}[\s-]?[0-9]{5})`)
+	rePIIAadhaar = regexp.MustCompile(`[2-9]\d{3}(?:[ -]\d{4}[ -]\d{4}|\d{8})`)
+	rePIIPhone   = regexp.MustCompile(`(?:\+91[\s-]?|91[\s-]|0[\s-]?)?[6-9]\d{2}(?:[\s-]?\d{3}[\s-]?\d{4}|\d{2}[\s-]?\d{5})`)
 	rePIIUPI     = regexp.MustCompile(`[A-Za-z0-9][A-Za-z0-9._-]{0,63}@[A-Za-z0-9]{2,64}`)
-	rePIIOTPPre  = regexp.MustCompile(`(?i)\b(?:otp|one[- ]time[- ]pass(?:word|code)|verification[- ]code|verify[- ]code|security[- ]code|auth(?:entication)?[- ]code|login[- ]code|passcode|mpin)\b[^0-9\n]{0,24}\b([0-9]{4,8})\b`)
-	rePIIOTPPost = regexp.MustCompile(`(?i)\b([0-9]{4,8})\b[^0-9\n]{0,24}\b(?:is\s+(?:your|the)\s+)?(?:otp|one[- ]time[- ]pass(?:word|code)|verification[- ]code|security[- ]code|login[- ]code|passcode|mpin)\b`)
+	rePIIOTPPre  = regexp.MustCompile(`(?i)\b(?:otp|one[- ]time[- ]pass(?:word|code)|verification[- ]code|verify[- ]code|security[- ]code|auth(?:entication)?[- ]code|login[- ]code|passcode|mpin)\b[^0-9\n]{0,24}\b(\d{4,8})\b`)
+	rePIIOTPPost = regexp.MustCompile(`(?i)\b(\d{4,8})\b[^0-9\n]{0,24}\b(?:is\s+(?:your|the)\s+)?(?:otp|one[- ]time[- ]pass(?:word|code)|verification[- ]code|security[- ]code|login[- ]code|passcode|mpin)\b`)
 )
 
 var defaultSyntheticTestAllowlist = []string{
